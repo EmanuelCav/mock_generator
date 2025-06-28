@@ -11,7 +11,7 @@ const Media = ({ openForm }: MediaPropsType) => {
     return (
         <View style={homeStyles.mediaContainer}>
             <AddColumn openForm={openForm} />
-            <Icon name="settings" color="#607d8b" size={20} />
+            <Icon name="settings" color="#50C878" size={20} />
         </View>
 
     )

@@ -1,22 +1,43 @@
-import React, { ReactNode } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { ReactNode, useEffect } from 'react';
+import { View, StyleSheet, useColorScheme } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
+import { useTheme, useThemeMode } from '@rneui/themed';
 
 const Container = ({ children }: { children: ReactNode }) => {
     return (
         <SafeAreaProvider>
-            <StatusBar backgroundColor='#32b2c2' />
             <SafeAreaWrapper>{children}</SafeAreaWrapper>
         </SafeAreaProvider>
     )
 }
 
 const SafeAreaWrapper = ({ children }: { children: ReactNode }) => {
+
     const insets = useSafeAreaInsets()
+    const { theme } = useTheme()
+
+    const { setMode } = useThemeMode()
+    const colorScheme = useColorScheme()
+
+    useEffect(() => {
+        // if (colorScheme === "dark") {
+        //     setMode("light")
+        // } else if (colorScheme === "light") {
+        //     setMode("dark")
+        // } else {
+        //     setMode("light")
+        // }
+        setMode("dark")
+
+    }, [colorScheme])
 
     return (
-        <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+        <View style={[styles.container, {
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+            backgroundColor:
+                theme.colors.background
+        }]}>
             {children}
         </View>
     );

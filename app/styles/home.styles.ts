@@ -13,7 +13,7 @@ export const homeStyles = StyleSheet.create({
     containerBackground: {
         position: 'absolute',
         zIndex: 40,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
         top: 0,
         left: 0,
         width: '100%',
@@ -24,7 +24,6 @@ export const homeStyles = StyleSheet.create({
     },
 
     cardBackground: {
-        backgroundColor: '#ffffff',
         borderRadius: 8,
         width: '100%',
         flexGrow: 0,
@@ -42,6 +41,31 @@ export const homeStyles = StyleSheet.create({
         width: '100%',
         justifyContent: 'center',
         height: '10%'
+    },
+
+    columnSelect: {
+        flexDirection: 'row',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        paddingHorizontal: Dimensions.get('window').height / 106,
+        paddingVertical: Dimensions.get('window').height / 67.27,
+        borderWidth: 2,
+        borderColor: '#50C878',
+        borderStyle: 'solid'
+    },
+
+    containerNotFields: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    titleNotFields: {
+        fontWeight: 'bold',
+        fontSize: Dimensions.get("window").height / 47,
+        color: "#32CD32"
     }
 
 })

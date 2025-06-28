@@ -5,12 +5,12 @@ import { AddColumnPropsType } from "../../types/home.types"
 const AddColumn = ({ openForm }: AddColumnPropsType) => {
   return (
     <Button
-      title="Agregar Columna"
+      title="ADD FIELD"
       icon={{
         name: 'add',
         color: 'white',
       }}
-      buttonStyle={{ backgroundColor: '#4caf50' }}
+      buttonStyle={{ backgroundColor: '#50C878' }}
       onPress={openForm}
     />
 

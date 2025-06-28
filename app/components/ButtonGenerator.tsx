@@ -3,16 +3,17 @@ import { View } from "react-native"
 
 import { homeStyles } from "../styles/home.styles"
 
-const ButtonGenerator = () => {
+const ButtonGenerator = ({ columnsLength }: { columnsLength: number }) => {
   return (
     <View style={homeStyles.ButtonGeneratorContainer}>
       <Button
-        title="Generate"
+        disabled={columnsLength === 0}
+        title="GENERATE"
         icon={{
           name: 'save',
           color: 'white',
         }}
-        buttonStyle={{ backgroundColor: '#4caf50' }}
+        buttonStyle={{ backgroundColor: '#50C878' }}
         onPress={() => console.log('Botón presionado')}
       />
     </View>

@@ -9,11 +9,14 @@ export const generalStyles = StyleSheet.create({
         paddingHorizontal: Dimensions.get("window").width / 36
     },
 
-    buttonClose: {
-        justifyContent: 'flex-end',
+    containerClose: {
         width: '100%',
-        alignItems: 'flex-end',
-        position: 'static'
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end'
+    },
+
+    buttonClose: {
+        position: 'static',
     }
 
 })

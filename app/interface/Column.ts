@@ -3,6 +3,7 @@ export interface IColumn {
     topic: string;
     blank: number;
     id: number;
+    data: () => any;
 }
 
 export interface ISelectColumn {
@@ -14,4 +15,5 @@ export interface ISelectColumn {
 export interface ICreateColumn {
     title: string;
     columnData: string;
+    data: () => any;
 }

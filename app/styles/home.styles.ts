@@ -13,7 +13,6 @@ export const homeStyles = StyleSheet.create({
     containerBackground: {
         position: 'absolute',
         zIndex: 40,
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
         top: 0,
         left: 0,
         width: '100%',
@@ -26,10 +25,8 @@ export const homeStyles = StyleSheet.create({
     cardBackground: {
         borderRadius: 8,
         width: '100%',
-        flexGrow: 0,
         padding: Dimensions.get("window").width / 36,
         position: 'relative',
-        maxHeight: Dimensions.get("window").height / 1.05,
         marginVertical: Dimensions.get("window").height / 74,
     },
 

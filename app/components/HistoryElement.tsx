@@ -1,9 +1,9 @@
-import { Dimensions, View } from 'react-native';
-import { Icon, ListItem } from '@rneui/themed';
+import { Dimensions, View } from "react-native"
+import { Icon, ListItem, Text } from '@rneui/themed'
 
-import { ColumnPropsType } from '../types/home.types';
+import { HistoryElementPropsType } from "../types/history.types"
 
-const Column = ({ column, removeColumn, openEdit, colors }: ColumnPropsType) => {
+const HistoryElement = ({ colors, history, handleDownload, handleEdit }: HistoryElementPropsType) => {
     return (
         <ListItem bottomDivider
             containerStyle={{
@@ -15,11 +15,22 @@ const Column = ({ column, removeColumn, openEdit, colors }: ColumnPropsType) => 
             <View>
                 <ListItem.Title
                     style={{ color: colors.white, fontWeight: '700' }}>
-                    {column.fieldName}
+                    {history.name}
                 </ListItem.Title>
                 <ListItem.Subtitle
                     style={{ color: colors.white }}>
-                    {column.topic}
+                    {history.name}
+                </ListItem.Subtitle>
+                <ListItem.Subtitle
+                    style={{ color: colors.white }}>
+                    Columns:
+                    {
+                        history.columns
+                            .slice(0, history.columns.length < 3 ? history.columns.length : 3)
+                            .map((column) => {
+                                return <Text>{column.fieldName}</Text>
+                            })
+                    }
                 </ListItem.Subtitle>
             </View>
             <View style={{ flexDirection: 'row' }}>
@@ -28,17 +39,17 @@ const Column = ({ column, removeColumn, openEdit, colors }: ColumnPropsType) => 
                     color="#00ff00"
                     size={30}
                     style={{ marginRight: Dimensions.get("window").width / 25 }}
-                    onPress={() => openEdit(column)}
+                    onPress={() => handleEdit(history.columns)}
                 />
                 <Icon
                     name="delete"
                     color="#ff0000"
                     size={30}
-                    onPress={() => removeColumn(column)}
+                    onPress={() => handleDownload(history)}
                 />
             </View>
         </ListItem>
-    );
-};
+    )
+}
 
-export default Column;
+export default HistoryElement

@@ -7,35 +7,25 @@ import ButtonGenerator from '../components/ButtonGenerator';
 import Media from '../components/Media';
 import Banner from '../components/Banner';
 import FormColumn from '../components/form/FormColumn';
+import FormEdit from '../components/form/FormEdit';
+import Container from '../../ContainerGeneral';
 
 import { IColumn, ICreateColumn } from '../interface/Column';
 
 import { generalStyles } from '../styles/general.styles';
 import { homeStyles } from '../styles/home.styles';
 
+import { fileStore } from "../store/file.store";
+
+import { generateData } from '../utils/generator';
+
 export default function DropdownWithIcons() {
 
     const { theme } = useTheme();
 
     const [isForm, setIsForm] = useState<boolean>(false)
+    const [isEdit, setIsEdit] = useState<boolean>(false)
     const [titleError, setTitleError] = useState<string>("")
-
-    const [columns, setColumns] = useState<IColumn[]>([{
-        id: 1,
-        fieldName: "Id",
-        topic: "uuid",
-        blank: 0
-    }, {
-        id: 2,
-        fieldName: "Firstname",
-        topic: "firstname",
-        blank: 0
-    }, {
-        id: 3,
-        fieldName: "Lastname",
-        topic: "lastName",
-        blank: 0
-    }])
 
     const handleAddColumn = (data: ICreateColumn) => {
 
@@ -44,23 +34,41 @@ export default function DropdownWithIcons() {
             return
         }
 
-        setColumns([...columns, {
+        fileStore.addColumn({
             blank: 0,
             fieldName: String(data.title),
             topic: String(data.columnData),
-            id: columns.length + 1
-        }])
+            id: fileStore.column.length + 1,
+            data: data.data
+        })
 
         setIsForm(false)
     }
 
-    const removeColumn = (data: string) => {
-        const newColumns = columns.filter(c => c.fieldName !== data)
-        setColumns(newColumns)
+    const removeColumn = (data: IColumn) => {
+        fileStore.removeColumn(data)
+    }
+
+    const openEdit = (data: IColumn) => {
+        setIsEdit(true)
+        fileStore.getField(data)
+    }
+
+    const handleEdit = () => {
+
+    }
+
+    const closeEdit = () => {
+        setIsEdit(false)
+        fileStore.getField(null)
+    }
+
+    const handleGenerate = () => {
+        console.log(generateData(fileStore.column))
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <Container>
             {
                 isForm && <FormColumn
                     error={titleError}
@@ -69,14 +77,21 @@ export default function DropdownWithIcons() {
                     handleAddColumn={handleAddColumn}
                 />
             }
+            {
+                isEdit && <FormEdit
+                    colors={theme.colors}
+                    handleClose={closeEdit}
+                />
+            }
             <View style={generalStyles.generalContainer}>
                 <Banner />
                 {
-                    columns.length > 0 ? <FlatList
-                        data={columns}
+                    fileStore.column.length > 0 ? <FlatList
+                        data={fileStore.column}
                         renderItem={({ item }) => <Column
                             colors={theme.colors}
                             removeColumn={removeColumn}
+                            openEdit={openEdit}
                             column={item}
                         />}
                         keyExtractor={(column) => String(column.id)}
@@ -87,8 +102,8 @@ export default function DropdownWithIcons() {
                     </View>
                 }
                 <Media openForm={() => setIsForm(true)} />
-                <ButtonGenerator columnsLength={columns.length} />
+                <ButtonGenerator handleGenerate={handleGenerate} columnsLength={fileStore.column.length} />
             </View>
-        </View>
+        </Container>
     );
 }

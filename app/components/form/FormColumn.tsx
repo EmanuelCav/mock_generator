@@ -1,15 +1,14 @@
 import { useState } from 'react';
-import { Dimensions, ScrollView, View } from 'react-native';
-import { Button, Icon, Input, Text } from "@rneui/themed"
+import { Dimensions, ScrollView } from 'react-native';
+import { Button, Input, Text } from "@rneui/themed"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import ContainerBackground from "../ContainerBackground"
 import ColumnSelect from './components/ColumnSelect';
+import Close from '../Close';
 
 import { FormColumnPropsType } from '../../types/home.types';
-
-import { generalStyles } from "../../styles/general.styles"
 
 import { column, topics } from '../../utils/topics';
 
@@ -23,7 +22,10 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
         topics.map(item => ({
             ...item,
             icon: () => (
-                <MaterialCommunityIcons name={item.iconName as any} size={18} color="#666" />
+                <MaterialCommunityIcons
+                    name={item.iconName as any}
+                    size={18}
+                    color="#666" />
             ),
         }))
     )
@@ -31,15 +33,7 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
     return (
         <ContainerBackground colors={colors}>
 
-            <View style={generalStyles.containerClose}>
-                <Icon
-                    name="close"
-                    color="#ff0000"
-                    size={26}
-                    onPress={handleClose}
-                    style={generalStyles.buttonClose}
-                />
-            </View>
+            <Close handleClose={handleClose} />
 
             <Text style={{
                 marginBottom: Dimensions.get("window").height / 143,
@@ -66,6 +60,7 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
                 value={title}
                 onChangeText={setTitle}
                 maxLength={30}
+                inputStyle={{ color: colors.white }}
             />
 
             <Text style={{
@@ -117,7 +112,8 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
                 }}
                 onPress={() => handleAddColumn({
                     title,
-                    columnData
+                    columnData,
+                    data: column.find((col) => col.name === columnData)?.data!
                 })}
             />
         </ContainerBackground>

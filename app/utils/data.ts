@@ -6,7 +6,7 @@ import { FormatOption, LanguageOption } from "../types/general.types";
 export const defaultColumn: IColumn[] = [{
     id: 1,
     fieldName: "Id",
-    topic: "ULID",
+    topic: "UUID",
     blank: 0,
     data: () => faker.string.uuid()
 }, {

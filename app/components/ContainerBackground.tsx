@@ -34,7 +34,7 @@ const ContainerBackground = ({ children, colors }: ContainerBackgroundPropsType)
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={[
         homeStyles.containerBackground,
-        { height: windowHeight },
+        { height: "100%" },
         {
           backgroundColor: colors.background === "#121212"
             ? "rgba(255, 255, 255, 0.5)"
@@ -49,7 +49,7 @@ const ContainerBackground = ({ children, colors }: ContainerBackgroundPropsType)
             backgroundColor: colors.background,
             maxHeight: keyboardVisible
               ? windowHeight / 2
-              : windowHeight / 1.125
+              : windowHeight / 1.175
           }
         ]}
       >

@@ -34,15 +34,12 @@ const SafeAreaWrapper = ({ children }: { children: ReactNode }) => {
             if (colorScheme === "dark") {
                 setMode("dark")
                 userStore.handleTheme(true)
-            } else if (colorScheme === "light") {
-                setMode("light")
-                userStore.handleTheme(false)
             } else {
                 setMode("light")
                 userStore.handleTheme(false)
             }
         }
-    }, [colorScheme])
+    }, [])
 
     return (
         <View style={[styles.container, {

@@ -9,7 +9,7 @@ export interface IUserStore {
 export interface IHistory {
     name: string;
     id: number;
-    date: Date;
+    date: string;
     columns: IColumn[];
     data: any[];
 }

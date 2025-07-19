@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { STORAGE_KEY_FILE } from "../constants/user.const";
 
 import { IColumn } from "../interface/Column";
-import { IFileStore } from "../interface/File";
+import { FileOptions, IFileStore } from "../interface/File";
 
 import { defaultColumn } from "../utils/data";
 
@@ -31,8 +31,15 @@ class FileStore {
         this.saveToStorage();
     }
 
+    updateOptions(col: FileOptions) {
+        this.areHeaders = col.areHeaders
+        this.format = col.format
+        this.rows = col.rows
+        this.saveToStorage();
+    }
+
     removeColumn(col: IColumn) {
-        this.column.filter(c => c.id !== col.id);
+        this.column = this.column.filter(c => c.id !== col.id);
         this.saveToStorage();
     }
 
@@ -48,6 +55,11 @@ class FileStore {
 
     updateHeaders(data: boolean) {
         this.areHeaders = data
+        this.saveToStorage();
+    }
+
+    getColumns(columns: IColumn[]) {
+        this.column = columns
         this.saveToStorage();
     }
 
@@ -69,9 +81,9 @@ class FileStore {
             runInAction(() => {
                 this.column = defaultColumn
                 this.field = null
-                this.areHeaders = data.areHeaders
-                this.rows = data.rows
-                this.format = data.format
+                this.areHeaders = data.areHeaders ?? true
+                this.rows = data.rows ?? '1000'
+                this.format = data.format ?? 'CSV'
             });
         }
     }

@@ -6,6 +6,7 @@ import { IColumn } from "../interface/Column";
 export type HistoryElementPropsType = {
     history: IHistory;
     colors: Colors;
-    handleDownload: (history: IHistory) => void;
+    openDownload: (history: IHistory) => void;
     handleEdit: (column: IColumn[]) => void;
+    handleDelete: (history: IHistory) => void;
 }

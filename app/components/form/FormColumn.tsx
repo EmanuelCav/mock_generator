@@ -3,6 +3,7 @@ import { Dimensions, ScrollView } from 'react-native';
 import { Button, Input, Text } from "@rneui/themed"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
+import i18n from '../../../i18n';
 
 import ContainerBackground from "../ContainerBackground"
 import ColumnSelect from './components/ColumnSelect';
@@ -12,7 +13,7 @@ import { FormColumnPropsType } from '../../types/home.types';
 
 import { column, topics } from '../../utils/topics';
 
-const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnPropsType) => {
+const FormColumn = ({ handleClose, handleAddColumn, colors, error, columnLength }: FormColumnPropsType) => {
 
     const [open, setOpen] = useState<boolean>(false)
     const [columnData, setColumnData] = useState<string>("")
@@ -40,7 +41,7 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
                 fontWeight: 'bold',
                 color: colors.white
             }}>
-                Write a field name
+                {i18n.t("fieldName")}
             </Text>
 
             {
@@ -55,7 +56,7 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
             }
 
             <Input
-                placeholder="Field Name"
+                placeholder={i18n.t("fieldNamePlaceholder")}
                 autoCapitalize="none"
                 value={title}
                 onChangeText={setTitle}
@@ -68,7 +69,7 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
                 fontWeight: 'bold',
                 color: colors.white
             }}>
-                Select a topic to filter (optional)
+                {i18n.t("topicFilter")}
             </Text>
 
             <DropDownPicker
@@ -78,7 +79,7 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
-                placeholder="Select a topic to filter"
+                placeholder={i18n.t("topicFilterPlaceholder")}
             />
 
             <Text style={{
@@ -86,7 +87,7 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
                 fontWeight: 'bold',
                 color: colors.white
             }}>
-                Select a type {value === "all topics" ? "(scroll down to see more)" : ""}
+                {i18n.t("selectType")} {value === "all topics" ? `${i18n.t("scrollDown")}` : ""}
             </Text>
 
             <ScrollView style={{ marginVertical: Dimensions.get("window").height / 246.66 }}>
@@ -105,13 +106,13 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
                 }
             </ScrollView>
             <Button
-                disabled={columnData.length === 0 || title.length === 0}
-                title="ADD"
+                disabled={columnData.length === 0}
+                title={i18n.t("add")}
                 buttonStyle={{
                     backgroundColor: "#50C878"
                 }}
                 onPress={() => handleAddColumn({
-                    title,
+                    title: title === "" ? `Field ${columnLength}` : title,
                     columnData,
                     data: column.find((col) => col.name === columnData)?.data!
                 })}

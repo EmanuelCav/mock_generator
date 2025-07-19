@@ -1,4 +1,4 @@
-import { ThemeProvider, Icon } from '@rneui/themed';
+import { ThemeProvider, Icon, useTheme } from '@rneui/themed';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Home from './app/screens/Home';
@@ -8,16 +8,26 @@ import Config from './app/screens/Config';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { userStore } from './app/store/user.store';
+
 import { theme } from './app/utils/theme';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
         <Tab.Navigator initialRouteName="Create"
           screenOptions={{
+            // tabBarStyle: {
+            //   backgroundColor: userStore.isDarkMode ?
+            //     theme.darkColors?.background :
+            //     theme.lightColors?.background,
+            //   borderTopColor: 'transparent',
+            //   elevation: 0
+            // },
             tabBarActiveTintColor: "#50C878",
             animation: "shift"
           }}>

@@ -1,8 +1,12 @@
+import { useState } from "react";
+import { observer } from "mobx-react-lite";
 import { FlatList, View } from "react-native"
 import { Text, useTheme } from "@rneui/themed"
+import i18n from "../../i18n";
 
 import Container from "../../ContainerGeneral"
 import HistoryElement from "../components/HistoryElement";
+import DownloadView from "../components/DownloadView";
 
 import { IColumn } from "../interface/Column";
 import { IHistory } from "../interface/User";
@@ -13,35 +17,64 @@ import { homeStyles } from "../styles/home.styles";
 import { StackNavigation } from "../types/general.types";
 
 import { userStore } from "../store/user.store";
+import { fileStore } from "../store/file.store";
 
-const History = ({ navigation }: { navigation: StackNavigation }) => {
+const History = observer(({ navigation }: { navigation: StackNavigation }) => {
 
     const { theme } = useTheme();
 
+    const [isDownload, setIsDownload] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
+    const [fieldsData, setFieldsData] = useState<any[]>([])
+
     const handleEdit = (column: IColumn[]) => {
-        navigation.navigate("Home")
+        fileStore.getColumns(column)
+        navigation.navigate("Create")
     }
 
-    const handleDownload = (history: IHistory) => {
+    const handleDelete = (history: IHistory) => {
+        userStore.removeHistory(history)
+    }
 
+    const openDownload = (history: IHistory) => {
+        setFieldsData(history.data)
+        setIsDownload(true)
+    }
+
+    const handleDownload = () => {
+
+        setLoading(true)
+
+        setTimeout(() => {
+            setLoading(false)
+        }, 1260);
     }
 
     return (
         <Container>
+            {
+                isDownload && <DownloadView
+                    handleDownload={handleDownload}
+                    setIsGenerated={setIsDownload}
+                    loading={loading}
+                    colors={theme.colors}
+                />
+            }
             <View style={generalStyles.generalContainer}>
                 {
-                    !userStore.history ?
+                    userStore.history.length === 0 ?
                         (
                             <View style={homeStyles.containerNotFields}>
                                 <Text style={homeStyles.titleNotFields}>
-                                    There are not fields! Start to add
+                                    {i18n.t("historyEmpty")}
                                 </Text>
                             </View>
                         ) : (
                             <FlatList
                                 data={userStore.history}
                                 renderItem={({ item }) => <HistoryElement
-                                    handleDownload={handleDownload}
+                                    handleDelete={handleDelete}
+                                    openDownload={openDownload}
                                     handleEdit={handleEdit}
                                     colors={theme.colors}
                                     history={item}
@@ -53,6 +86,6 @@ const History = ({ navigation }: { navigation: StackNavigation }) => {
             </View>
         </Container>
     )
-}
+})
 
 export default History

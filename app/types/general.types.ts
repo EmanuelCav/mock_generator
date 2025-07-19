@@ -5,7 +5,7 @@ import { Colors } from "@rneui/base";
 import { FormatKeyProps, LanguageKeyProps } from "../interface/File";
 
 export type RouteType = {
-    Home: undefined;
+    Create: undefined;
     History: undefined;
     Templates: undefined;
     Config: undefined;

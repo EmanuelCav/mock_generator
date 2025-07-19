@@ -31,6 +31,10 @@ class UserStore {
         this.saveToStorage();
     }
 
+    removeHistory = (his: IHistory) => {
+        this.history = this.history.filter(c => c.id !== his.id)
+    }
+
     async saveToStorage() {
         const data: IUserStore = {
             history: this.history,
@@ -45,9 +49,9 @@ class UserStore {
         if (json) {
             const data: IUserStore = JSON.parse(json);
             runInAction(() => {
-                this.history = data.history;
-                this.isDarkMode = data.isDarkMode;
-                this.isThemeChanged = data.isThemeChanged;
+                this.history = data.history ?? [];
+                this.isDarkMode = data.isDarkMode ?? false;
+                this.isThemeChanged = data.isThemeChanged ?? false;
             });
         }
     }

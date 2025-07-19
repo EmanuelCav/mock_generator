@@ -25,7 +25,7 @@ const Column = ({ column, removeColumn, openEdit, colors }: ColumnPropsType) => 
             <View style={{ flexDirection: 'row' }}>
                 <Icon
                     name="edit"
-                    color="#00ff00"
+                    color="#50C878"
                     size={30}
                     style={{ marginRight: Dimensions.get("window").width / 25 }}
                     onPress={() => openEdit(column)}

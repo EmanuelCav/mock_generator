@@ -15,4 +15,10 @@ export const configStyles = StyleSheet.create({
         marginBottom: Dimensions.get("window").height / 37,
     },
 
+    containConfig: {
+        justifyContent: 'center',
+        flex: 1,
+        width: '100%'
+    }
+
 })

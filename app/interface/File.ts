@@ -18,3 +18,9 @@ export interface LanguageKeyProps {
     spanish: string;
     english: string;
 }
+
+export interface FileOptions {
+    rows: string;
+    areHeaders: boolean;
+    format: string;
+}

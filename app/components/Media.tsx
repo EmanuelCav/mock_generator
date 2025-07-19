@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import { Icon } from '@rneui/base'
+import { Button } from '@rneui/themed'
 
 import AddColumn from './media/AddColumn'
 
@@ -7,11 +7,18 @@ import { MediaPropsType } from '../types/home.types'
 
 import { homeStyles } from '../styles/home.styles'
 
-const Media = ({ openForm }: MediaPropsType) => {
+const Media = ({ openForm, openOptions }: MediaPropsType) => {
     return (
         <View style={homeStyles.mediaContainer}>
             <AddColumn openForm={openForm} />
-            <Icon name="settings" color="#50C878" size={20} />
+            <Button
+                icon={{
+                    name: 'menu',
+                    color: 'white',
+                }}
+                buttonStyle={{ backgroundColor: '#50C878' }}
+                onPress={openOptions}
+            />
         </View>
 
     )

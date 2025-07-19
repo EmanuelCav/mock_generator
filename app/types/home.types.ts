@@ -1,5 +1,7 @@
 import { Colors } from "@rneui/base";
+
 import { IColumn, ICreateColumn, ISelectColumn } from "../interface/Column"
+import { FileOptions } from "../interface/File";
 
 export type ColumnPropsType = {
     column: IColumn;
@@ -10,6 +12,7 @@ export type ColumnPropsType = {
 
 export type MediaPropsType = {
     openForm: () => void;
+    openOptions: () => void;
 }
 
 export type AddColumnPropsType = {
@@ -21,6 +24,7 @@ export type FormColumnPropsType = {
     handleAddColumn: (data: ICreateColumn) => void;
     colors: Colors;
     error: string;
+    columnLength: number
 }
 
 export type ColumnSelectPropsType = {
@@ -32,10 +36,17 @@ export type ColumnSelectPropsType = {
 
 export type FormEditPropsType = {
     colors: Colors;
-    handleClose: () => void
+    handleClose: () => void;
+    field: IColumn;
 }
 
 export type ButtonGeneratorPropsType = {
     columnsLength: number;
     handleGenerate: () => void;
+    loading: boolean;
+}
+
+export type OptionsPropsType = {
+    handleClose: () => void;
+    handleOption: (col: FileOptions) => void;
 }

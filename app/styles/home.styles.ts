@@ -26,8 +26,7 @@ export const homeStyles = StyleSheet.create({
         borderRadius: 8,
         width: '100%',
         padding: Dimensions.get("window").width / 36,
-        position: 'relative',
-        marginVertical: Dimensions.get("window").height / 74,
+        position: 'relative'
     },
 
     containerBanner: {
@@ -63,6 +62,14 @@ export const homeStyles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: Dimensions.get("window").height / 47,
         color: "#32CD32"
+    },
+
+    downloadTitle: {
+        color: "#50C878",
+        fontWeight: 'bold',
+        marginVertical: Dimensions.get("window").height / 74,
+        textAlign: 'center',
+        fontSize: Dimensions.get("window").height / 47
     }
 
 })

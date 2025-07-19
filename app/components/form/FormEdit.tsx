@@ -1,24 +1,21 @@
 import { useState } from 'react';
 import { Dimensions } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { Text } from '@rneui/themed';
+import { Button, Input, Text } from '@rneui/themed';
+import i18n from '../../../i18n';
 
 import ContainerBackground from "../ContainerBackground"
 import Close from "../Close"
 
 import { FormEditPropsType } from "../../types/home.types"
-import { FormatOption, FormatTypes } from '../../types/general.types';
 
-import { formatsAvailable } from '../../utils/data';
+const FormEdit = ({ colors, handleClose, field }: FormEditPropsType) => {
 
-const FormEdit = ({ colors, handleClose }: FormEditPropsType) => {
-
-    const [open, setOpen] = useState<boolean>(false)
-    const [value, setValue] = useState<FormatTypes>("csv")
-    const [items, setItems] = useState<FormatOption[]>(formatsAvailable)
+    const [title, setTitle] = useState<string>(field.fieldName)
+    const [blank, setBlank] = useState<string>(String(field.blank));
 
     return (
         <ContainerBackground colors={colors}>
+
             <Close handleClose={handleClose} />
 
             <Text style={{
@@ -26,17 +23,46 @@ const FormEdit = ({ colors, handleClose }: FormEditPropsType) => {
                 fontWeight: 'bold',
                 color: colors.white
             }}>
-                Selecciona un formato para el archivo
+                {i18n.t("fieldName")}
             </Text>
 
-            <DropDownPicker
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                placeholder="Selecciona un formato para el archivo"
+            <Input
+                placeholder={i18n.t("fieldNamePlaceholder")}
+                autoCapitalize="none"
+                value={title}
+                onChangeText={setTitle}
+                maxLength={30}
+                inputStyle={{ color: colors.white }}
+            />
+
+            <Text style={{
+                marginBottom: Dimensions.get("window").height / 143,
+                fontWeight: 'bold',
+                color: colors.white
+            }}>
+                {i18n.t("defaultRows")}
+            </Text>
+
+            <Input
+                keyboardType="numeric"
+                style={{ color: colors.white }}
+                value={blank}
+                onChangeText={setBlank}
+                maxLength={6}
+            />
+
+            <Button
+                title={i18n.t("accept")}
+                buttonStyle={{
+                    backgroundColor: "#50C878"
+                }}
+                onPress={() => {
+                    // handleOption({
+                    //     areHeaders: headers,
+                    //     format: valueFormat,
+                    //     rows: localRows === "" ? "1000" : localRows
+                    // })
+                }}
             />
 
         </ContainerBackground>

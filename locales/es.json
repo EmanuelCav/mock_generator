@@ -15,6 +15,7 @@
     "language": "Idioma",
     "file": "ARCHIVO",
     "defaultRows": "Cantidad predeterminada de filas",
+    "blankLabel": "Datos vacíos (%)",
     "defaultFormat": "Formato de archivo predeterminado",
     "defaultHeader": "Incluir encabezado",
     "historyEmpty": "Aún no se han generado archivos",
@@ -27,5 +28,13 @@
     "accept": "ACEPTAR",
     "download": "DESCARGAR",
     "fileGenerated": "ARCHIVO GENERADO CON ÉXITO!",
-    "cancel": "CANCELAR"
+    "fileGot": "ARCHIVO OBTENIDO",
+    "cancel": "CANCELAR",
+    "use": "USAR",
+    "downloaded": "ARCHIVO DESCARGADO",
+    "errorShare": "La opción de compartir no está disponible",
+    "shareFile": "Compartir archivo",
+    "data": "Datos",
+    "share": "COMPARTIR",
+    "errorDownload": "Error al descargar el archivo"
 }

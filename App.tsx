@@ -1,4 +1,5 @@
-import { ThemeProvider, Icon, useTheme } from '@rneui/themed';
+import { ThemeProvider, Icon } from '@rneui/themed';
+import { observer } from 'mobx-react-lite';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Home from './app/screens/Home';
@@ -14,20 +15,20 @@ import { theme } from './app/utils/theme';
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+const App = observer(() => {
 
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
         <Tab.Navigator initialRouteName="Create"
           screenOptions={{
-            // tabBarStyle: {
-            //   backgroundColor: userStore.isDarkMode ?
-            //     theme.darkColors?.background :
-            //     theme.lightColors?.background,
-            //   borderTopColor: 'transparent',
-            //   elevation: 0
-            // },
+            tabBarStyle: {
+              backgroundColor: userStore.isDarkMode ?
+                theme.darkColors?.background :
+                theme.lightColors?.background,
+              borderTopColor: 'transparent',
+              elevation: 0
+            },
             tabBarActiveTintColor: "#50C878",
             animation: "shift"
           }}>
@@ -79,4 +80,6 @@ export default function App() {
       </NavigationContainer>
     </ThemeProvider>
   );
-}
+})
+
+export default App

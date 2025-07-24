@@ -8,7 +8,7 @@ import Close from "../Close"
 
 import { FormEditPropsType } from "../../types/home.types"
 
-const FormEdit = ({ colors, handleClose, field }: FormEditPropsType) => {
+const FormEdit = ({ colors, handleClose, field, handleEdit }: FormEditPropsType) => {
 
     const [title, setTitle] = useState<string>(field.fieldName)
     const [blank, setBlank] = useState<string>(String(field.blank));
@@ -40,7 +40,7 @@ const FormEdit = ({ colors, handleClose, field }: FormEditPropsType) => {
                 fontWeight: 'bold',
                 color: colors.white
             }}>
-                {i18n.t("defaultRows")}
+                {i18n.t("blankLabel")}
             </Text>
 
             <Input
@@ -48,7 +48,7 @@ const FormEdit = ({ colors, handleClose, field }: FormEditPropsType) => {
                 style={{ color: colors.white }}
                 value={blank}
                 onChangeText={setBlank}
-                maxLength={6}
+                maxLength={3}
             />
 
             <Button
@@ -56,13 +56,13 @@ const FormEdit = ({ colors, handleClose, field }: FormEditPropsType) => {
                 buttonStyle={{
                     backgroundColor: "#50C878"
                 }}
-                onPress={() => {
-                    // handleOption({
-                    //     areHeaders: headers,
-                    //     format: valueFormat,
-                    //     rows: localRows === "" ? "1000" : localRows
-                    // })
-                }}
+                onPress={() => handleEdit({
+                    data: field.data,
+                    blank: Number(blank),
+                    fieldName: title,
+                    id: field.id,
+                    topic: field.topic
+                })}
             />
 
         </ContainerBackground>

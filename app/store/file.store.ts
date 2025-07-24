@@ -63,6 +63,11 @@ class FileStore {
         this.saveToStorage();
     }
 
+    updateField(col: IColumn) {
+        this.column = this.column.map((c) => c.id === col.id ? col : c)
+        this.saveToStorage();
+    }
+
     async saveToStorage() {
         const data: IFileStore = {
             column: this.column,

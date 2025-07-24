@@ -12,6 +12,8 @@ export interface FormatKeyProps {
     csv: string;
     excel: string;
     json: string;
+    sql: string;
+    xml: string;
 }
 
 export interface LanguageKeyProps {

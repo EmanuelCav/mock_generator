@@ -23,7 +23,8 @@ import { homeStyles } from '../styles/home.styles';
 import { fileStore } from "../store/file.store";
 import { userStore } from '../store/user.store';
 
-import { generateData } from '../utils/generator';
+import { csvGenerator, excelGenerator, generateData, jsonGenerator, sqlGenerator, xmlGenerator } from '../utils/generator';
+import { generateRandomString } from '../utils/data';
 
 const Home = observer(() => {
 
@@ -36,6 +37,7 @@ const Home = observer(() => {
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
     const [fieldsData, setFieldsData] = useState<any[]>([])
+    const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
     const [titleError, setTitleError] = useState<string>("")
 
     const handleAddColumn = (data: ICreateColumn) => {
@@ -65,8 +67,9 @@ const Home = observer(() => {
         fileStore.getField(data)
     }
 
-    const handleEdit = () => {
-
+    const handleEdit = (data: IColumn) => {
+        fileStore.updateField(data)
+        fileStore.getField(null)
     }
 
     const closeEdit = () => {
@@ -81,13 +84,16 @@ const Home = observer(() => {
 
         setFieldsData(fields)
 
-        userStore.addHistory({
+        const newFile = {
             id: userStore.history.length + 1,
             date: new Date().toISOString().split("T")[0],
             data: fields,
-            name: `DATA_GENERATED_${userStore.history.length + 1}`,
+            name: `DATA_GENERATED_${generateRandomString().slice(0, 6)}`,
             columns: fileStore.column
-        })
+        }
+
+        userStore.addHistory(newFile)
+        userStore.getHistory(newFile)
 
         setTimeout(() => {
             setLoading(false)
@@ -104,9 +110,64 @@ const Home = observer(() => {
 
         setLoadingDownload(true)
 
+        switch (fileStore.format) {
+            case "excel":
+                excelGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "csv":
+                csvGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "xml":
+                xmlGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "json":
+                jsonGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "sql":
+                sqlGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            default:
+                excelGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+        }
+
         setTimeout(() => {
             setLoadingDownload(false)
         }, 1260);
+    }
+
+    const handleShare = () => {
+
+        switch (fileStore.format) {
+            case "excel":
+                excelGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "csv":
+                csvGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "xml":
+                xmlGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "json":
+                jsonGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "sql":
+                sqlGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            default:
+                excelGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+        }
     }
 
     return (
@@ -125,6 +186,7 @@ const Home = observer(() => {
                     colors={theme.colors}
                     field={fileStore.field!}
                     handleClose={closeEdit}
+                    handleEdit={handleEdit}
                 />
             }
             {
@@ -136,9 +198,13 @@ const Home = observer(() => {
             {
                 isGenerated && <DownloadView
                     loading={loadingDownload}
+                    isDownloaded={isDownloaded}
+                    setIsDownloaded={setIsDownloaded}
                     handleDownload={handleDownload}
                     colors={theme.colors}
                     setIsGenerated={setIsGenerated}
+                    handleShare={handleShare}
+                    text={i18n.t("fileGenerated")}
                 />
             }
             <View style={generalStyles.generalContainer}>
@@ -152,7 +218,7 @@ const Home = observer(() => {
                             openEdit={openEdit}
                             column={item}
                         />}
-                        keyExtractor={(column) => String(column.id)}
+                        keyExtractor={() => String(generateRandomString())}
                     /> : <View style={homeStyles.containerNotFields}>
                         <Text style={homeStyles.titleNotFields}>
                             {i18n.t("emptyFields")}

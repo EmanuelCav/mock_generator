@@ -10,6 +10,7 @@ class UserStore {
     isDarkMode: boolean = false;
     isThemeChanged: boolean = false;
     history: IHistory[] = [];
+    historyData: IHistory | null = null
 
     constructor() {
         makeAutoObservable(this);
@@ -18,6 +19,11 @@ class UserStore {
 
     addHistory(col: IHistory) {
         this.history.push(col);
+        this.saveToStorage();
+    }
+
+    getHistory(his: IHistory) {
+        this.historyData = his
         this.saveToStorage();
     }
 
@@ -33,6 +39,7 @@ class UserStore {
 
     removeHistory = (his: IHistory) => {
         this.history = this.history.filter(c => c.id !== his.id)
+        this.saveToStorage();
     }
 
     async saveToStorage() {
@@ -40,6 +47,7 @@ class UserStore {
             history: this.history,
             isDarkMode: this.isDarkMode,
             isThemeChanged: this.isThemeChanged,
+            historyData: this.historyData
         };
         await AsyncStorage.setItem(STORAGE_KEY_USER, JSON.stringify(data));
     }
@@ -52,6 +60,7 @@ class UserStore {
                 this.history = data.history ?? [];
                 this.isDarkMode = data.isDarkMode ?? false;
                 this.isThemeChanged = data.isThemeChanged ?? false;
+                this.historyData = null;
             });
         }
     }

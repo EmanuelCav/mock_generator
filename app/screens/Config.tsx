@@ -2,6 +2,7 @@ import { Dimensions, View } from 'react-native'
 import { useEffect, useState } from 'react';
 import { Text, Switch, Icon, useTheme, useThemeMode, Input } from '@rneui/themed'
 import DropDownPicker from 'react-native-dropdown-picker';
+import { observer } from 'mobx-react-lite';
 import i18n from '../../i18n';
 
 import Container from '../../ContainerGeneral';
@@ -16,8 +17,7 @@ import { formatsAvailable, languagesAvailable } from '../utils/data';
 import { userStore } from '../store/user.store';
 import { fileStore } from '../store/file.store';
 
-const Config = () => {
-
+const Config = observer(() => {
 
     const { theme } = useTheme();
     const { setMode } = useThemeMode();
@@ -45,10 +45,10 @@ const Config = () => {
 
         if (darkMode) {
             setMode("light")
-            userStore.handleTheme(true)
+            userStore.handleTheme(false)
         } else {
             setMode("dark")
-            userStore.handleTheme(false)
+            userStore.handleTheme(true)
         }
 
     }
@@ -188,6 +188,6 @@ const Config = () => {
             </View>
         </Container>
     )
-}
+})
 
 export default Config

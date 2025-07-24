@@ -19,12 +19,16 @@ import { StackNavigation } from "../types/general.types";
 import { userStore } from "../store/user.store";
 import { fileStore } from "../store/file.store";
 
+import { generateRandomString } from "../utils/data";
+import { csvGenerator, excelGenerator, jsonGenerator, sqlGenerator, xmlGenerator } from "../utils/generator";
+
 const History = observer(({ navigation }: { navigation: StackNavigation }) => {
 
     const { theme } = useTheme();
 
     const [isDownload, setIsDownload] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false)
+    const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
     const [fieldsData, setFieldsData] = useState<any[]>([])
 
     const handleEdit = (column: IColumn[]) => {
@@ -37,6 +41,7 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
     }
 
     const openDownload = (history: IHistory) => {
+        userStore.getHistory(history)
         setFieldsData(history.data)
         setIsDownload(true)
     }
@@ -44,6 +49,32 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
     const handleDownload = () => {
 
         setLoading(true)
+
+        switch (fileStore.format) {
+            case "excel":
+                excelGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                break;
+
+            case "csv":
+                csvGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                break;
+
+            case "xml":
+                xmlGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                break;
+
+            case "json":
+                jsonGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                break;
+
+            case "sql":
+                sqlGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                break;
+
+            default:
+                excelGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                break;
+        }
 
         setTimeout(() => {
             setLoading(false)
@@ -54,8 +85,11 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
         <Container>
             {
                 isDownload && <DownloadView
+                    setIsDownloaded={setIsDownloaded}
+                    text={i18n.t("fileGot")}
                     handleDownload={handleDownload}
                     setIsGenerated={setIsDownload}
+                    isDownloaded={isDownloaded}
                     loading={loading}
                     colors={theme.colors}
                 />
@@ -79,7 +113,7 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
                                     colors={theme.colors}
                                     history={item}
                                 />}
-                                keyExtractor={(column) => String(column.id)}
+                                keyExtractor={() => generateRandomString()}
                             />
                         )
                 }

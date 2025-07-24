@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mock_generator",
-    "slug": "mock_generator",
+    "name": "Data Mocker",
+    "slug": "DataMocker",
     "version": "1.0.0",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -20,6 +20,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
       "userInterfaceStyle": "automatic",
       "edgeToEdgeEnabled": true
     },

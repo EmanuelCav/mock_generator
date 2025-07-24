@@ -34,7 +34,7 @@ const ContainerBackground = ({ children, colors }: ContainerBackgroundPropsType)
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={[
         homeStyles.containerBackground,
-        { height: "100%" },
+        { height: Dimensions.get("window").height },
         {
           backgroundColor: colors.background === "#121212"
             ? "rgba(255, 255, 255, 0.5)"

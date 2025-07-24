@@ -2,6 +2,7 @@ import { IColumn } from "./Column";
 
 export interface IUserStore {
     history: IHistory[];
+    historyData: IHistory | null;
     isDarkMode: boolean;
     isThemeChanged: boolean;
 }

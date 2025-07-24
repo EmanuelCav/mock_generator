@@ -1,18 +1,33 @@
-import { View } from "react-native"
-import { Text } from "@rneui/themed"
+import { FlatList, View } from "react-native"
+import { observer } from "mobx-react-lite"
+import { useTheme } from "@rneui/themed"
 
 import Container from "../../ContainerGeneral"
+import Template from "../components/Template"
 
 import { generalStyles } from "../styles/general.styles"
 
-const Templates = () => {
+import { templatesData } from "../utils/templates"
+
+const Templates = observer(() => {
+
+    const { theme } = useTheme()
+
     return (
         <Container>
             <View style={generalStyles.generalContainer}>
-                <Text>Templates</Text>
+                <FlatList
+                    data={templatesData}
+                    renderItem={({ item }) =>
+                        <Template
+                            colors={theme.colors}
+                            template={item}
+                        />}
+                    keyExtractor={(_, index) => String(index)}
+                />
             </View>
         </Container>
     )
-}
+})
 
 export default Templates

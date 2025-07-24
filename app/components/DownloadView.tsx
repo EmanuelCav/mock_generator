@@ -1,4 +1,3 @@
-import { Dimensions } from 'react-native'
 import { Button, Text } from '@rneui/themed'
 import i18n from '../../i18n'
 
@@ -9,16 +8,24 @@ import { DownloadViewPropsType } from '../types/config.types'
 
 import { homeStyles } from '../styles/home.styles'
 
-const DownloadView = ({ colors, setIsGenerated, handleDownload, loading }: DownloadViewPropsType) => {
+const DownloadView = ({ colors, setIsGenerated, handleDownload, loading, text, setIsDownloaded, isDownloaded, handleShare }: DownloadViewPropsType) => {
     return (
         <ContainerBackground colors={colors}>
 
-            <Close handleClose={() => setIsGenerated(false)} />
+            <Close handleClose={() => {
+                setIsDownloaded(false)
+                setIsGenerated(false)
+            }} />
 
-            <Text style={homeStyles.downloadTitle}>{i18n.t("fileGenerated")}</Text>
+            {
+                isDownloaded ? 
+                <Text style={homeStyles.downloadTitle}>{i18n.t("downloaded")}</Text>
+                : <Text style={homeStyles.downloadTitle}>{text}</Text>
+            }
 
             <Button
                 title={i18n.t("download")}
+                loading={loading}
                 disabled={loading}
                 icon={{
                     name: 'download',
@@ -34,12 +41,15 @@ const DownloadView = ({ colors, setIsGenerated, handleDownload, loading }: Downl
             />
 
             <Button
-                title={i18n.t("cancel")}
-                buttonStyle={{
-                    backgroundColor: "#ff0000",
-                    marginTop: Dimensions.get("window").height / 106
+                title={i18n.t("download")}
+                icon={{
+                    name: 'share',
+                    color: 'white',
                 }}
-                onPress={() => setIsGenerated(false)}
+                buttonStyle={{
+                    backgroundColor: "#5164c8"
+                }}
+                onPress={handleShare}
             />
 
         </ContainerBackground>

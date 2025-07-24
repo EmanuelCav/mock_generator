@@ -25,21 +25,13 @@ const SafeAreaWrapper = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         if (userStore.isThemeChanged) {
-            if (userStore.isDarkMode) {
-                setMode("dark")
-            } else {
-                setMode("light")
-            }
+            setMode(userStore.isDarkMode ? "dark" : "light")
         } else {
-            if (colorScheme === "dark") {
-                setMode("dark")
-                userStore.handleTheme(true)
-            } else {
-                setMode("light")
-                userStore.handleTheme(false)
-            }
+            const shouldUseDark = colorScheme === "dark"
+            setMode(shouldUseDark ? "dark" : "light")
+            userStore.handleTheme(shouldUseDark)
         }
-    }, [])
+    }, [colorScheme])
 
     return (
         <View style={[styles.container, {

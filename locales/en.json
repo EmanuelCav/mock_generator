@@ -15,6 +15,7 @@
     "language": "Language",
     "file": "FILE",
     "defaultRows": "Default rows amount",
+    "blankLabel": "Empty data (%)",
     "defaultFormat": "Default file format",
     "defaultHeader": "Default include header value",
     "historyEmpty": "No files have been generated yet",
@@ -27,5 +28,13 @@
     "accept": "ACCEPT",
     "download": "DOWNLOAD",
     "fileGenerated": "FILE SUCCESSFULLY GENERATED",
-    "cancel": "CANCEL"
+    "fileGot": "FILE OBTAINED",
+    "cancel": "CANCEL",
+    "use": "USE",
+    "downloaded": "DOWNLOADED FILE",
+    "errorShare": "The sharing option is not available",
+    "shareFile": "Share file",
+    "data": "Data",
+    "share": "SHARE",
+    "errorDownload": "Error downloading the file"
 }

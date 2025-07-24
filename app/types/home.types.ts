@@ -38,6 +38,7 @@ export type FormEditPropsType = {
     colors: Colors;
     handleClose: () => void;
     field: IColumn;
+    handleEdit: (field: IColumn) => void;
 }
 
 export type ButtonGeneratorPropsType = {

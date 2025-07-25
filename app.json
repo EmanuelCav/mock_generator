@@ -16,6 +16,8 @@
       "userInterfaceStyle": "automatic"
     },
     "android": {
+      "package": "com.datamocker.excelgenerator",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -31,7 +33,18 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-localization"
-    ]
+      "expo-localization",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-8789796567862358~9993189831"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1565ed9e-e398-4292-9717-5fff0266fa0e"
+      }
+    }
   }
 }

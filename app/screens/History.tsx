@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { FlatList, View } from "react-native"
-import { Text, useTheme } from "@rneui/themed"
+import { Button, Text, useTheme } from "@rneui/themed"
 import i18n from "../../i18n";
 
 import Container from "../../ContainerGeneral"
 import HistoryElement from "../components/HistoryElement";
 import DownloadView from "../components/DownloadView";
+import Banner from "../components/Banner";
 
 import { IColumn } from "../interface/Column";
 import { IHistory } from "../interface/User";
@@ -52,33 +53,62 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
 
         switch (fileStore.format) {
             case "excel":
-                excelGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                excelGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "csv":
-                csvGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                csvGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "xml":
-                xmlGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                xmlGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "json":
-                jsonGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                jsonGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "sql":
-                sqlGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                sqlGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             default:
-                excelGenerator(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                excelGenerator(fieldsData, userStore.historyData?.name!)
                 break;
         }
 
         setTimeout(() => {
             setLoading(false)
         }, 1260);
+    }
+
+    const handleShare = () => {
+
+        switch (fileStore.format) {
+            case "excel":
+                excelGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "csv":
+                csvGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "xml":
+                xmlGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "json":
+                jsonGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            case "sql":
+                sqlGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+
+            default:
+                excelGenerator(fieldsData, userStore.historyData?.name!)
+                break;
+        }
     }
 
     return (
@@ -89,11 +119,13 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
                     text={i18n.t("fileGot")}
                     handleDownload={handleDownload}
                     setIsGenerated={setIsDownload}
+                    handleShare={handleShare}
                     isDownloaded={isDownloaded}
                     loading={loading}
                     colors={theme.colors}
                 />
             }
+            <Banner />
             <View style={generalStyles.generalContainer}>
                 {
                     userStore.history.length === 0 ?
@@ -102,6 +134,13 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
                                 <Text style={homeStyles.titleNotFields}>
                                     {i18n.t("historyEmpty")}
                                 </Text>
+                                <Button
+                                    title={i18n.t("startNow")}
+                                    buttonStyle={{
+                                        backgroundColor: "#50C878"
+                                    }}
+                                    onPress={() => navigation.navigate("Create")}
+                                />
                             </View>
                         ) : (
                             <FlatList

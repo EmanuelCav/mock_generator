@@ -1,44 +1,40 @@
-import { Dimensions, View } from 'react-native';
-import { Icon, ListItem } from '@rneui/themed';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Icon } from '@rneui/themed';
 
 import { ColumnPropsType } from '../types/home.types';
 
+import { homeStyles } from '../styles/home.styles';
+
 const Column = ({ column, removeColumn, openEdit, colors }: ColumnPropsType) => {
     return (
-        <ListItem bottomDivider
-            containerStyle={{
-                backgroundColor: colors.primary,
-                marginVertical: Dimensions.get("window").height / 92.5,
-                justifyContent: 'space-between',
-                alignItems: 'center'
-            }}>
+        <View style={[homeStyles.containColumn, { backgroundColor: colors.primary }]}>
             <View>
-                <ListItem.Title
-                    style={{ color: colors.white, fontWeight: '700' }}>
+                <Text style={[homeStyles.titleColumn, { color: colors.white }]}>
                     {column.fieldName}
-                </ListItem.Title>
-                <ListItem.Subtitle
-                    style={{ color: colors.white }}>
+                </Text>
+                <Text style={[homeStyles.subtitleColumn, { color: colors.white }]}>
                     {column.topic}
-                </ListItem.Subtitle>
+                </Text>
             </View>
-            <View style={{ flexDirection: 'row' }}>
-                <Icon
-                    name="edit"
-                    color="#50C878"
-                    size={30}
-                    style={{ marginRight: Dimensions.get("window").width / 25 }}
-                    onPress={() => openEdit(column)}
-                />
-                <Icon
-                    name="delete"
-                    color="#ff0000"
-                    size={30}
-                    onPress={() => removeColumn(column)}
-                />
+            <View style={homeStyles.actionsColumn}>
+                <TouchableOpacity onPress={() => openEdit(column)}>
+                    <Icon
+                        name="edit"
+                        color="#50C878"
+                        size={30}
+                        containerStyle={homeStyles.iconSpacing}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => removeColumn(column)}>
+                    <Icon
+                        name="delete"
+                        color="#ff0000"
+                        size={30}
+                    />
+                </TouchableOpacity>
             </View>
-        </ListItem>
-    );
-};
+        </View>
+    )
+}
 
 export default Column;

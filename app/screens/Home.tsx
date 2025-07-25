@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { View, FlatList } from 'react-native';
-import { Text, useTheme } from '@rneui/themed';
+import { Button, Text, useTheme } from '@rneui/themed';
 import i18n from '../../i18n';
 
 import Column from '../components/Column';
@@ -51,7 +51,7 @@ const Home = observer(() => {
             blank: 0,
             fieldName: String(data.title),
             topic: String(data.columnData),
-            id: fileStore.column.length + 1,
+            id: fileStore.fieldId + 1,
             data: data.data
         })
 
@@ -69,7 +69,7 @@ const Home = observer(() => {
 
     const handleEdit = (data: IColumn) => {
         fileStore.updateField(data)
-        fileStore.getField(null)
+        setIsEdit(false)
     }
 
     const closeEdit = () => {
@@ -88,7 +88,7 @@ const Home = observer(() => {
             id: userStore.history.length + 1,
             date: new Date().toISOString().split("T")[0],
             data: fields,
-            name: `DATA_GENERATED_${generateRandomString().slice(0, 6)}`,
+            name: `DATA_MOCKER_${generateRandomString()}`,
             columns: fileStore.column
         }
 
@@ -175,7 +175,7 @@ const Home = observer(() => {
             {
                 isForm && <FormColumn
                     error={titleError}
-                    columnLength={fileStore.column.length}
+                    columnLength={fileStore.fieldId + 1}
                     colors={theme.colors}
                     handleClose={() => setIsForm(false)}
                     handleAddColumn={handleAddColumn}
@@ -207,22 +207,30 @@ const Home = observer(() => {
                     text={i18n.t("fileGenerated")}
                 />
             }
+            <Banner />
             <View style={generalStyles.generalContainer}>
-                <Banner />
                 {
                     fileStore.column.length > 0 ? <FlatList
                         data={fileStore.column}
                         renderItem={({ item }) => <Column
+                            id={item.id}
                             colors={theme.colors}
                             removeColumn={removeColumn}
                             openEdit={openEdit}
                             column={item}
                         />}
-                        keyExtractor={() => String(generateRandomString())}
+                        keyExtractor={(item) => String(item.id)}
                     /> : <View style={homeStyles.containerNotFields}>
                         <Text style={homeStyles.titleNotFields}>
                             {i18n.t("emptyFields")}
                         </Text>
+                        <Button
+                            title={i18n.t("addField")}
+                            buttonStyle={{
+                                backgroundColor: "#50C878"
+                            }}
+                            onPress={() => setIsForm(true)}
+                        />
                     </View>
                 }
                 <Media openForm={() => setIsForm(true)} openOptions={() => setIsOptions(true)} />

@@ -20,15 +20,19 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error, columnLength 
     const [title, setTitle] = useState<string>("")
     const [value, setValue] = useState<string>("all topics")
     const [items, setItems] = useState(
-        topics.map(item => ({
-            ...item,
-            icon: () => (
-                <MaterialCommunityIcons
-                    name={item.iconName as any}
-                    size={18}
-                    color="#666" />
-            ),
-        }))
+        topics
+            .map(item => ({
+                ...item,
+                label: i18n.t(`topics.${item.value}`),
+                icon: () => (
+                    <MaterialCommunityIcons
+                        name={item.iconName as any}
+                        size={18}
+                        color="#666"
+                    />
+                ),
+            }))
+            .sort((a, b) => a.label.localeCompare(b.label))
     )
 
     return (
@@ -93,18 +97,24 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error, columnLength 
             <ScrollView style={{ marginVertical: Dimensions.get("window").height / 246.66 }}>
                 {
                     column
-                        .filter(col => col.topic.find(t => t === value.charAt(0).toUpperCase() + value.slice(1, value.length)))
-                        .sort((a, b) => a.name.localeCompare(b.name))
-                        .map((element, index) => {
-                            return <ColumnSelect
+                        .filter(col => col.topic.find(t => t === topics.find(top => top.value === value)?.label))
+                        .map(col => ({
+                            ...col,
+                            translatedName: i18n.t(`columns.${col.name}`)
+                        }))
+                        .sort((a, b) => a.translatedName.localeCompare(b.translatedName))
+                        .map((element, index) => (
+                            <ColumnSelect
                                 colors={colors}
                                 columnData={columnData}
                                 setColumnData={setColumnData}
-                                element={element}
-                                key={index} />
-                        })
+                                element={{ ...element, name: element.translatedName }}
+                                key={index}
+                            />
+                        ))
                 }
             </ScrollView>
+
             <Button
                 disabled={columnData.length === 0}
                 title={i18n.t("add")}

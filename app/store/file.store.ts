@@ -10,11 +10,12 @@ import { defaultColumn } from "../utils/data";
 
 class FileStore {
 
-    column: IColumn[] = defaultColumn
+    column: IColumn[] = defaultColumn()
     field: IColumn | null = null
     rows: string = '1000'
     areHeaders: boolean = true
     format: string = "CSV"
+    fieldId: number = defaultColumn.length
 
     constructor() {
         makeAutoObservable(this);
@@ -28,6 +29,7 @@ class FileStore {
 
     addColumn(col: IColumn) {
         this.column.push(col);
+        this.fieldId = this.fieldId + 1
         this.saveToStorage();
     }
 
@@ -65,6 +67,7 @@ class FileStore {
 
     updateField(col: IColumn) {
         this.column = this.column.map((c) => c.id === col.id ? col : c)
+        this.field = null
         this.saveToStorage();
     }
 
@@ -74,7 +77,8 @@ class FileStore {
             field: this.field,
             areHeaders: this.areHeaders,
             format: this.format,
-            rows: this.rows
+            rows: this.rows,
+            fieldId: this.fieldId
         };
         await AsyncStorage.setItem(STORAGE_KEY_FILE, JSON.stringify(data));
     }
@@ -84,11 +88,12 @@ class FileStore {
         if (json) {
             const data: IFileStore = JSON.parse(json);
             runInAction(() => {
-                this.column = defaultColumn
+                this.column = defaultColumn()
                 this.field = null
                 this.areHeaders = data.areHeaders ?? true
                 this.rows = data.rows ?? '1000'
-                this.format = data.format ?? 'CSV'
+                this.format = data.format ?? 'CSV',
+                this.fieldId = defaultColumn.length
             });
         }
     }

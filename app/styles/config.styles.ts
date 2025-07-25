@@ -6,7 +6,7 @@ export const configStyles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        marginTop: Dimensions.get("window").height / 74
+        marginVertical: Dimensions.get("window").height / 74
     },
 
     modeContainer: {

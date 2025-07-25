@@ -1,16 +1,20 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Localization from 'expo-localization';
+import i18n from "../../i18n";
 
 import { STORAGE_KEY_USER } from "../constants/user.const";
 
 import { IHistory, IUserStore } from "../interface/User";
 
+const languageCode = Localization.getLocales()[0].languageCode || 'en'
+
 class UserStore {
 
-    isDarkMode: boolean = false;
-    isThemeChanged: boolean = false;
     history: IHistory[] = [];
     historyData: IHistory | null = null
+    isDarkMode: boolean = false
+    lang: string = languageCode
 
     constructor() {
         makeAutoObservable(this);
@@ -27,28 +31,29 @@ class UserStore {
         this.saveToStorage();
     }
 
-    handleTheme(data: boolean) {
+    removeHistory = (his: IHistory) => {
+        this.history = this.history.filter(c => c.id !== his.id)
+        this.saveToStorage();
+    }
+
+    updateMode = (data: boolean) => {
         this.isDarkMode = data
         this.saveToStorage();
     }
 
-    handleThemeChanged(data: boolean) {
-        this.isThemeChanged = data
-        this.saveToStorage();
-    }
-
-    removeHistory = (his: IHistory) => {
-        this.history = this.history.filter(c => c.id !== his.id)
+    updateLang = (data: string) => {
+        this.lang = data
+        i18n.locale = data
         this.saveToStorage();
     }
 
     async saveToStorage() {
         const data: IUserStore = {
             history: this.history,
+            historyData: this.historyData,
             isDarkMode: this.isDarkMode,
-            isThemeChanged: this.isThemeChanged,
-            historyData: this.historyData
-        };
+            lang: this.lang
+        }
         await AsyncStorage.setItem(STORAGE_KEY_USER, JSON.stringify(data));
     }
 
@@ -58,9 +63,10 @@ class UserStore {
             const data: IUserStore = JSON.parse(json);
             runInAction(() => {
                 this.history = data.history ?? [];
-                this.isDarkMode = data.isDarkMode ?? false;
-                this.isThemeChanged = data.isThemeChanged ?? false;
                 this.historyData = null;
+                this.isDarkMode = data.isDarkMode ?? false;
+                this.lang = data.lang ?? languageCode
+                i18n.locale = this.lang;
             });
         }
     }

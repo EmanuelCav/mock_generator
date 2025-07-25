@@ -8,6 +8,7 @@ export type ColumnPropsType = {
     removeColumn: (data: IColumn) => void;
     openEdit: (data: IColumn) => void;
     colors: Colors;
+    id: number;
 }
 
 export type MediaPropsType = {

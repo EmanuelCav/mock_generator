@@ -14,24 +14,23 @@ import { configStyles } from '../styles/config.styles';
 
 import { formatsAvailable, languagesAvailable } from '../utils/data';
 
-import { userStore } from '../store/user.store';
 import { fileStore } from '../store/file.store';
+import { userStore } from '../store/user.store';
 
 const Config = observer(() => {
 
     const { theme } = useTheme();
     const { setMode } = useThemeMode();
 
-    const [darkMode, setDarkMode] = useState<boolean>(userStore.isDarkMode);
     const [headers, setHeaders] = useState<boolean>(fileStore.areHeaders)
     const [localRows, setLocalRows] = useState<string>(fileStore.rows);
 
     const [open, setOpen] = useState<boolean>(false)
-    const [value, setValue] = useState<string>("Spanish")
+    const [value, setValue] = useState<string>(userStore.lang)
     const [items, setItems] = useState<LanguageOption[]>(languagesAvailable)
 
     const [openFormat, setOpenFormat] = useState<boolean>(false)
-    const [valueFormat, setValueFormat] = useState<string>(fileStore.format)
+    const [valueFormat, setValueFormat] = useState<string>(fileStore.format.toLowerCase())
     const [itemsFormat, setItemsFormat] = useState<FormatOption[]>(formatsAvailable)
 
     const toggleSwitchHeaders = () => {
@@ -40,17 +39,8 @@ const Config = observer(() => {
     }
 
     const toggleSwitch = () => {
-        setDarkMode(!darkMode);
-        userStore.handleThemeChanged(true)
-
-        if (darkMode) {
-            setMode("light")
-            userStore.handleTheme(false)
-        } else {
-            setMode("dark")
-            userStore.handleTheme(true)
-        }
-
+        setMode(theme.mode === "dark" ? "light" : "dark")
+        userStore.updateMode(theme.mode !== "dark")
     }
 
     const handleRowsChange = (text: string) => {
@@ -63,8 +53,11 @@ const Config = observer(() => {
     }
 
     useEffect(() => {
-        fileStore.updateFormat(valueFormat)
-    }, [valueFormat])
+        setItems([
+            { label: i18n.t("english"), value: 'en' },
+            { label: i18n.t("spanish"), value: 'es' },
+        ]);
+    }, [i18n.locale]);
 
     return (
         <Container>
@@ -81,9 +74,9 @@ const Config = observer(() => {
 
                         <View style={configStyles.modeContainer}>
                             <Icon
-                                name={'moon'}
+                                name={theme.mode === "dark" ? 'moon' : 'sunny'}
                                 type='ionicon'
-                                color={darkMode ? '#ffffff' : '#FFA500'}
+                                color={theme.mode === "dark" ? '#ffffff' : '#FFA500'}
                                 size={30}
                             />
                             <Text style={{
@@ -96,14 +89,13 @@ const Config = observer(() => {
                         </View>
 
                         <Switch
-                            value={darkMode}
+                            value={theme.mode === "dark"}
                             onValueChange={toggleSwitch}
                             color="#4CAF50"
                             trackColor={{ true: '#81C784', false: '#E0E0E0' }}
-                            thumbColor={darkMode ? '#4CAF50' : '#F4F3F4'}
+                            thumbColor={theme.mode === "dark" ? '#4CAF50' : '#F4F3F4'}
                         />
                     </View>
-
 
                     <Text style={{
                         marginBottom: Dimensions.get("window").height / 143,
@@ -118,9 +110,12 @@ const Config = observer(() => {
                         value={value}
                         items={items}
                         setOpen={setOpen}
-                        setValue={setValue}
+                        setValue={(callback) => {
+                            const newValue = callback(value)
+                            setValue(newValue)
+                            userStore.updateLang(newValue)
+                        }}
                         setItems={setItems}
-                        placeholder="Select a topic to filter"
                     />
 
                     <Text style={{

@@ -30,7 +30,9 @@ export const homeStyles = StyleSheet.create({
     },
 
     containerBanner: {
-        height: '8%'
+        height: '8%',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
     },
 
     ButtonGeneratorContainer: {
@@ -61,7 +63,8 @@ export const homeStyles = StyleSheet.create({
     titleNotFields: {
         fontWeight: 'bold',
         fontSize: Dimensions.get("window").height / 47,
-        color: "#32CD32"
+        color: "#50C878",
+        marginBottom: Dimensions.get("window").height / 74
     },
 
     downloadTitle: {
@@ -70,6 +73,35 @@ export const homeStyles = StyleSheet.create({
         marginVertical: Dimensions.get("window").height / 74,
         textAlign: 'center',
         fontSize: Dimensions.get("window").height / 47
-    }
+    },
+
+    containColumn: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginVertical: Dimensions.get('window').height / 92.5,
+        padding: 12,
+        borderRadius: 8,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+    },
+    titleColumn: {
+        fontWeight: '700',
+        fontSize: 16,
+    },
+    subtitleColumn: {
+        fontSize: 14,
+        marginTop: 4,
+    },
+    actionsColumn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    iconSpacing: {
+        marginRight: Dimensions.get('window').width / 25,
+    },
 
 })

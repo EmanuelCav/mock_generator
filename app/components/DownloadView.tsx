@@ -18,9 +18,9 @@ const DownloadView = ({ colors, setIsGenerated, handleDownload, loading, text, s
             }} />
 
             {
-                isDownloaded ? 
-                <Text style={homeStyles.downloadTitle}>{i18n.t("downloaded")}</Text>
-                : <Text style={homeStyles.downloadTitle}>{text}</Text>
+                isDownloaded ?
+                    <Text style={homeStyles.downloadTitle}>{i18n.t("downloaded")}</Text>
+                    : <Text style={homeStyles.downloadTitle}>{text}</Text>
             }
 
             <Button
@@ -50,6 +50,17 @@ const DownloadView = ({ colors, setIsGenerated, handleDownload, loading, text, s
                     backgroundColor: "#5164c8"
                 }}
                 onPress={handleShare}
+            />
+
+            <Button
+                title={i18n.t("cancel")}
+                buttonStyle={{
+                    backgroundColor: "#ff0000"
+                }}
+                onPress={() => {
+                    setIsDownloaded(false)
+                    setIsGenerated(false)
+                }}
             />
 
         </ContainerBackground>

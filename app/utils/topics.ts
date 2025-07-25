@@ -1,4 +1,4 @@
-import { faker } from "./generator"
+import { faker } from "./fakerGenerator"
 
 export const topics = [
   { label: 'All topics', value: 'all topics', iconName: 'apps' },
@@ -35,7 +35,7 @@ export const column = [
   { type: 'string', topic: ["Person", "All topics"], name: "Prefix", data: () => faker.person.prefix() }, // sex
   { type: 'string', topic: ["Person", "All topics"], name: "Suffix", data: () => faker.person.suffix() },
   { type: 'string', topic: ["Person", "All topics"], name: "Zodiac sign", data: () => faker.person.zodiacSign() },
-
+  
   { type: 'string', topic: ["Transport", "All topics"], name: "Aircraft type", data: () => faker.airline.aircraftType() },
   { type: 'string', topic: ["Transport", "All topics"], name: "Airlane", data: () => faker.airline.airline().name },
   { type: 'string', topic: ["Transport", "All topics"], name: "Airplane", data: () => faker.airline.airplane().name },
@@ -51,7 +51,7 @@ export const column = [
   { type: 'string', topic: ["Transport", "All topics"], name: "Vehicle", data: () => faker.vehicle.vehicle() },
   { type: 'string', topic: ["Transport", "All topics"], name: "Vehicle identification number", data: () => faker.vehicle.vin() },
   { type: 'string', topic: ["Transport", "All topics"], name: "Vehicle registration number", data: () => faker.vehicle.vrm() },
-
+  
   { type: 'string', topic: ["Computing", "All topics"], name: "Database type", data: () => faker.database.type() },
   { type: 'string', topic: ["Computing", "All topics"], name: "Database collation", data: () => faker.database.collation() },
   { type: 'string', topic: ["Computing", "All topics"], name: "Database column", data: () => faker.database.column() },

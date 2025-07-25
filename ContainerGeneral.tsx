@@ -1,11 +1,19 @@
-import React, { ReactNode, useEffect } from 'react';
-import { View, StyleSheet, useColorScheme, StatusBar } from 'react-native';
+import { ReactNode, useEffect } from 'react';
+import { View, StyleSheet, StatusBar, Appearance } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme, useThemeMode } from '@rneui/themed';
 
 import { userStore } from './app/store/user.store';
 
 const Container = ({ children }: { children: ReactNode }) => {
+
+    const { setMode } = useThemeMode();
+
+    useEffect(() => {
+        setMode(Appearance.getColorScheme() === "dark" ? "dark" : "light")
+        userStore.updateMode(Appearance.getColorScheme() === "dark")
+    }, [])
+    
     return (
         <SafeAreaProvider>
             <StatusBar barStyle={"default"} />
@@ -19,19 +27,6 @@ const SafeAreaWrapper = ({ children }: { children: ReactNode }) => {
     const insets = useSafeAreaInsets()
 
     const { theme } = useTheme()
-
-    const { setMode } = useThemeMode()
-    const colorScheme = useColorScheme()
-
-    useEffect(() => {
-        if (userStore.isThemeChanged) {
-            setMode(userStore.isDarkMode ? "dark" : "light")
-        } else {
-            const shouldUseDark = colorScheme === "dark"
-            setMode(shouldUseDark ? "dark" : "light")
-            userStore.handleTheme(shouldUseDark)
-        }
-    }, [colorScheme])
 
     return (
         <View style={[styles.container, {

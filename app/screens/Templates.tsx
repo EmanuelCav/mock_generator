@@ -4,6 +4,7 @@ import { useTheme } from "@rneui/themed"
 
 import Container from "../../ContainerGeneral"
 import Template from "../components/Template"
+import Banner from "../components/Banner"
 
 import { generalStyles } from "../styles/general.styles"
 
@@ -15,6 +16,7 @@ const Templates = observer(() => {
 
     return (
         <Container>
+            <Banner />
             <View style={generalStyles.generalContainer}>
                 <FlatList
                     data={templatesData}

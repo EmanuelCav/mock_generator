@@ -6,6 +6,7 @@ export interface IFileStore {
     rows: string;
     areHeaders: boolean;
     format: string;
+    fieldId: number;
 }
 
 export interface FormatKeyProps {
@@ -17,8 +18,8 @@ export interface FormatKeyProps {
 }
 
 export interface LanguageKeyProps {
-    spanish: string;
-    english: string;
+    es: string;
+    en: string;
 }
 
 export interface FileOptions {

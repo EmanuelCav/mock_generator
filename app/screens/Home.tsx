@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { View, FlatList } from 'react-native';
 import { Button, Text, useTheme } from '@rneui/themed';
@@ -16,6 +16,7 @@ import DownloadView from '../components/DownloadView';
 
 import { IColumn, ICreateColumn } from '../interface/Column';
 import { FileOptions } from '../interface/File';
+import { IHistory } from '../interface/User';
 
 import { generalStyles } from '../styles/general.styles';
 import { homeStyles } from '../styles/home.styles';
@@ -24,7 +25,7 @@ import { fileStore } from "../store/file.store";
 import { userStore } from '../store/user.store';
 
 import { csvGenerator, excelGenerator, generateData, jsonGenerator, sqlGenerator, xmlGenerator } from '../utils/generator';
-import { generateRandomString } from '../utils/data';
+import { generateRandomNumber, generateRandomString } from '../utils/data';
 
 const Home = observer(() => {
 
@@ -39,6 +40,7 @@ const Home = observer(() => {
     const [fieldsData, setFieldsData] = useState<any[]>([])
     const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
     const [titleError, setTitleError] = useState<string>("")
+    const [_, forceRender] = useState<number>(0);
 
     const handleAddColumn = (data: ICreateColumn) => {
 
@@ -51,7 +53,7 @@ const Home = observer(() => {
             blank: 0,
             fieldName: String(data.title),
             topic: String(data.columnData),
-            id: fileStore.fieldId + 1,
+            id: generateRandomNumber(),
             data: data.data
         })
 
@@ -84,12 +86,13 @@ const Home = observer(() => {
 
         setFieldsData(fields)
 
-        const newFile = {
-            id: userStore.history.length + 1,
+        const newFile: IHistory = {
+            id: generateRandomString(),
             date: new Date().toISOString().split("T")[0],
             data: fields,
             name: `DATA_MOCKER_${generateRandomString()}`,
-            columns: fileStore.column
+            columns: fileStore.column,
+            extension: fileStore.format
         }
 
         userStore.addHistory(newFile)
@@ -170,12 +173,15 @@ const Home = observer(() => {
         }
     }
 
+    useEffect(() => {
+        forceRender((prev) => prev + 1);
+    }, [userStore.lang])
+
     return (
         <Container>
             {
                 isForm && <FormColumn
                     error={titleError}
-                    columnLength={fileStore.fieldId + 1}
                     colors={theme.colors}
                     handleClose={() => setIsForm(false)}
                     handleAddColumn={handleAddColumn}
@@ -213,13 +219,12 @@ const Home = observer(() => {
                     fileStore.column.length > 0 ? <FlatList
                         data={fileStore.column}
                         renderItem={({ item }) => <Column
-                            id={item.id}
                             colors={theme.colors}
                             removeColumn={removeColumn}
                             openEdit={openEdit}
                             column={item}
                         />}
-                        keyExtractor={(item) => String(item.id)}
+                        keyExtractor={(_, index) => String(index)}
                     /> : <View style={homeStyles.containerNotFields}>
                         <Text style={homeStyles.titleNotFields}>
                             {i18n.t("emptyFields")}

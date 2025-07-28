@@ -22,6 +22,8 @@ const Config = observer(() => {
     const { theme } = useTheme();
     const { setMode } = useThemeMode();
 
+    const [_, forceRender] = useState<number>(0);
+
     const [headers, setHeaders] = useState<boolean>(fileStore.areHeaders)
     const [localRows, setLocalRows] = useState<string>(fileStore.rows);
 
@@ -58,6 +60,12 @@ const Config = observer(() => {
             { label: i18n.t("spanish"), value: 'es' },
         ]);
     }, [i18n.locale]);
+
+    useEffect(() => {
+        setHeaders(fileStore.areHeaders)
+        setLocalRows(fileStore.rows)
+        setValueFormat(fileStore.format.toLowerCase())
+    }, [fileStore.areHeaders, fileStore.rows, fileStore.format])
 
     return (
         <Container>
@@ -114,6 +122,8 @@ const Config = observer(() => {
                             const newValue = callback(value)
                             setValue(newValue)
                             userStore.updateLang(newValue)
+                            i18n.locale = newValue
+                            forceRender(prev => prev + 1)
                         }}
                         setItems={setItems}
                     />

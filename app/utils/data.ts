@@ -6,22 +6,22 @@ import { FormatOption, LanguageOption } from "../types/general.types";
 
 export const defaultColumn = (): IColumn[] => [
     {
-        id: 1,
-        fieldName: "Id",
+        id: generateRandomNumber(),
+        fieldName: "id",
         topic: "UUID",
         blank: 0,
         data: () => faker.string.uuid()
     },
     {
-        id: 2,
-        fieldName: i18n.t("firstnameField"),
+        id: generateRandomNumber(),
+        fieldName: "first name",
         topic: "First name",
         blank: 0,
         data: () => faker.person.firstName()
     },
     {
-        id: 3,
-        fieldName: i18n.t("lastnameField"),
+        id: generateRandomNumber(),
+        fieldName: "last name",
         topic: "Last name",
         blank: 0,
         data: () => faker.person.lastName()
@@ -36,6 +36,23 @@ export const formatsAvailable: FormatOption[] = [
     { label: 'XML', value: 'xml' },
 ];
 
+export const extensionFile = (file: string): string => {
+    switch (file) {
+        case "csv":
+            return "csv"
+        case "json":
+            return "json"
+        case "sql":
+            return "sql"
+        case "xml":
+            return "xml"
+        case "excel":
+            return "xlsx"
+        default:
+            return "xlsx"
+    }
+}
+
 export const languagesAvailable: LanguageOption[] = [
     { label: i18n.t("english"), value: 'en' },
     { label: i18n.t("spanish"), value: 'es' }
@@ -49,3 +66,7 @@ export const generateRandomString = (): string => {
     }
     return result
 };
+
+export const generateRandomNumber = () => {
+  return Math.floor(100000 + Math.random() * 900000)
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { FlatList, View } from "react-native"
 import { Button, Text, useTheme } from "@rneui/themed"
@@ -20,7 +20,6 @@ import { StackNavigation } from "../types/general.types";
 import { userStore } from "../store/user.store";
 import { fileStore } from "../store/file.store";
 
-import { generateRandomString } from "../utils/data";
 import { csvGenerator, excelGenerator, jsonGenerator, sqlGenerator, xmlGenerator } from "../utils/generator";
 
 const History = observer(({ navigation }: { navigation: StackNavigation }) => {
@@ -31,6 +30,7 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
     const [fieldsData, setFieldsData] = useState<any[]>([])
+    const [_, forceRender] = useState<number>(0);
 
     const handleEdit = (column: IColumn[]) => {
         fileStore.getColumns(column)
@@ -111,6 +111,10 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
         }
     }
 
+    useEffect(() => {
+        forceRender((prev) => prev + 1);
+    }, [userStore.lang])
+
     return (
         <Container>
             {
@@ -152,7 +156,7 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
                                     colors={theme.colors}
                                     history={item}
                                 />}
-                                keyExtractor={() => generateRandomString()}
+                                keyExtractor={(_, index) => String(index)}
                             />
                         )
                 }

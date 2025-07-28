@@ -6,7 +6,6 @@ export interface IFileStore {
     rows: string;
     areHeaders: boolean;
     format: string;
-    fieldId: number;
 }
 
 export interface FormatKeyProps {

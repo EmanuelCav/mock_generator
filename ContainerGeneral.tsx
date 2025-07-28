@@ -16,7 +16,7 @@ const Container = ({ children }: { children: ReactNode }) => {
     
     return (
         <SafeAreaProvider>
-            <StatusBar barStyle={"default"} />
+            <StatusBar barStyle={userStore.isDarkMode ? "light-content" : "dark-content"} />
             <SafeAreaWrapper>{children}</SafeAreaWrapper>
         </SafeAreaProvider>
     )

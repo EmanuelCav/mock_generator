@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { ThemeProvider, Icon } from '@rneui/themed';
 import { observer } from 'mobx-react-lite';
 import { NavigationContainer } from '@react-navigation/native';
+import i18n from './i18n';
 
 import Home from './app/screens/Home';
 import Templates from './app/screens/Templates';
@@ -16,6 +18,12 @@ import { theme } from './app/utils/theme';
 const Tab = createBottomTabNavigator();
 
 const App = observer(() => {
+
+  const [_, forceRender] = useState<number>(0);
+
+  useEffect(() => {
+    forceRender((prev) => prev + 1);
+  }, [userStore.lang])
 
   return (
     <ThemeProvider theme={theme}>
@@ -37,7 +45,7 @@ const App = observer(() => {
             component={Home}
             options={{
               headerShown: false,
-              title: "Create",
+              title: i18n.t("create"),
               tabBarIcon: ({ color, size }) => (
                 <Icon name="plus-circle" type="feather" color={color} size={size} />
               ),
@@ -48,7 +56,7 @@ const App = observer(() => {
             component={Templates}
             options={{
               headerShown: false,
-              title: "Templates",
+              title: i18n.t("templates"),
               tabBarIcon: ({ color, size }) => (
                 <Icon name="layers" type="feather" color={color} size={size} />
               ),
@@ -59,7 +67,7 @@ const App = observer(() => {
             component={History}
             options={{
               headerShown: false,
-              title: "History",
+              title: i18n.t("history"),
               tabBarIcon: ({ color, size }) => (
                 <Icon name="clock" type="feather" color={color} size={size} />
               ),
@@ -70,7 +78,7 @@ const App = observer(() => {
             component={Config}
             options={{
               headerShown: false,
-              title: "Config",
+              title: i18n.t("config"),
               tabBarIcon: ({ color, size }) => (
                 <Icon name="settings" type="feather" color={color} size={size} />
               ),

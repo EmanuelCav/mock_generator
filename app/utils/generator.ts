@@ -4,13 +4,15 @@ import { PermissionsAndroid, Platform } from 'react-native';
 import XLSX from 'xlsx';
 import * as Sharing from 'expo-sharing';
 import i18n from '../../i18n';
-
-import { IColumn } from '../interface/Column';
-import { fileStore } from '../store/file.store';
-
 import { generateFakeData } from './fakerGenerator';
 
+import { IColumn } from '../interface/Column';
+
+import { fileStore } from '../store/file.store';
+
 export const generateData = (fields: IColumn[]) => {
+  console.log(fields);
+  
   return generateFakeData(fields, Number(fileStore.rows));
 };
 

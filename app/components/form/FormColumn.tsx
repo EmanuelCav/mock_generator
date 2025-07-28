@@ -13,7 +13,7 @@ import { FormColumnPropsType } from '../../types/home.types';
 
 import { column, topics } from '../../utils/topics';
 
-const FormColumn = ({ handleClose, handleAddColumn, colors, error, columnLength }: FormColumnPropsType) => {
+const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnPropsType) => {
 
     const [open, setOpen] = useState<boolean>(false)
     const [columnData, setColumnData] = useState<string>("")
@@ -122,9 +122,9 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error, columnLength 
                     backgroundColor: "#50C878"
                 }}
                 onPress={() => handleAddColumn({
-                    title: title === "" ? `Field ${columnLength}` : title,
+                    title: title === "" ? `${columnData.toLowerCase()}` : title,
                     columnData,
-                    data: column.find((col) => col.name === columnData)?.data!
+                    data: column.find((col) => i18n.t(`columns.${col.name}`) === columnData)?.data!
                 })}
             />
         </ContainerBackground>

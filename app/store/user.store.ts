@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Localization from 'expo-localization';
-import i18n from "../../i18n";
 
 import { STORAGE_KEY_USER } from "../constants/user.const";
 
@@ -43,7 +42,6 @@ class UserStore {
 
     updateLang = (data: string) => {
         this.lang = data
-        i18n.locale = data
         this.saveToStorage();
     }
 
@@ -66,7 +64,6 @@ class UserStore {
                 this.historyData = null;
                 this.isDarkMode = data.isDarkMode ?? false;
                 this.lang = data.lang ?? languageCode
-                i18n.locale = this.lang;
             });
         }
     }

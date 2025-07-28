@@ -8,7 +8,6 @@ export type ColumnPropsType = {
     removeColumn: (data: IColumn) => void;
     openEdit: (data: IColumn) => void;
     colors: Colors;
-    id: number;
 }
 
 export type MediaPropsType = {
@@ -25,7 +24,6 @@ export type FormColumnPropsType = {
     handleAddColumn: (data: ICreateColumn) => void;
     colors: Colors;
     error: string;
-    columnLength: number
 }
 
 export type ColumnSelectPropsType = {

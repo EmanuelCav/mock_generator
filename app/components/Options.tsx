@@ -15,8 +15,9 @@ import { configStyles } from "../styles/config.styles"
 import { fileStore } from "../store/file.store"
 
 import { formatsAvailable } from "../utils/data"
+import { observer } from "mobx-react-lite"
 
-const Options = ({ handleClose, handleOption }: OptionsPropsType) => {
+const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
 
     const { theme } = useTheme()
 
@@ -106,6 +107,6 @@ const Options = ({ handleClose, handleOption }: OptionsPropsType) => {
             />
         </ContainerBackground>
     )
-}
+})
 
 export default Options

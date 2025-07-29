@@ -59,7 +59,7 @@ class FileStore {
     }
 
     getColumns(columns: IColumn[]) {
-        this.column = columns
+        this.column = [...columns]
         this.saveToStorage();
     }
 

@@ -1,18 +1,32 @@
+import { Dimensions, View } from 'react-native'
 import { Button, Card } from '@rneui/themed'
 import i18n from '../../i18n'
 
 import { TemplatePropsType } from '../types/template.types'
 
-const Template = ({ template, colors }: TemplatePropsType) => {
+const Template = ({ template, colors, getTemplate }: TemplatePropsType) => {
     return (
         <Card containerStyle={{ backgroundColor: colors.primary }}>
-            <Card.Title style={{ color: colors.white }}>
+            <Card.Title style={{ color: colors.white, fontSize: Dimensions.get("window").height / 54 }}>
                 {template.title}
             </Card.Title>
+            <Card.FeaturedSubtitle style={{ textDecorationLine: "underline" }}>
+                {i18n.t("columnsText")}:
+            </Card.FeaturedSubtitle>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                {
+                    template.data.map((column, index) => {
+                        return <Card.FeaturedSubtitle key={index}
+                            style={{ marginLeft: Dimensions.get("window").width / 120 }}>
+                            {column.fieldName}{index === template.data.length - 1 ? "" : ","}
+                        </Card.FeaturedSubtitle>
+                    })
+                }
+            </View>
             <Card.Divider />
             <Button
                 title={i18n.t("use")}
-                onPress={() => console.log(`Click en ${template.title}`)}
+                onPress={() => getTemplate(template.data)}
                 buttonStyle={{
                     backgroundColor: "#50C878"
                 }}

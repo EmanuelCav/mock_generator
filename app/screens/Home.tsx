@@ -24,7 +24,7 @@ import { homeStyles } from '../styles/home.styles';
 import { fileStore } from "../store/file.store";
 import { userStore } from '../store/user.store';
 
-import { csvGenerator, excelGenerator, generateData, jsonGenerator, sqlGenerator, xmlGenerator } from '../utils/generator';
+import { csvGenerator, excelDownload, excelGenerator, generateData, jsonGenerator, sqlGenerator, xmlGenerator } from '../utils/generator';
 import { generateRandomNumber, generateRandomString } from '../utils/data';
 
 const Home = observer(() => {
@@ -89,9 +89,9 @@ const Home = observer(() => {
         const newFile: IHistory = {
             id: generateRandomString(),
             date: new Date().toISOString().split("T")[0],
-            data: fields,
+            data: [...fields],
             name: `DATA_MOCKER_${generateRandomString()}`,
-            columns: fileStore.column,
+            columns: [...fileStore.column],
             extension: fileStore.format
         }
 
@@ -115,7 +115,7 @@ const Home = observer(() => {
 
         switch (fileStore.format) {
             case "excel":
-                excelGenerator(fieldsData, userStore.historyData?.name!)
+                excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
 
             case "csv":
@@ -135,7 +135,7 @@ const Home = observer(() => {
                 break;
 
             default:
-                excelGenerator(fieldsData, userStore.historyData?.name!)
+                excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
         }
 

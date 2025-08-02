@@ -3,6 +3,7 @@ import { ThemeProvider, Icon } from '@rneui/themed';
 import { observer } from 'mobx-react-lite';
 import { NavigationContainer } from '@react-navigation/native';
 import i18n from './i18n';
+import mobileAds, { AppOpenAd, TestIds, AdEventType } from 'react-native-google-mobile-ads';
 
 import Home from './app/screens/Home';
 import Templates from './app/screens/Templates';
@@ -14,16 +15,52 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { userStore } from './app/store/user.store';
 
 import { theme } from './app/utils/theme';
+import { isFirstOpen, setFirstOpenFlag } from './app/utils/firstOpen';
 
 const Tab = createBottomTabNavigator();
+
+const adUnitId = __DEV__ ? TestIds.APP_OPEN : `${process.env.EXPO_PUBLIC_START}`;
 
 const App = observer(() => {
 
   const [_, forceRender] = useState<number>(0);
+  const [ready, setReady] = useState<boolean>(false);
 
   useEffect(() => {
     forceRender((prev) => prev + 1);
   }, [userStore.lang])
+
+
+  useEffect(() => {
+    const init = async () => {
+      await mobileAds().initialize();
+
+      const firstTime = await isFirstOpen();
+
+      if (!firstTime) {
+
+        const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
+          keywords: ['fashion', 'clothing'],
+        })
+
+        appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
+          appOpenAd.show();
+        })
+
+        appOpenAd.load();
+
+      } else {
+        await setFirstOpenFlag();
+      }
+
+      setReady(true);
+    }
+
+    init()
+
+  }, [])
+
+  if (!ready) return null;
 
   return (
     <ThemeProvider theme={theme}>

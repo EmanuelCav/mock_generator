@@ -7,8 +7,8 @@ import { TemplatePropsType } from '../types/template.types'
 const Template = ({ template, colors, getTemplate }: TemplatePropsType) => {
     return (
         <Card containerStyle={{ backgroundColor: colors.primary }}>
-            <Card.Title style={{ color: colors.white, fontSize: Dimensions.get("window").height / 54 }}>
-                {template.title}
+            <Card.Title style={{ color: colors.white, fontSize: Dimensions.get("window").height / 56 }}>
+                {template.title.toUpperCase()}
             </Card.Title>
             <Card.FeaturedSubtitle style={{ textDecorationLine: "underline" }}>
                 {i18n.t("columnsText")}:

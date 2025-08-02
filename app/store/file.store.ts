@@ -14,7 +14,7 @@ class FileStore {
     field: IColumn | null = null
     rows: string = '1000'
     areHeaders: boolean = true
-    format: string = "CSV"
+    format: string = "csv"
 
     constructor() {
         makeAutoObservable(this);
@@ -89,7 +89,7 @@ class FileStore {
                 this.field = null
                 this.areHeaders = data.areHeaders ?? true
                 this.rows = data.rows ?? '1000'
-                this.format = data.format ?? 'CSV'
+                this.format = data.format ?? 'csv'
             });
         }
     }

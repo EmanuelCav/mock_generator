@@ -5,6 +5,7 @@ import * as Localization from 'expo-localization';
 import { STORAGE_KEY_USER } from "../constants/user.const";
 
 import { IHistory, IUserStore } from "../interface/User";
+import { column } from "../utils/topics";
 
 const languageCode = Localization.getLocales()[0].languageCode || 'en'
 
@@ -60,7 +61,13 @@ class UserStore {
         if (json) {
             const data: IUserStore = JSON.parse(json);
             runInAction(() => {
-                this.history = data.history ?? [];
+                this.history = data.history.map((h) => ({
+                    ...h,
+                    columns: h.columns.map(col => ({
+                        ...col,
+                        data: column.find(c => c.name === col.topic)?.data!
+                    }))
+                })) ?? []
                 this.historyData = null;
                 this.isDarkMode = data.isDarkMode ?? false;
                 this.lang = data.lang ?? languageCode

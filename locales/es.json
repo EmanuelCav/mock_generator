@@ -16,6 +16,7 @@
     "file": "ARCHIVO",
     "defaultRows": "Cantidad predeterminada de filas",
     "blankLabel": "Datos vacíos (%)",
+    "downloadComplete": "¡Descarga completada! El archivo se guardó en la carpeta Descargas. Puedes acceder desde la app Archivos de tu dispositivo.",
     "defaultFormat": "Formato de archivo predeterminado",
     "defaultHeader": "Incluir encabezado",
     "historyEmpty": "Aún no se han generado archivos",

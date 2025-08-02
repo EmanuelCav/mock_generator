@@ -17,3 +17,16 @@ export const generateFakeData = (fields: IColumn[], count: number) => {
         return record;
     }, { count });
 };
+
+const verifyField = (field: IColumn, fields: IColumn[]) => {
+
+    switch (field.topic) {
+        case "Full name":
+            fields.forEach(f => f.topic === "Last name")
+            break;
+    
+        default:
+            break;
+    }
+
+}

@@ -2,6 +2,7 @@ import * as FileSystem from 'expo-file-system';
 import RNFS from 'react-native-fs';
 import { PermissionsAndroid, Platform } from 'react-native';
 import XLSX from 'xlsx';
+import { Buffer } from 'buffer';
 import * as Sharing from 'expo-sharing';
 import i18n from '../../i18n';
 import { generateFakeData } from './fakerGenerator';
@@ -10,9 +11,7 @@ import { IColumn } from '../interface/Column';
 
 import { fileStore } from '../store/file.store';
 
-export const generateData = (fields: IColumn[]) => {
-  console.log(fields);
-  
+export const generateData = (fields: IColumn[]) => {  
   return generateFakeData(fields, Number(fileStore.rows));
 };
 
@@ -35,8 +34,9 @@ export const excelGenerator = async (fieldsData: any[], fileName: string) => {
   }
 };
 
-export const excelDownload = async (fieldsData: any[], fileName: string) => {
+export const excelDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void) => {
   try {
+
     if (Platform.OS === 'android') {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -51,7 +51,7 @@ export const excelDownload = async (fieldsData: any[], fileName: string) => {
 
       if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
         console.log('Permiso denegado');
-        return;
+        // return;
       }
     }
 
@@ -66,8 +66,7 @@ export const excelDownload = async (fieldsData: any[], fileName: string) => {
 
     await RNFS.writeFile(path, buffer.toString('base64'), 'base64');
 
-    console.log('Archivo guardado en:', path);
-    alert('Archivo Excel guardado en Descargas');
+    setIsDownload(true)
 
   } catch (error) {
     console.error('Error al guardar archivo Excel:', error);
@@ -160,14 +159,6 @@ export const jsonGenerator = async (fieldsData: any[], fileName: string) => {
 
   } catch (error) {
     console.error('Error al exportar JSON:', error);
-  }
-};
-
-const downloadFromUrl = async (url: string, fileName: string) => {
-  try {
-    // funcionalidad no implementada aún
-  } catch (error) {
-    console.error(`${i18n.t("errorDownload")}:`, error);
   }
 };
 

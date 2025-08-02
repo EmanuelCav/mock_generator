@@ -16,6 +16,7 @@
     "file": "FILE",
     "defaultRows": "Default rows amount",
     "blankLabel": "Empty data (%)",
+    "downloadComplete": "Download complete! Check your Downloads folder in the Files app.",
     "defaultFormat": "Default file format",
     "defaultHeader": "Default include header value",
     "historyEmpty": "No files have been generated yet",

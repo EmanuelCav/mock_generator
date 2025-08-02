@@ -25,6 +25,27 @@ export const defaultColumn = (): IColumn[] => [
         topic: "Last name",
         blank: 0,
         data: () => faker.person.lastName()
+    },
+    {
+        id: generateRandomNumber(),
+        fieldName: "email",
+        topic: "Email",
+        blank: 0,
+        data: () => faker.internet.email()
+    },
+    {
+        id: generateRandomNumber(),
+        fieldName: "birth date",
+        topic: "Birth date",
+        blank: 0,
+        data: () => faker.date.birthdate().toISOString().split("T")[0]
+    },
+    {
+        id: generateRandomNumber(),
+        fieldName: "gender",
+        topic: "Gender",
+        blank: 0,
+        data: () => faker.person.sex()
     }
 ];
 

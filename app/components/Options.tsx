@@ -21,7 +21,7 @@ const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
 
     const { theme } = useTheme()
 
-    const [headers, setHeaders] = useState<boolean>(fileStore.areHeaders)
+    // const [headers, setHeaders] = useState<boolean>(fileStore.areHeaders)
     const [localRows, setLocalRows] = useState<string>(fileStore.rows);
 
     const [openFormat, setOpenFormat] = useState<boolean>(false)
@@ -32,10 +32,10 @@ const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
         setLocalRows(text);
     }
 
-    const toggleSwitchHeaders = () => {
-        setHeaders(!headers)
-        fileStore.updateHeaders(!fileStore.areHeaders)
-    }
+    // const toggleSwitchHeaders = () => {
+    //     setHeaders(!headers)
+    //     fileStore.updateHeaders(!fileStore.areHeaders)
+    // }
 
     return (
         <ContainerBackground colors={theme.colors}>
@@ -83,13 +83,13 @@ const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
                     {i18n.t("defaultHeader")}
                 </Text>
 
-                <Switch
+                {/* <Switch
                     value={headers}
                     onValueChange={toggleSwitchHeaders}
                     color="#4CAF50"
                     trackColor={{ true: '#81C784', false: '#E0E0E0' }}
                     thumbColor={headers ? '#4CAF50' : '#F4F3F4'}
-                />
+                /> */}
             </View>
 
             <Button
@@ -99,7 +99,6 @@ const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
                 }}
                 onPress={() => {
                     handleOption({
-                        areHeaders: headers,
                         format: valueFormat,
                         rows: localRows === "" ? "1000" : localRows
                     })

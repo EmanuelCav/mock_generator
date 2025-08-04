@@ -4,7 +4,6 @@ export interface IFileStore {
     column: IColumn[];
     field: IColumn | null;
     rows: string;
-    areHeaders: boolean;
     format: string;
 }
 
@@ -23,6 +22,5 @@ export interface LanguageKeyProps {
 
 export interface FileOptions {
     rows: string;
-    areHeaders: boolean;
     format: string;
 }

@@ -13,8 +13,13 @@ class FileStore {
     column: IColumn[] = defaultColumn()
     field: IColumn | null = null
     rows: string = '1000'
-    areHeaders: boolean = true
     format: string = "csv"
+
+    header_csv: boolean = true
+    json_array: boolean = true
+    root_element_xml: string = "dataset"
+    record_element_xml: string = "record"
+    table_name_sql: string = "DATA_MOCKER"
 
     constructor() {
         makeAutoObservable(this);
@@ -32,7 +37,6 @@ class FileStore {
     }
 
     updateOptions(col: FileOptions) {
-        this.areHeaders = col.areHeaders
         this.format = col.format
         this.rows = col.rows
         this.saveToStorage();
@@ -53,11 +57,6 @@ class FileStore {
         this.saveToStorage();
     }
 
-    updateHeaders(data: boolean) {
-        this.areHeaders = data
-        this.saveToStorage();
-    }
-
     getColumns(columns: IColumn[]) {
         this.column = [...columns]
         this.saveToStorage();
@@ -73,7 +72,6 @@ class FileStore {
         const data: IFileStore = {
             column: this.column,
             field: this.field,
-            areHeaders: this.areHeaders,
             format: this.format,
             rows: this.rows
         };
@@ -87,7 +85,6 @@ class FileStore {
             runInAction(() => {
                 this.column = defaultColumn()
                 this.field = null
-                this.areHeaders = data.areHeaders ?? true
                 this.rows = data.rows ?? '1000'
                 this.format = data.format ?? 'csv'
             });

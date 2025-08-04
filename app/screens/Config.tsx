@@ -24,7 +24,7 @@ const Config = observer(() => {
 
     const [_, forceRender] = useState<number>(0);
 
-    const [headers, setHeaders] = useState<boolean>(fileStore.areHeaders)
+    // const [headers, setHeaders] = useState<boolean>(fileStore.areHeaders)
     const [localRows, setLocalRows] = useState<string>(fileStore.rows);
 
     const [open, setOpen] = useState<boolean>(false)
@@ -35,10 +35,10 @@ const Config = observer(() => {
     const [valueFormat, setValueFormat] = useState<string>(fileStore.format.toLowerCase())
     const [itemsFormat, setItemsFormat] = useState<FormatOption[]>(formatsAvailable)
 
-    const toggleSwitchHeaders = () => {
-        setHeaders(!headers)
-        fileStore.updateHeaders(!fileStore.areHeaders)
-    }
+    // const toggleSwitchHeaders = () => {
+    //     setHeaders(!headers)
+    //     fileStore.updateHeaders(!fileStore.areHeaders)
+    // }
 
     const toggleSwitch = () => {
         setMode(theme.mode === "dark" ? "light" : "dark")
@@ -62,15 +62,17 @@ const Config = observer(() => {
     }, [i18n.locale]);
 
     useEffect(() => {
-        setHeaders(fileStore.areHeaders)
+        // setHeaders(fileStore.areHeaders)
         setLocalRows(fileStore.rows)
         setValueFormat(fileStore.format.toLowerCase())
-    }, [fileStore.areHeaders, fileStore.rows, fileStore.format])
+    }, [/*fileStore.areHeaders*/, fileStore.rows, fileStore.format])
 
     return (
         <Container>
             <View style={generalStyles.generalContainer}>
                 <View style={configStyles.containConfig}>
+
+                    <Text>{process.env.EXPO_PUBLIC_BANNER === "ca-app-pub-8789796567862358/9267814417" ? "Config" : "Settings"}</Text>
 
                     <Text style={{
                         color: theme.colors.white,
@@ -181,13 +183,13 @@ const Config = observer(() => {
                             {i18n.t("defaultHeader")}
                         </Text>
 
-                        <Switch
+                        {/*<Switch
                             value={headers}
                             onValueChange={toggleSwitchHeaders}
                             color="#4CAF50"
                             trackColor={{ true: '#81C784', false: '#E0E0E0' }}
                             thumbColor={headers ? '#4CAF50' : '#F4F3F4'}
-                        />
+                        />*/}
                     </View>
                 </View>
             </View>

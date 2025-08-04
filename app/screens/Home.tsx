@@ -24,7 +24,7 @@ import { homeStyles } from '../styles/home.styles';
 import { fileStore } from "../store/file.store";
 import { userStore } from '../store/user.store';
 
-import { csvGenerator, excelDownload, excelGenerator, generateData, jsonGenerator, sqlGenerator, xmlGenerator } from '../utils/generator';
+import * as FileSystemOptions from '../utils/generator';
 import { generateRandomNumber, generateRandomString } from '../utils/data';
 
 const Home = observer(() => {
@@ -82,7 +82,7 @@ const Home = observer(() => {
     const handleGenerate = () => {
         setLoading(true)
 
-        const fields = generateData(fileStore.column);
+        const fields = FileSystemOptions.generateData(fileStore.column);
 
         setFieldsData(fields)
 
@@ -115,27 +115,27 @@ const Home = observer(() => {
 
         switch (fileStore.format) {
             case "excel":
-                excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
 
             case "csv":
-                csvGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.csvDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
 
             case "xml":
-                xmlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.xmlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
 
             case "json":
-                jsonGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.jsonDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
 
             case "sql":
-                sqlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.sqlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
 
             default:
-                excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
         }
 
@@ -148,27 +148,27 @@ const Home = observer(() => {
 
         switch (fileStore.format) {
             case "excel":
-                excelGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.excelGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "csv":
-                csvGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.csvGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "xml":
-                xmlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.xmlGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "json":
-                jsonGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.jsonGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "sql":
-                sqlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.sqlGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             default:
-                excelGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.excelGenerator(fieldsData, userStore.historyData?.name!)
                 break;
         }
     }

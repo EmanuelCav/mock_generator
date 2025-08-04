@@ -20,7 +20,7 @@ import { StackNavigation } from "../types/general.types";
 import { userStore } from "../store/user.store";
 import { fileStore } from "../store/file.store";
 
-import { csvGenerator, excelGenerator, jsonGenerator, sqlGenerator, xmlGenerator } from "../utils/generator";
+import * as FileSystemOptions from "../utils/generator";
 
 const History = observer(({ navigation }: { navigation: StackNavigation }) => {
 
@@ -53,27 +53,27 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
 
         switch (fileStore.format) {
             case "excel":
-                excelGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
 
             case "csv":
-                csvGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.csvDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
 
             case "xml":
-                xmlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.xmlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
 
             case "json":
-                jsonGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.jsonDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
 
             case "sql":
-                sqlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.sqlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
 
             default:
-                excelGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
                 break;
         }
 
@@ -86,27 +86,27 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
 
         switch (fileStore.format) {
             case "excel":
-                excelGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.excelGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "csv":
-                csvGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.csvGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "xml":
-                xmlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.xmlGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "json":
-                jsonGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.jsonGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             case "sql":
-                sqlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.sqlGenerator(fieldsData, userStore.historyData?.name!)
                 break;
 
             default:
-                excelGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.excelGenerator(fieldsData, userStore.historyData?.name!)
                 break;
         }
     }

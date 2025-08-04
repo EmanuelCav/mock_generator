@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import RNFS from 'react-native-fs';
-import { PermissionsAndroid, Platform } from 'react-native';
+import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import XLSX from 'xlsx';
 import { Buffer } from 'buffer';
 import * as Sharing from 'expo-sharing';
@@ -11,7 +11,7 @@ import { IColumn } from '../interface/Column';
 
 import { fileStore } from '../store/file.store';
 
-export const generateData = (fields: IColumn[]) => {  
+export const generateData = (fields: IColumn[]) => {
   return generateFakeData(fields, Number(fileStore.rows));
 };
 
@@ -30,34 +30,22 @@ export const excelGenerator = async (fieldsData: any[], fileName: string) => {
 
     shareMethod(path, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', "Excel");
   } catch (error) {
-    console.error('Error al exportar Excel:', error);
+    Alert.alert(i18n.t("titleErrorShare"), i18n.t("descriptionErrorShare"))
   }
 };
 
 export const excelDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void) => {
+
   try {
 
-    if (Platform.OS === 'android') {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: 'Permiso de almacenamiento',
-          message: 'La app necesita acceso a tu almacenamiento para guardar archivos.',
-          buttonNeutral: 'Preguntar luego',
-          buttonNegative: 'Cancelar',
-          buttonPositive: 'Aceptar',
-        }
-      );
-
-      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Permiso denegado');
-        // return;
-      }
+    if (!permissionsReadStorage()) {
+      Alert.alert(i18n.t("titlePermissionDenied"), i18n.t("descriptionPermissionDenied"))
+      return
     }
 
     const ws = XLSX.utils.json_to_sheet(fieldsData);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Datos');
+    XLSX.utils.book_append_sheet(wb, ws, 'Data');
 
     const wbout = XLSX.write(wb, { type: 'binary', bookType: 'xlsx' });
 
@@ -69,9 +57,9 @@ export const excelDownload = async (fieldsData: any[], fileName: string, setIsDo
     setIsDownload(true)
 
   } catch (error) {
-    console.error('Error al guardar archivo Excel:', error);
+    Alert.alert(i18n.t("titleErrorDownload"), i18n.t("descriptionErrorDownload"))
   }
-};
+}
 
 export const csvGenerator = async (fieldsData: any[], fileName: string) => {
   try {
@@ -90,20 +78,51 @@ export const csvGenerator = async (fieldsData: any[], fileName: string) => {
     shareMethod(path, 'text/csv', "CSV");
 
   } catch (error) {
-    console.error('Error al exportar CSV:', error);
+    Alert.alert(i18n.t("titleErrorShare"), i18n.t("descriptionErrorShare"))
   }
-};
+}
+
+export const csvDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void) => {
+  try {
+
+    if (!permissionsReadStorage()) {
+      Alert.alert(i18n.t("titlePermissionDenied"), i18n.t("descriptionPermissionDenied"))
+      return
+    }
+
+    const ws = XLSX.utils.json_to_sheet(fieldsData);
+
+    const csv = XLSX.utils.sheet_to_csv(ws);
+
+    const path = `${RNFS.DownloadDirectoryPath}/${fileName}.csv`;
+
+    await RNFS.writeFile(path, csv, 'utf8');
+
+    setIsDownload(true);
+
+  } catch (error) {
+    Alert.alert(i18n.t("titleErrorDownload"), i18n.t("descriptionErrorDownload"))
+  }
+}
+
+const jsonToXml = (jsonArray: any[], rootName = 'Items', itemName = 'Item'): string => {
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<${rootName.toLowerCase()}>\n`;
+
+  jsonArray.forEach(obj => {
+    xml += `  <${itemName.toLowerCase()}>\n`;
+    Object.entries(obj).forEach(([key, value]) => {
+      xml += `    <${key.split(" ").join("_")}>${value}</${key.split(" ").join("_")}>\n`;
+    });
+    xml += `  </${itemName.toLowerCase()}>\n`;
+  });
+
+  xml += `</${rootName.toLowerCase()}>`;
+  return xml;
+}
 
 export const xmlGenerator = async (fieldsData: any[], fileName: string) => {
   try {
-    const xmlItems = fieldsData.map(item => {
-      const fields = Object.entries(item).map(([key, value]) => {
-        return `<${key}>${String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</${key}>`;
-      }).join('');
-      return `<item>${fields}</item>`;
-    }).join('');
-
-    const xmlString = `<?xml version="1.0" encoding="UTF-8"?><items>${xmlItems}</items>`;
+    const xmlString = jsonToXml(fieldsData, "dataset", "record")
     const path = FileSystem.documentDirectory + `${fileName}.xml`;
 
     await FileSystem.writeAsStringAsync(path, xmlString, {
@@ -113,13 +132,33 @@ export const xmlGenerator = async (fieldsData: any[], fileName: string) => {
     shareMethod(path, 'application/xml', "XML");
 
   } catch (error) {
-    console.error('Error al exportar XML:', error);
+    Alert.alert(i18n.t("titleErrorShare"), i18n.t("descriptionErrorShare"))
   }
-};
+}
+
+export const xmlDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void) => {
+  try {
+
+    if (!permissionsReadStorage()) {
+      Alert.alert(i18n.t("titlePermissionDenied"), i18n.t("descriptionPermissionDenied"))
+      return
+    }
+
+    const xmlContent = jsonToXml(fieldsData, "dataset", "record");
+    const path = `${RNFS.DownloadDirectoryPath}/${fileName}.xml`;
+
+    await RNFS.writeFile(path, xmlContent, 'utf8');
+
+    setIsDownload(true);
+
+  } catch (error) {
+    Alert.alert(i18n.t("titleErrorDownload"), i18n.t("descriptionErrorDownload"))
+  }
+}
 
 export const sqlGenerator = async (fieldsData: any[], fileName: string) => {
   try {
-    const tableName = 'data_generator';
+    const tableName = 'DATA_MOCKER';
     const keys = Object.keys(fieldsData[0]);
 
     const sqlStatements = fieldsData.map(item => {
@@ -130,7 +169,7 @@ export const sqlGenerator = async (fieldsData: any[], fileName: string) => {
         return `'${String(value).replace(/'/g, "''")}'`;
       }).join(', ');
 
-      return `insert into ${tableName} (${keys.join(', ')}) values (${values});`;
+      return `insert into ${tableName} (${keys.map(k => k.split(" ").join("_")).join(', ')}) values (${values});`;
     }).join('\n');
 
     const path = FileSystem.documentDirectory + `${fileName}.sql`;
@@ -142,7 +181,40 @@ export const sqlGenerator = async (fieldsData: any[], fileName: string) => {
     shareMethod(path, 'application/sql', "SQL");
 
   } catch (error) {
-    console.error('Error al exportar SQL:', error);
+    Alert.alert(i18n.t("titleErrorShare"), i18n.t("descriptionErrorShare"))
+  }
+};
+
+export const sqlDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void) => {
+  try {
+
+    if (!permissionsReadStorage()) {
+      Alert.alert(i18n.t("titlePermissionDenied"), i18n.t("descriptionPermissionDenied"))
+      return
+    }
+
+    const tableName = 'data_generator';
+    const keys = Object.keys(fieldsData[0]);
+
+    const sqlStatements = fieldsData.map(item => {
+      const values = keys.map(key => {
+        const value = item[key];
+        if (typeof value === 'number') return value;
+        if (value === null || value === undefined) return 'NULL';
+        return `'${String(value).replace(/'/g, "''")}'`;
+      }).join(', ');
+
+      return `insert into ${tableName} (${keys.map(k => k.split(" ").join("_")).join(', ')}) values (${values});`;
+    }).join('\n');
+
+    const path = `${RNFS.DownloadDirectoryPath}/${fileName}.sql`;
+
+    await RNFS.writeFile(path, sqlStatements, 'utf8');
+
+    setIsDownload(true);
+
+  } catch (error) {
+    Alert.alert(i18n.t("titleErrorDownload"), i18n.t("descriptionErrorDownload"))
   }
 };
 
@@ -158,9 +230,30 @@ export const jsonGenerator = async (fieldsData: any[], fileName: string) => {
     shareMethod(path, 'application/json', "JSON");
 
   } catch (error) {
-    console.error('Error al exportar JSON:', error);
+    Alert.alert(i18n.t("titleErrorShare"), i18n.t("descriptionErrorShare"))
   }
-};
+}
+
+export const jsonDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void) => {
+  try {
+
+    if (!permissionsReadStorage()) {
+      Alert.alert(i18n.t("titlePermissionDenied"), i18n.t("descriptionPermissionDenied"))
+      return
+    }
+
+    const jsonString = JSON.stringify(fieldsData, null, 2);
+
+    const path = `${RNFS.DownloadDirectoryPath}/${fileName}.json`;
+
+    await RNFS.writeFile(path, jsonString, 'utf8');
+
+    setIsDownload(true);
+
+  } catch (error) {
+    Alert.alert(i18n.t("titleErrorDownload"), i18n.t("descriptionErrorDownload"))
+  }
+}
 
 export const shareMethod = async (path: string, mimeType: string, format: string) => {
   if (await Sharing.isAvailableAsync()) {
@@ -169,6 +262,26 @@ export const shareMethod = async (path: string, mimeType: string, format: string
       dialogTitle: `${i18n.t("shareFile")} ${format}`,
     });
   } else {
-    alert(i18n.t("errorShare"));
+    Alert.alert(i18n.t("errorShare"));
   }
 };
+
+export const permissionsReadStorage = async (): Promise<boolean> => {
+
+  if (Platform.OS === 'android' && Platform.Version < 29) {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      {
+        title: i18n.t("titleStorage"),
+        message: i18n.t("messageStorage"),
+        buttonNeutral: i18n.t("askafter"),
+        buttonNegative: i18n.t("cancel"),
+        buttonPositive: i18n.t("accept"),
+      }
+    );
+
+    return granted === PermissionsAndroid.RESULTS.GRANTED
+  }
+
+  return true
+}

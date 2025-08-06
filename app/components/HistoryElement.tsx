@@ -59,13 +59,7 @@ const HistoryElement = ({ colors, history, openDownload, handleEdit, handleDelet
                     onPress={() => handleEdit(history.columns)}
                 />
                 <Icon
-                    name="share"
-                    color="#50C878"
-                    size={30}
-                    onPress={() => openDownload(history)}
-                />
-                <Icon
-                    name="download"
+                    name="exit-to-app"
                     color="#50C878"
                     size={30}
                     onPress={() => openDownload(history)}

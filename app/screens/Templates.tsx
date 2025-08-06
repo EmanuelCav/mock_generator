@@ -57,9 +57,9 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: () => faker.phone.number({ style: "international" })
         }, {
             id: generateRandomNumber(),
-            fieldName: "birth date",
+            fieldName: "birthdate",
             blank: 0,
-            topic: "Birth date",
+            topic: "Birthdate",
             data: () => faker.date.birthdate().toISOString().split("T")[0]
         }, {
             id: generateRandomNumber(),
@@ -98,8 +98,8 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             id: generateRandomNumber(),
             fieldName: "stock",
             blank: 0,
-            topic: "Boolean",
-            data: () => faker.datatype.boolean({ probability: 0.75 })
+            topic: "Number",
+            data: () => faker.number.int({ min: 0, max: 50 })
         }, {
             id: generateRandomNumber(),
             fieldName: "department",
@@ -276,7 +276,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "likes",
             blank: 0,
             topic: "Number",
-            data: () => faker.number.int({ min: 0, max: 1000 }),
+            data: () => faker.number.int({ min: 0, max: 5000 }),
     
         }]
     }, {
@@ -437,12 +437,6 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             blank: 0,
             topic: "Color name",
             data: () => faker.color.human()
-        }, {
-            id: generateRandomNumber(),
-            fieldName: "year",
-            blank: 0,
-            topic: "Year",
-            data: () => faker.date.anytime().getFullYear(),
         }]
     }, {
         title: i18n.t("bill"),
@@ -469,7 +463,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "amount",
             blank: 0,
             topic: "Price",
-            data: () => faker.finance.amount({ min: 100, max: 5000, dec: 2 })
+            data: () => faker.finance.amount({ min: 50, max: 1200, dec: 2 })
         }, {
             id: generateRandomNumber(),
             fieldName: "due date",
@@ -594,7 +588,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             id: generateRandomNumber(),
             fieldName: "end date",
             blank: 0,
-            topic: "End datetime",
+            topic: "Future datetime",
             data: () => faker.date.future()
         }, {
             id: generateRandomNumber(),

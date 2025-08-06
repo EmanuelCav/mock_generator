@@ -50,3 +50,10 @@ export type OptionsPropsType = {
     handleClose: () => void;
     handleOption: (col: FileOptions) => void;
 }
+
+export type TypeInputPropsType = {
+    value: string;
+    setValue: (value: string) => void;
+    colors: Colors;
+    label: string;
+}

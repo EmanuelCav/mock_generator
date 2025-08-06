@@ -88,20 +88,24 @@ export const homeStyles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 3,
     },
+
     titleColumn: {
         fontWeight: '700',
         fontSize: 16,
     },
+
     subtitleColumn: {
         fontSize: 14,
         marginTop: 4,
     },
+
     actionsColumn: {
         flexDirection: 'row',
         alignItems: 'center',
     },
+    
     iconSpacing: {
         marginRight: Dimensions.get('window').width / 25,
-    },
+    }
 
 })

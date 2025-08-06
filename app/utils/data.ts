@@ -35,8 +35,8 @@ export const defaultColumn = (): IColumn[] => [
     },
     {
         id: generateRandomNumber(),
-        fieldName: "birth date",
-        topic: "Birth date",
+        fieldName: "birthdate",
+        topic: "Birthdate",
         blank: 0,
         data: () => faker.date.birthdate().toISOString().split("T")[0]
     },

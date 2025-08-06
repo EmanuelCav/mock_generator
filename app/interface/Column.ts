@@ -8,8 +8,13 @@ export interface IColumn {
     max?: number;
 }
 
+export interface IParameters {
+    min: number;
+    max?: number;
+}
+
 export interface ISelectColumn {
-    type: string;
+    type: string[];
     topic: string[];
     name: string;
 }
@@ -23,4 +28,10 @@ export interface ICreateColumn {
 export interface ITemplate {
     data: IColumn[];
     title: string;
+}
+
+export interface ITopic {
+    label: string;
+    value: string;
+    iconName: string;
 }

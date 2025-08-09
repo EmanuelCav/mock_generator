@@ -71,7 +71,7 @@ const DownloadView = ({ colors, setIsGenerated, handleDownload, loading, text, s
     }
 
     return (
-        <ContainerBackground colors={colors}>
+        <ContainerBackground colors={colors} isField={false}>
 
             <Close handleClose={handleClose} />
 

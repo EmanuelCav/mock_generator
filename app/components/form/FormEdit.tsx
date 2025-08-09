@@ -1,25 +1,28 @@
 import { useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { Button, Input, Text } from '@rneui/themed';
 import i18n from '../../../i18n';
 
 import ContainerBackground from "../ContainerBackground"
 import Close from "../Close"
 
+import TypeInput from './components/TypeInput';
+import DateInput from './components/DateInput';
+
 import { FormEditPropsType } from "../../types/home.types"
 
 import { column, fieldDefaultValue } from '../../utils/topics';
-import TypeInput from './components/TypeInput';
 
 const FormEdit = ({ colors, handleClose, field, handleEdit }: FormEditPropsType) => {
 
+    const [isError, setIsError] = useState<string>("")
     const [title, setTitle] = useState<string>(field.fieldName)
     const [blank, setBlank] = useState<string>(String(field.blank));
     const [min, setMin] = useState<string>(field.min === undefined ? String(fieldDefaultValue(field.topic).min) : String(field.min))
     const [max, setMax] = useState<string>(field.max === undefined ? String(fieldDefaultValue(field.topic).max) : String(field.max))
 
     return (
-        <ContainerBackground colors={colors}>
+        <ContainerBackground colors={colors} isField={true}>
 
             <Close handleClose={handleClose} />
 
@@ -52,19 +55,54 @@ const FormEdit = ({ colors, handleClose, field, handleEdit }: FormEditPropsType)
                 keyboardType="numeric"
                 style={{ color: colors.white }}
                 value={blank}
-                onChangeText={setBlank}
+                onChangeText={(text) => {
+                    let numericValue = text.replace(/[^0-9]/g, '');
+
+                    if (numericValue.length > 1) {
+                        numericValue = numericValue.replace(/^0+/, '');
+                    }
+
+                    const number = parseInt(numericValue, 10);
+
+                    if (numericValue === '') {
+                        setBlank('');
+                    } else if (!isNaN(number) && number >= 0 && number <= 100) {
+                        setBlank(numericValue);
+                    }
+                }}
                 maxLength={3}
             />
 
             {
+                isError && <Text style={{ color: "#f00", marginBottom: Dimensions.get("window").height / 74 }}>
+                    {isError}
+                </Text>
+            }
+
+            {
                 column.find((col) => col.name === field.topic)?.type.map((input, index) => {
-                    return <TypeInput
-                        colors={colors}
-                        setValue={input === "min" ? setMin : setMax}
-                        value={input === "min" ? min : max}
-                        label={input === "min" ? i18n.t("minValue") : i18n.t("maxValue")}
-                        key={index}
-                    />
+                    return <View key={index}>
+                        {
+                            (input === "maxDate" || input === "minDate") ? (
+                                <DateInput
+                                    colors={colors}
+                                    value={input === "minDate" ? min : max}
+                                    setValue={input === "minDate" ? setMin : setMax}
+                                    label={input === "minDate" ? "Selecciona una fecha mínima" : "Selecciona una fecha mínima"}
+                                    labelSelected={input === "minDate" ? "Fecha mínima" : "Fecha máxima"}
+                                    topic={field.topic}
+                                />
+                            ) : (
+                                <TypeInput
+                                    colors={colors}
+                                    setValue={input === "min" ? setMin : setMax}
+                                    value={input === "min" ? min : max}
+                                    label={input === "min" ? i18n.t("minValue") : i18n.t("maxValue")}
+                                    topic={field.topic}
+                                />
+                            )
+                        }
+                    </View>
                 })
             }
 
@@ -73,13 +111,28 @@ const FormEdit = ({ colors, handleClose, field, handleEdit }: FormEditPropsType)
                 buttonStyle={{
                     backgroundColor: "#50C878"
                 }}
-                onPress={() => handleEdit({
-                    data: field.data(Number(min), Number(max)),
-                    blank: Number(blank),
-                    fieldName: title,
-                    id: field.id,
-                    topic: field.topic
-                })}
+                onPress={() => {
+
+                    const maxValueSelected = max.split("T").length > 1 ? Number(max.split("T")[0].split("-")[0]) : Number(max)
+                    const minValueSelected = min.split("T").length > 1 ? Number(min.split("T")[0].split("-")[0]) : Number(min)
+
+                    if (minValueSelected >= maxValueSelected) {
+                        setIsError(i18n.t("minHigherThanMax"))
+                        return
+                    }
+
+                    handleEdit({
+                        max: maxValueSelected,
+                        min: minValueSelected,
+                        data: field.data,
+                        blank: Number(blank),
+                        fieldName: title,
+                        id: field.id,
+                        topic: field.topic
+                    })
+
+                    setIsError("")
+                }}
             />
 
         </ContainerBackground>

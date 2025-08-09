@@ -15,6 +15,7 @@ export type StackNavigation = BottomTabNavigationProp<RouteType>;
 
 export type ContainerBackgroundPropsType = PropsWithChildren<{
     colors: Colors;
+    isField: boolean;
 }>
 
 export type FormatTypes = keyof FormatKeyProps;

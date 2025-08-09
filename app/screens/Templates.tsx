@@ -22,7 +22,7 @@ import { generateRandomNumber } from "../utils/data"
 
 
 const Templates = observer(({ navigation }: { navigation: StackNavigation }) => {
-    
+
     const templatesData: ITemplate[] = [{
         title: i18n.t("perfilUsuario"),
         data: [{
@@ -60,7 +60,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "birthdate",
             blank: 0,
             topic: "Birthdate",
-            data: () => faker.date.birthdate().toISOString().split("T")[0]
+            data: (min: number = 1940, max: number = 2007) => faker.date.between({ from: `${min}-01-01T00:00:00.000Z`, to: `${max}-01-01T00:00:00.000Z` }).toISOString().split("T")[0]
         }, {
             id: generateRandomNumber(),
             fieldName: "address",
@@ -93,13 +93,13 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "price",
             blank: 0,
             topic: "Price",
-            data: () => faker.finance.amount({ symbol: "$" })
+            data: (min: number = 1, max: number = 1000) => faker.finance.amount({ symbol: "$", dec: 2, max, min })
         }, {
             id: generateRandomNumber(),
             fieldName: "stock",
             blank: 0,
             topic: "Number",
-            data: () => faker.number.int({ min: 0, max: 50 })
+            data: (min: number = 0, max: number = 50) => faker.number.int({ min, max })
         }, {
             id: generateRandomNumber(),
             fieldName: "department",
@@ -120,7 +120,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "title",
             blank: 0,
             topic: "Separate words",
-            data: () => faker.word.words({ count: { min: 3, max: 8 } })
+            data: (min: number = 3, max: number = 8) => faker.word.words({ count: { max, min } })
         }, {
             id: generateRandomNumber(),
             fieldName: "content",
@@ -137,8 +137,8 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             id: generateRandomNumber(),
             fieldName: "date",
             blank: 0,
-            topic: "Past",
-            data: () => faker.date.past()
+            topic: "Past datetime",
+            data: (min: number = 5) => faker.date.past({ years: min })
         }]
     }, {
         title: i18n.t("company"),
@@ -204,7 +204,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "expiry",
             blank: 0,
             topic: "Future date",
-            data: () => faker.date.future().toISOString().split("T")[0]
+            data: (min: number = 10) => faker.date.future({ years: min }).toISOString().split("T")[0]
         }]
     }, {
         title: i18n.t("event"),
@@ -219,7 +219,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "title",
             blank: 0,
             topic: "Separate words",
-            data: () => faker.word.words({ count: { min: 1, max: 6 } })
+            data: (min: number = 1, max: number = 8) => faker.word.words({ count: { max, min } })
         }, {
             id: generateRandomNumber(),
             fieldName: "location",
@@ -230,14 +230,14 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             id: generateRandomNumber(),
             fieldName: "date",
             blank: 0,
-            topic: "Future datetime",
-            data: () => faker.date.future()
+            topic: "Soon datetime",
+            data: (min: number = 5) => faker.date.soon({ days: min })
         }, {
             id: generateRandomNumber(),
             fieldName: "description",
             blank: 0,
             topic: "Paragraph",
-            data: () => faker.lorem.paragraph()
+            data: (min: number = 1, max: number = 3) => faker.lorem.paragraph({ max, min })
         }]
     }, {
         title: i18n.t("review"),
@@ -258,26 +258,26 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "rating",
             blank: 0,
             topic: "Number",
-            data: () => faker.number.int({ min: 1, max: 5 })
+            data: (min: number = 1, max: number = 5) => faker.number.int({ max, min })
         }, {
             id: generateRandomNumber(),
             fieldName: "comment",
             blank: 0,
             topic: "Sentences",
-            data: () => faker.lorem.sentences({ min: 1, max: 3 })
+            data: (min: number = 2, max: number = 4) => faker.lorem.sentences({ max, min })
         }, {
             id: generateRandomNumber(),
             fieldName: "date",
             blank: 0,
             topic: "Recent datetime",
-            data: () => faker.date.recent()
+            data: (min: number = 90) => faker.date.recent({ days: min })
         }, {
             id: generateRandomNumber(),
             fieldName: "likes",
             blank: 0,
             topic: "Number",
-            data: () => faker.number.int({ min: 0, max: 5000 }),
-    
+            data: (min: number = 1, max: number = 5000) => faker.number.int({ max, min })
+
         }]
     }, {
         title: i18n.t("bank"),
@@ -310,7 +310,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "balance",
             blank: 0,
             topic: "Price",
-            data: () => faker.finance.amount({ symbol: "$" })
+            data: (min: number = 1, max: number = 1000) => faker.finance.amount({ symbol: "$", dec: 2, max, min })
         }]
     }, {
         title: i18n.t("registerUser"),
@@ -343,7 +343,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "registeredAt",
             blank: 0,
             topic: "Past datetime",
-            data: () => faker.date.past()
+            data: (min: number = 5) => faker.date.past({ years: min })
         }]
     }, {
         title: i18n.t("address"),
@@ -403,7 +403,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "age",
             blank: 0,
             topic: "Age",
-            data: () => faker.number.int({ min: 1, max: 20 })
+            data: (min: number = 1, max: number = 20) => faker.number.int({ min, max })
         }]
     }, {
         title: i18n.t("vehicle"),
@@ -463,13 +463,13 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "amount",
             blank: 0,
             topic: "Price",
-            data: () => faker.finance.amount({ min: 50, max: 1200, dec: 2 })
+            data: (min: number = 50, max: number = 1200) => faker.finance.amount({ symbol: "$", dec: 2, max, min })
         }, {
             id: generateRandomNumber(),
             fieldName: "due date",
             blank: 0,
             topic: "Future datetime",
-            data: () => faker.date.future()
+            data: (min: number = 3) => faker.date.future({ years: min })
         }]
     }, {
         title: i18n.t("employee"),
@@ -502,7 +502,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "hire date",
             blank: 0,
             topic: "Past date",
-            data: () => faker.date.past()
+            data: (min: number = 20) => faker.date.past({ years: min }).toISOString().split("T")[0]
         }]
     }, {
         title: i18n.t("transaction"),
@@ -523,13 +523,13 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "amount",
             blank: 0,
             topic: "Price",
-            data: () => faker.finance.amount({ symbol: "$", dec: 2 }),
+            data: (min: number = 1, max: number = 1000) => faker.finance.amount({ symbol: "$", dec: 2, max, min })
         }, {
             id: generateRandomNumber(),
             fieldName: "date",
             blank: 0,
             topic: "Recent datetime",
-            data: () => faker.date.recent(),
+            data: (min: number = 1) => faker.date.recent({ days: min })
         }]
     }, {
         title: i18n.t("profile"),
@@ -556,7 +556,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "followers",
             blank: 0,
             topic: "Number",
-            data: () => faker.number.int({ min: 0, max: 10000 })
+            data: (min: number = 0, max: number = 10000) => faker.number.int({ min, max })
         }, {
             id: generateRandomNumber(),
             fieldName: "isVerified",
@@ -583,13 +583,13 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "start date",
             blank: 0,
             topic: "Past datetime",
-            data: () => faker.date.past()
+            data: (min: number = 2) => faker.date.past({ years: min })
         }, {
             id: generateRandomNumber(),
             fieldName: "end date",
             blank: 0,
             topic: "Future datetime",
-            data: () => faker.date.future()
+            data: (min: number = 2) => faker.date.future({ years: min })
         }, {
             id: generateRandomNumber(),
             fieldName: "isActive",
@@ -643,7 +643,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "title",
             blank: 0,
             topic: "Separate words",
-            data: () => faker.word.words({ count: { min: 1, max: 5 } })
+            data: (min: number = 1, max: number = 5) => faker.word.words({ count: { max, min } })
         }, {
             id: generateRandomNumber(),
             fieldName: "genre",
@@ -655,13 +655,13 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             fieldName: "release date",
             blank: 0,
             topic: "Past datetime",
-            data: () => faker.date.past()
+            data: (min: number = 60) => faker.date.past({ years: min })
         }, {
             id: generateRandomNumber(),
             fieldName: "rating",
             blank: 0,
             topic: "Number",
-            data: () => faker.number.int({ min: 1, max: 5 })
+            data: (min: number = 1, max: number = 5) => faker.number.int({ max, min })
         }]
     }]
 

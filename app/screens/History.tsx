@@ -148,7 +148,7 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
                             </View>
                         ) : (
                             <FlatList
-                                data={userStore.history}
+                                data={userStore.history.reverse()}
                                 renderItem={({ item }) => <HistoryElement
                                     handleDelete={handleDelete}
                                     openDownload={openDownload}

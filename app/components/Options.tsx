@@ -38,7 +38,7 @@ const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
     // }
 
     return (
-        <ContainerBackground colors={theme.colors}>
+        <ContainerBackground colors={theme.colors} isField={false}>
             <Close handleClose={handleClose} />
             <Text style={{
                 marginBottom: Dimensions.get("window").height / 143,
@@ -73,37 +73,40 @@ const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
                 setItems={setItemsFormat}
             />
 
-            <View style={configStyles.platform}>
 
-                <Text style={{
-                    color: theme.colors.white,
-                    fontSize: Dimensions.get("window").height / 52,
-                    marginLeft: Dimensions.get("window").width / 36
-                }}>
-                    {i18n.t("defaultHeader")}
-                </Text>
+            {/* <Text style={{
+                color: theme.colors.white,
+                fontSize: Dimensions.get("window").height / 52,
+                marginLeft: Dimensions.get("window").width / 36
+            }}>
+                {i18n.t("defaultHeader")}
+            </Text> */}
 
-                {/* <Switch
+            {/* <Switch
                     value={headers}
                     onValueChange={toggleSwitchHeaders}
                     color="#4CAF50"
                     trackColor={{ true: '#81C784', false: '#E0E0E0' }}
                     thumbColor={headers ? '#4CAF50' : '#F4F3F4'}
                 /> */}
+
+
+            <View style={{ marginTop: Dimensions.get("window").height / 74 }}>
+                <Button
+                    title={i18n.t("accept")}
+                    buttonStyle={{
+                        backgroundColor: "#50C878",
+                    }}
+                    onPress={() => {
+                        handleOption({
+                            format: valueFormat,
+                            rows: localRows === "" ? "1000" : localRows
+                        })
+                    }}
+                />
+
             </View>
 
-            <Button
-                title={i18n.t("accept")}
-                buttonStyle={{
-                    backgroundColor: "#50C878"
-                }}
-                onPress={() => {
-                    handleOption({
-                        format: valueFormat,
-                        rows: localRows === "" ? "1000" : localRows
-                    })
-                }}
-            />
         </ContainerBackground>
     )
 })

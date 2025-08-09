@@ -56,4 +56,14 @@ export type TypeInputPropsType = {
     setValue: (value: string) => void;
     colors: Colors;
     label: string;
+    topic: string;
+}
+
+export type DateInputPropsType = {
+    value: string;
+    setValue: (value: string) => void;
+    colors: Colors;
+    label: string;
+    labelSelected: string;
+    topic: string;
 }

@@ -51,6 +51,7 @@
     "descriptionErrorDownload": "Ocurrió un error al descargar el archivo. Por favor, intenta compartirlo o vuelve a intentarlo más tarde.",
     "titleErrorShare": "Error al compartir",
     "descriptionErrorShare": "Ocurrió un error al compartir el archivo. Por favor, intenta descargarlo o vuelve a intentarlo más tarde.",
+    "minHigherThanMax": "Error: El valor mínimo no puede ser mayor o igual al valor máximo.",
     "firstnameField": "nombre",
     "lastnameField": "apellido",
     "maxValue": "Valor máximo",

@@ -138,18 +138,18 @@ export const column = [
   { type: [], topic: ["Number", "All topics"], name: "IMEI number", data: () => faker.phone.imei() },
   { type: [], topic: ["Number", "Person", "All topics"], name: "Phone number national", data: () => faker.phone.number({ style: "national" }) },
   { type: [], topic: ["Number", "Person", "All topics"], name: "Phone number international", data: () => faker.phone.number({ style: "international" }) },
-  { type: [], topic: ["Date", "Person", "All topics"], name: "Birthdate", data: () => faker.date.between({ from: '1940-01-01T00:00:00.000Z', to: '2005-01-01T00:00:00.000Z' }).toISOString().split("T")[0] },
-  { type: [], topic: ["Date", "General", "All topics"], name: "Year", data: () => faker.date.between({ from: '1940-01-01T00:00:00.000Z', to: '2030-01-01T00:00:00.000Z' }).getFullYear() },
+  { type: ["minDate", "maxDate"], topic: ["Date", "Person", "All topics"], name: "Birthdate", data: (min: number = 1940, max: number = 2007) => faker.date.between({ from: `${min}-01-01T00:00:00.000Z`, to: `${max}-01-01T00:00:00.000Z` }).toISOString().split("T")[0] },
+  { type: ["min", "max"], topic: ["Date", "General", "All topics"], name: "Year", data: (min: number = 1940, max: number = new Date().getFullYear() - 1) => faker.number.int({ min, max }) },
   { type: [], topic: ["Date", "General", "All topics"], name: "Any datatime", data: () => faker.date.anytime() },
   { type: [], topic: ["Date", "General", "All topics"], name: "Any date", data: () => faker.date.anytime().toISOString().split("T")[0] }, // dates
-  { type: [], topic: ["Date", "General", "All topics"], name: "Date", data: () => faker.date.between({ from: '1960-01-01T00:00:00.000Z', to: '2030-01-01T00:00:00.000Z' }).toISOString().split("T")[0] }, // dates
-  { type: ["maxDate"], topic: ["Date", "All topics"], name: "Future datetime", data: (min: number = 90) => faker.date.future({ years: min }) },
-  { type: ["maxDate"], topic: ["Date", "All topics"], name: "Future date", data: (min: number = 90) => faker.date.future({ years: min }).toISOString().split("T")[0] },
+  { type: ["minDate", "maxDate"], topic: ["Date", "General", "All topics"], name: "Date", data: (min: number = 1980, max: number = new Date().getFullYear() - 1) => faker.date.between({ from: `${min}-01-01T00:00:00.000Z`, to: `${max}-01-01T00:00:00.000Z` }).toISOString().split("T")[0] },
+  { type: ["max"], topic: ["Date", "All topics"], name: "Future datetime", data: (min: number = 90) => faker.date.future({ years: min }) },
+  { type: ["max"], topic: ["Date", "All topics"], name: "Future date", data: (min: number = 90) => faker.date.future({ years: min }).toISOString().split("T")[0] },
   { type: [], topic: ["Date", "General", "All topics"], name: "Month", data: () => faker.date.month() },
-  { type: ["minDate"], topic: ["Date", "All topics"], name: "Past datetime", data: (min: number = 90) => faker.date.past({ years: min }) },
-  { type: ["minDate"], topic: ["Date", "All topics"], name: "Past date", data: (min: number = 90) => faker.date.past({ years: min }).toISOString().split("T")[0] },
-  { type: ["minDate"], topic: ["Date", "All topics"], name: "Recent datetime", data: (min: number = 1) => faker.date.recent({ days: min }) },
-  { type: ["maxDate"], topic: ["Date", "All topics"], name: "Soon datetime", data: (min: number = 1) => faker.date.soon({ days: min }) },
+  { type: ["min"], topic: ["Date", "All topics"], name: "Past datetime", data: (min: number = 90) => faker.date.past({ years: min }) },
+  { type: ["min"], topic: ["Date", "All topics"], name: "Past date", data: (min: number = 90) => faker.date.past({ years: min }).toISOString().split("T")[0] },
+  { type: ["min"], topic: ["Date", "All topics"], name: "Recent datetime", data: (min: number = 1) => faker.date.recent({ days: min }) },
+  { type: ["max"], topic: ["Date", "All topics"], name: "Soon datetime", data: (min: number = 1) => faker.date.soon({ days: min }) },
   { type: [], topic: ["Date", "Geography", "All topics"], name: "Time zone", data: () => faker.location.timeZone() },
   { type: [], topic: ["Date", "General", "All topics"], name: "Day of the week", data: () => faker.date.weekday() },
   { type: [], topic: ["Color", "Computing", "All topics"], name: "CYMK color", data: () => faker.color.cmyk() },
@@ -256,7 +256,7 @@ export const fieldDefaultValue = (fieldName: string): IParameters => {
     case "Age":
       return {
         min: 18,
-        max: 65
+        max: 95
       }
 
     case "Alphabet letters":
@@ -415,11 +415,95 @@ export const fieldDefaultValue = (fieldName: string): IParameters => {
         max: 6
       };
 
+    case "Year":
+      return {
+        min: 1900,
+        max: new Date().getFullYear() - 1
+      }
+
+    case "Birthdate":
+      return {
+        min: 1940,
+        max: 2007
+      }
+
+    case "Date":
+      return {
+        min: 1980,
+        max: new Date().getFullYear() - 1
+      }
+
     default:
       return {
         min: 1,
         max: 8
       };
+  }
+
+}
+
+export const topicsLowLength = (topic: string): number => {
+
+  switch (topic) {
+    case "Sentences":
+      return 2
+
+    case "Sentence":
+      return 2
+
+    case "Paragraphs":
+      return 1
+
+    case "Paragraph":
+      return 1
+
+    case "Lines":
+      return 1
+
+    case "Separate words":
+      return 2
+
+    case "Past date":
+      return 4
+
+    case "Past datetime":
+      return 4
+
+    case "Future date":
+      return 4
+
+    case "Future datetime":
+      return 4
+
+    case "Age":
+      return 3
+
+    case "Symbol":
+      return 3
+
+    case "UTF-16 chars":
+      return 3
+
+    case "Octal":
+      return 3
+
+    case "Digits":
+      return 3
+
+    case "Nano ID":
+      return 3
+
+    case "Characters":
+      return 3
+
+    case "Alpha characters and digits":
+      return 3
+
+    case "Alphabet letters":
+      return 3
+
+    default:
+      return 12
   }
 
 }

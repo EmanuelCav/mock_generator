@@ -3,7 +3,18 @@ import { Input, Text } from "@rneui/themed"
 
 import { TypeInputPropsType } from "../../../types/home.types"
 
-const TypeInput = ({ value, setValue, colors, label }: TypeInputPropsType) => {
+import { topicsLowLength } from "../../../utils/topics"
+
+const TypeInput = ({ value, setValue, colors, label, topic }: TypeInputPropsType) => {
+
+    const handleChange = (text: string) => {
+        let regex = (topic === "Number" || topic === "Float number") ? /^-?\d*$/ : /^\d*$/;
+
+        if (regex.test(text)) {
+            setValue(text);
+        }
+    }
+
     return (
         <>
             <Text style={{
@@ -18,8 +29,8 @@ const TypeInput = ({ value, setValue, colors, label }: TypeInputPropsType) => {
                 keyboardType="numeric"
                 style={{ color: colors.white }}
                 value={value}
-                onChangeText={setValue}
-                maxLength={3}
+                onChangeText={handleChange}
+                maxLength={topicsLowLength(topic)}
             />
         </>
     )

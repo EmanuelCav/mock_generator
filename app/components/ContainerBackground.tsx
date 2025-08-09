@@ -4,7 +4,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
-  Keyboard
+  Keyboard,
+  ScrollView,
 } from "react-native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
@@ -12,7 +13,7 @@ import { ContainerBackgroundPropsType } from "../types/general.types";
 
 import { homeStyles } from "../styles/home.styles";
 
-const ContainerBackground = ({ children, colors }: ContainerBackgroundPropsType) => {
+const ContainerBackground = ({ children, colors, isField }: ContainerBackgroundPropsType) => {
   const [keyboardVisible, setKeyboardVisible] = useState<boolean>(false);
 
   useEffect(() => {
@@ -45,19 +46,37 @@ const ContainerBackground = ({ children, colors }: ContainerBackgroundPropsType)
         }
       ]}
     >
-      <View
-        style={[
-          homeStyles.cardBackground,
-          {
-            backgroundColor: colors.background,
-            maxHeight: keyboardVisible
-              ? windowHeight / 2
-              : windowHeight / 1.25
-          }
-        ]}
-      >
-        {children}
-      </View>
+      {
+        isField ?
+          <ScrollView
+            style={[
+              homeStyles.cardBackground,
+              {
+                flexGrow: 0,
+                backgroundColor: colors.background,
+                maxHeight: keyboardVisible
+                  ? windowHeight / 2
+                  : windowHeight / 1.25
+              }
+            ]}
+          >
+            {children}
+          </ScrollView>
+          : <View
+            style={[
+              homeStyles.cardBackground,
+              {
+                flexGrow: 0,
+                backgroundColor: colors.background,
+                maxHeight: keyboardVisible
+                  ? windowHeight / 2
+                  : windowHeight / 1.25
+              }
+            ]}
+          >
+            {children}
+          </View>
+      }
     </KeyboardAvoidingView>
   );
 };

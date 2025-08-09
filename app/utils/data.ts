@@ -38,7 +38,7 @@ export const defaultColumn = (): IColumn[] => [
         fieldName: "birthdate",
         topic: "Birthdate",
         blank: 0,
-        data: () => faker.date.birthdate().toISOString().split("T")[0]
+        data: (min: number = 1940, max: number = 2007) => faker.date.between({ from: `${min}-01-01T00:00:00.000Z`, to: `${max}-01-01T00:00:00.000Z` }).toISOString().split("T")[0]
     },
     {
         id: generateRandomNumber(),

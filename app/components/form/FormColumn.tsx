@@ -36,7 +36,7 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
     )
 
     return (
-        <ContainerBackground colors={colors}>
+        <ContainerBackground colors={colors} isField={false}>
 
             <Close handleClose={handleClose} />
 
@@ -123,7 +123,7 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
                 }}
                 onPress={() => handleAddColumn({
                     title: title === "" ? `${columnData.toLowerCase()}` : title,
-                    columnData,
+                    columnData: column.find((col) => i18n.t(`columns.${col.name}`) === columnData)?.name!,
                     data: column.find((col) => i18n.t(`columns.${col.name}`) === columnData)?.data!
                 })}
             />

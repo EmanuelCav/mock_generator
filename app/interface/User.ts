@@ -14,4 +14,9 @@ export interface IHistory {
     columns: IColumn[];
     extension: string;
     data: any[];
+    header_csv: boolean;
+    json_array: boolean;
+    root_element_xml: string;
+    record_element_xml: string;
+    table_name_sql: string;
 }

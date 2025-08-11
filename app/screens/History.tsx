@@ -51,25 +51,25 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
 
         setLoading(true)
 
-        switch (fileStore.format) {
-            case "excel":
-                FileSystemOptions.excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+        switch (userStore.historyData?.extension) {
+            case "xlsx":
+                FileSystemOptions.excelDownload(fieldsData, userStore.historyData.name, setIsDownloaded)
                 break;
 
             case "csv":
-                FileSystemOptions.csvDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.csvDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.header_csv)
                 break;
 
             case "xml":
-                FileSystemOptions.xmlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.xmlDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.root_element_xml, userStore.historyData.record_element_xml)
                 break;
 
             case "json":
-                FileSystemOptions.jsonDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.jsonDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.json_array)
                 break;
 
             case "sql":
-                FileSystemOptions.sqlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.sqlDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.table_name_sql)
                 break;
 
             default:
@@ -84,25 +84,25 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
 
     const handleShare = () => {
 
-        switch (fileStore.format) {
-            case "excel":
-                FileSystemOptions.excelGenerator(fieldsData, userStore.historyData?.name!)
+        switch (userStore.historyData?.extension) {
+            case "xlsx":
+                FileSystemOptions.excelGenerator(fieldsData, userStore.historyData.name)
                 break;
 
             case "csv":
-                FileSystemOptions.csvGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.csvGenerator(fieldsData, userStore.historyData.name, userStore.historyData.header_csv)
                 break;
 
             case "xml":
-                FileSystemOptions.xmlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.xmlGenerator(fieldsData, userStore.historyData.name, userStore.historyData.root_element_xml, userStore.historyData.record_element_xml)
                 break;
 
             case "json":
-                FileSystemOptions.jsonGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.jsonGenerator(fieldsData, userStore.historyData.name, userStore.historyData.json_array)
                 break;
 
             case "sql":
-                FileSystemOptions.sqlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.sqlGenerator(fieldsData, userStore.historyData.name, userStore.historyData.table_name_sql)
                 break;
 
             default:
@@ -148,7 +148,7 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
                             </View>
                         ) : (
                             <FlatList
-                                data={userStore.history.reverse()}
+                                data={userStore.history.length > 0 ? userStore.history.slice().reverse() : []}
                                 renderItem={({ item }) => <HistoryElement
                                     handleDelete={handleDelete}
                                     openDownload={openDownload}

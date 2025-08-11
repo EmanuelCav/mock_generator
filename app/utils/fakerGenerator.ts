@@ -12,7 +12,7 @@ export const generateFakeData = (fields: IColumn[], count: number) => {
             const shouldBeEmpty = column.blank && Math.random() < column.blank;
             record[column.fieldName] = shouldBeEmpty
                 ? ''
-                : column.data(fields[i].min!, fields[i].max!);
+                : column.data(fields[i].min!, fields[i].max!, fields[i].array!);
         }
         return record;
     }, { count });

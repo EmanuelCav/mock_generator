@@ -61,28 +61,40 @@ export const excelDownload = async (fieldsData: any[], fileName: string, setIsDo
   }
 }
 
-export const csvGenerator = async (fieldsData: any[], fileName: string) => {
+export const csvGenerator = async (fieldsData: any[], fileName: string, areHeaders: boolean) => {
   try {
     const keys = Object.keys(fieldsData[0]);
-    const csvRows = [
-      keys.join(','),
-      ...fieldsData.map(row => keys.map(k => `"${(row[k] ?? '').toString().replace(/"/g, '""')}"`).join(','))
-    ];
-    const csvString = csvRows.join('\n');
-    const path = FileSystem.documentDirectory + `${fileName}.csv`;
+
+    const csvRows = areHeaders
+      ? [
+        keys.join(','),
+        ...fieldsData.map(row =>
+          keys
+            .map(k => `"${(row[k] ?? '').toString().replace(/"/g, '""')}"`)
+            .join(',')
+        ),
+      ]
+      : fieldsData.map(row =>
+        keys
+          .map(k => `"${(row[k] ?? '').toString().replace(/"/g, '""')}"`)
+          .join(',')
+      )
+
+    const csvString = csvRows.join('\n')
+    const path = FileSystem.documentDirectory + `${fileName}.csv`
 
     await FileSystem.writeAsStringAsync(path, csvString, {
       encoding: FileSystem.EncodingType.UTF8,
-    });
+    })
 
-    shareMethod(path, 'text/csv', "CSV");
+    shareMethod(path, 'text/csv', 'CSV')
 
   } catch (error) {
-    Alert.alert(i18n.t("titleErrorShare"), i18n.t("descriptionErrorShare"))
+    Alert.alert(i18n.t('titleErrorShare'), i18n.t('descriptionErrorShare'))
   }
 }
 
-export const csvDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void) => {
+export const csvDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, areHeaders: boolean) => {
   try {
 
     if (!permissionsReadStorage()) {
@@ -92,7 +104,11 @@ export const csvDownload = async (fieldsData: any[], fileName: string, setIsDown
 
     const ws = XLSX.utils.json_to_sheet(fieldsData);
 
-    const csv = XLSX.utils.sheet_to_csv(ws);
+    let csv = XLSX.utils.sheet_to_csv(ws);
+
+    if (!areHeaders) {
+      csv = csv.split("\n").slice(1).join("\n");
+    }
 
     const path = `${RNFS.DownloadDirectoryPath}/${fileName}.csv`;
 
@@ -120,9 +136,9 @@ const jsonToXml = (jsonArray: any[], rootName = 'Items', itemName = 'Item'): str
   return xml;
 }
 
-export const xmlGenerator = async (fieldsData: any[], fileName: string) => {
+export const xmlGenerator = async (fieldsData: any[], fileName: string, root_element_xml: string = "dataset", record_element_xml: string = "record") => {
   try {
-    const xmlString = jsonToXml(fieldsData, "dataset", "record")
+    const xmlString = jsonToXml(fieldsData, root_element_xml, record_element_xml)
     const path = FileSystem.documentDirectory + `${fileName}.xml`;
 
     await FileSystem.writeAsStringAsync(path, xmlString, {
@@ -136,7 +152,7 @@ export const xmlGenerator = async (fieldsData: any[], fileName: string) => {
   }
 }
 
-export const xmlDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void) => {
+export const xmlDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, root_element_xml: string = "dataset", record_element_xml: string = "record") => {
   try {
 
     if (!permissionsReadStorage()) {
@@ -144,7 +160,7 @@ export const xmlDownload = async (fieldsData: any[], fileName: string, setIsDown
       return
     }
 
-    const xmlContent = jsonToXml(fieldsData, "dataset", "record");
+    const xmlContent = jsonToXml(fieldsData, root_element_xml, record_element_xml);
     const path = `${RNFS.DownloadDirectoryPath}/${fileName}.xml`;
 
     await RNFS.writeFile(path, xmlContent, 'utf8');
@@ -156,9 +172,9 @@ export const xmlDownload = async (fieldsData: any[], fileName: string, setIsDown
   }
 }
 
-export const sqlGenerator = async (fieldsData: any[], fileName: string) => {
+export const sqlGenerator = async (fieldsData: any[], fileName: string, table_name: string) => {
   try {
-    const tableName = 'DATA_MOCKER';
+    const tableName = table_name;
     const keys = Object.keys(fieldsData[0]);
 
     const sqlStatements = fieldsData.map(item => {
@@ -185,7 +201,7 @@ export const sqlGenerator = async (fieldsData: any[], fileName: string) => {
   }
 };
 
-export const sqlDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void) => {
+export const sqlDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, table_name: string) => {
   try {
 
     if (!permissionsReadStorage()) {
@@ -193,7 +209,7 @@ export const sqlDownload = async (fieldsData: any[], fileName: string, setIsDown
       return
     }
 
-    const tableName = 'data_generator';
+    const tableName = table_name;
     const keys = Object.keys(fieldsData[0]);
 
     const sqlStatements = fieldsData.map(item => {
@@ -218,9 +234,17 @@ export const sqlDownload = async (fieldsData: any[], fileName: string, setIsDown
   }
 };
 
-export const jsonGenerator = async (fieldsData: any[], fileName: string) => {
+export const jsonGenerator = async (fieldsData: any[], fileName: string, json_array: boolean) => {
   try {
-    const jsonString = JSON.stringify(fieldsData, null, 2);
+
+    let jsonString: string
+
+    if (json_array) {
+      jsonString = JSON.stringify(fieldsData, null, 2)
+    } else {
+      jsonString = fieldsData.map(obj => JSON.stringify(obj)).join('\n')
+    }
+
     const path = FileSystem.documentDirectory + `${fileName}.json`;
 
     await FileSystem.writeAsStringAsync(path, jsonString, {
@@ -234,7 +258,7 @@ export const jsonGenerator = async (fieldsData: any[], fileName: string) => {
   }
 }
 
-export const jsonDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void) => {
+export const jsonDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, json_array: boolean) => {
   try {
 
     if (!permissionsReadStorage()) {
@@ -242,7 +266,13 @@ export const jsonDownload = async (fieldsData: any[], fileName: string, setIsDow
       return
     }
 
-    const jsonString = JSON.stringify(fieldsData, null, 2);
+    let jsonString: string
+
+    if (json_array) {
+      jsonString = JSON.stringify(fieldsData, null, 2)
+    } else {
+      jsonString = fieldsData.map(obj => JSON.stringify(obj)).join('\n')
+    }
 
     const path = `${RNFS.DownloadDirectoryPath}/${fileName}.json`;
 

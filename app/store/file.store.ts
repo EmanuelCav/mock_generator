@@ -42,6 +42,16 @@ class FileStore {
         this.saveToStorage();
     }
 
+    updateHeaderCsv(data: boolean) {
+        this.header_csv = data
+        this.saveToStorage();
+    }
+
+    updateArrayJson(data: boolean) {
+        this.json_array = data
+        this.saveToStorage();
+    }
+
     removeColumn(col: IColumn) {
         this.column = this.column.filter(c => c.id !== col.id);
         this.saveToStorage();
@@ -73,7 +83,12 @@ class FileStore {
             column: this.column,
             field: this.field,
             format: this.format,
-            rows: this.rows
+            rows: this.rows,
+            header_csv: this.header_csv,
+            json_array: this.json_array,
+            record_element_xml: this.record_element_xml,
+            root_element_xml: this.root_element_xml,
+            table_name_sql: this.table_name_sql
         };
         await AsyncStorage.setItem(STORAGE_KEY_FILE, JSON.stringify(data));
     }
@@ -87,6 +102,11 @@ class FileStore {
                 this.field = null
                 this.rows = data.rows ?? '1000'
                 this.format = data.format ?? 'csv'
+                this.header_csv = data.header_csv ?? true
+                this.json_array = data.json_array ?? true
+                this.root_element_xml = data.root_element_xml ?? "dataset"
+                this.record_element_xml = data.record_element_xml ?? "record"
+                this.table_name_sql = data.table_name_sql ?? "DATA_MOCKER"
             });
         }
     }

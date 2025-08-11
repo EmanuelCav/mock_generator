@@ -3,9 +3,10 @@ export interface IColumn {
     topic: string;
     blank: number;
     id: number;
-    data: (min: number, max: number) => any;
+    data: (min: number, max: number, array: string[]) => any;
     min?: number;
     max?: number;
+    array?: string[];
 }
 
 export interface IParameters {
@@ -22,7 +23,7 @@ export interface ISelectColumn {
 export interface ICreateColumn {
     title: string;
     columnData: string;
-    data: (min: number, max: number) => any;
+    data: (min: number, max: number, array: string[]) => any;
 }
 
 export interface ITemplate {

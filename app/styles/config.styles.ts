@@ -16,7 +16,7 @@ export const configStyles = StyleSheet.create({
     },
 
     containConfig: {
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         flex: 1,
         width: '100%'
     }

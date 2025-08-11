@@ -24,21 +24,16 @@ const Config = observer(() => {
 
     const [_, forceRender] = useState<number>(0);
 
-    // const [headers, setHeaders] = useState<boolean>(fileStore.areHeaders)
     const [localRows, setLocalRows] = useState<string>(fileStore.rows);
 
     const [open, setOpen] = useState<boolean>(false)
     const [value, setValue] = useState<string>(userStore.lang)
     const [items, setItems] = useState<LanguageOption[]>(languagesAvailable)
+    const [error, setError] = useState<string>("")
 
     const [openFormat, setOpenFormat] = useState<boolean>(false)
     const [valueFormat, setValueFormat] = useState<string>(fileStore.format.toLowerCase())
     const [itemsFormat, setItemsFormat] = useState<FormatOption[]>(formatsAvailable)
-
-    // const toggleSwitchHeaders = () => {
-    //     setHeaders(!headers)
-    //     fileStore.updateHeaders(!fileStore.areHeaders)
-    // }
 
     const toggleSwitch = () => {
         setMode(theme.mode === "dark" ? "light" : "dark")
@@ -62,10 +57,9 @@ const Config = observer(() => {
     }, [i18n.locale]);
 
     useEffect(() => {
-        // setHeaders(fileStore.areHeaders)
         setLocalRows(fileStore.rows)
         setValueFormat(fileStore.format.toLowerCase())
-    }, [/*fileStore.areHeaders*/, fileStore.rows, fileStore.format])
+    }, [fileStore.rows, fileStore.format])
 
     return (
         <Container>
@@ -173,24 +167,6 @@ const Config = observer(() => {
                         setItems={setItemsFormat}
                     />
 
-                    <View style={configStyles.platform}>
-
-                        <Text style={{
-                            color: theme.colors.white,
-                            fontSize: Dimensions.get("window").height / 52,
-                            marginLeft: Dimensions.get("window").width / 36
-                        }}>
-                            {i18n.t("defaultHeader")}
-                        </Text>
-
-                        {/*<Switch
-                            value={headers}
-                            onValueChange={toggleSwitchHeaders}
-                            color="#4CAF50"
-                            trackColor={{ true: '#81C784', false: '#E0E0E0' }}
-                            thumbColor={headers ? '#4CAF50' : '#F4F3F4'}
-                        />*/}
-                    </View>
                 </View>
             </View>
         </Container>

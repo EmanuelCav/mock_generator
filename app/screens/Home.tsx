@@ -92,7 +92,12 @@ const Home = observer(() => {
             data: [...fields],
             name: `DATA_MOCKER_${generateRandomString()}`,
             columns: [...fileStore.column],
-            extension: fileStore.format
+            extension: fileStore.format,
+            header_csv: fileStore.header_csv,
+            json_array: fileStore.json_array,
+            record_element_xml: fileStore.record_element_xml,
+            root_element_xml: fileStore.root_element_xml,
+            table_name_sql: fileStore.table_name_sql 
         }
 
         userStore.addHistory(newFile)
@@ -119,19 +124,19 @@ const Home = observer(() => {
                 break;
 
             case "csv":
-                FileSystemOptions.csvDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.csvDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded, fileStore.header_csv)
                 break;
 
             case "xml":
-                FileSystemOptions.xmlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.xmlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded, fileStore.root_element_xml, fileStore.record_element_xml)
                 break;
 
             case "json":
-                FileSystemOptions.jsonDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.jsonDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded, fileStore.json_array)
                 break;
 
             case "sql":
-                FileSystemOptions.sqlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.sqlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded, fileStore.table_name_sql)
                 break;
 
             default:
@@ -152,19 +157,19 @@ const Home = observer(() => {
                 break;
 
             case "csv":
-                FileSystemOptions.csvGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.csvGenerator(fieldsData, userStore.historyData?.name!, fileStore.header_csv)
                 break;
 
             case "xml":
-                FileSystemOptions.xmlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.xmlGenerator(fieldsData, userStore.historyData?.name!, fileStore.root_element_xml, fileStore.record_element_xml)
                 break;
 
             case "json":
-                FileSystemOptions.jsonGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.jsonGenerator(fieldsData, userStore.historyData?.name!, fileStore.json_array)
                 break;
 
             case "sql":
-                FileSystemOptions.sqlGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.sqlGenerator(fieldsData, userStore.historyData?.name!, fileStore.table_name_sql)
                 break;
 
             default:

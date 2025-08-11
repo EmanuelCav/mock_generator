@@ -247,7 +247,7 @@ export const column = [
   { type: ["min", "max"], topic: ["All topics", "Word"], name: "Sentences", data: (min: number = 2, max: number = 6) => faker.lorem.sentences({ max, min }) },
   { type: [], topic: ["All topics", "Word"], name: "Slug", data: () => faker.lorem.slug() },
   { type: [], topic: ["All topics", "Word"], name: "Text", data: () => faker.lorem.text() },
-  { type: ["array"], topic: ["All topics", "General", "Computing"], name: "Array elements", data: () => faker.helpers.arrayElement([]) },
+  { type: [], topic: ["All topics", "General", "Computing"], name: "Array elements", data: (_: number, __: number, array: string[] = []) => faker.helpers.arrayElement(array) },
 ];
 
 export const fieldDefaultValue = (fieldName: string): IParameters => {

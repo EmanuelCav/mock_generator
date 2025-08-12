@@ -45,6 +45,7 @@ const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
     const handleRecordElement = (text: string) => {
         setRecordElement(text);
     }
+
     const handleTableName = (text: string) => {
         setTableName(text);
     }
@@ -78,7 +79,7 @@ const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
                 style={{ color: theme.colors.white }}
                 value={localRows}
                 onChangeText={handleRowsChange}
-                maxLength={6}
+                maxLength={8}
             />
 
             <Text style={{
@@ -226,7 +227,7 @@ const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
                         if (!tableName) {
                             setError(i18n.t("errorTableName"))
                             return
-                        }
+                        }    
 
                         handleOption({
                             format: valueFormat,

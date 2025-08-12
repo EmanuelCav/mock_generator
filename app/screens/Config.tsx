@@ -29,7 +29,6 @@ const Config = observer(() => {
     const [open, setOpen] = useState<boolean>(false)
     const [value, setValue] = useState<string>(userStore.lang)
     const [items, setItems] = useState<LanguageOption[]>(languagesAvailable)
-    const [error, setError] = useState<string>("")
 
     const [openFormat, setOpenFormat] = useState<boolean>(false)
     const [valueFormat, setValueFormat] = useState<string>(fileStore.format.toLowerCase())
@@ -147,7 +146,7 @@ const Config = observer(() => {
                         value={localRows}
                         onChangeText={handleRowsChange}
                         onBlur={handleRowsBlur}
-                        maxLength={6}
+                        maxLength={8}
                     />
 
                     <Text style={{

@@ -39,6 +39,11 @@ class FileStore {
     updateOptions(col: FileOptions) {
         this.format = col.format
         this.rows = col.rows
+        this.header_csv = col.header_csv
+        this.json_array = col.json_array
+        this.record_element_xml = col.record_element_xml
+        this.root_element_xml = col.root_element_xml
+        this.table_name_sql = col.table_name_sql
         this.saveToStorage();
     }
 

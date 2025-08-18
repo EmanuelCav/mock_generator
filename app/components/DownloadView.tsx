@@ -15,8 +15,7 @@ import { userStore } from '../store/user.store'
 
 import { extensionFile } from '../utils/data'
 
-// const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : `${process.env.EXPO_PUBLIC_INTERSTICIAL}`;
-const adUnitId = TestIds.INTERSTITIAL
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : `${process.env.EXPO_PUBLIC_INTERSTICIAL}`;
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
     keywords: ['fashion', 'clothing'],

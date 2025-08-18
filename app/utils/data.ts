@@ -7,6 +7,13 @@ import { FormatOption, LanguageOption } from "../types/general.types";
 export const defaultColumn = (): IColumn[] => [
     {
         id: generateRandomNumber(),
+        fieldName: "row number",
+        topic: "Row number",
+        blank: 0,
+        data: () => null
+    },
+    {
+        id: generateRandomNumber(),
         fieldName: "id",
         topic: "UUID",
         blank: 0,

@@ -33,6 +33,7 @@ const Config = observer(() => {
     const [openFormat, setOpenFormat] = useState<boolean>(false)
     const [valueFormat, setValueFormat] = useState<string>(fileStore.format.toLowerCase())
     const [itemsFormat, setItemsFormat] = useState<FormatOption[]>(formatsAvailable)
+    const [fileName, setFileName] = useState<string>(fileStore.file_name)
 
     const toggleSwitch = () => {
         setMode(theme.mode === "dark" ? "light" : "dark")
@@ -44,8 +45,17 @@ const Config = observer(() => {
     }
 
     const handleRowsBlur = () => {
-        const valueToSave = localRows.trim() === '' ? '1000' : localRows;
+        const valueToSave = localRows.trim() === '' ? '1000' : localRows.trim();
         fileStore.updateRows(valueToSave);
+    }
+
+    const handleFileNameChange = (text: string) => {
+        setFileName(text);
+    }
+
+    const handleFileNameBlur = () => {
+        const valueToSave = fileName.trim() === '' ? 'DATA_MOCKER' : fileName.trim();
+        fileStore.updateFileName(valueToSave);
     }
 
     useEffect(() => {
@@ -57,15 +67,14 @@ const Config = observer(() => {
 
     useEffect(() => {
         setLocalRows(fileStore.rows)
+        setFileName(fileStore.file_name)
         setValueFormat(fileStore.format.toLowerCase())
-    }, [fileStore.rows, fileStore.format])
+    }, [fileStore.rows, fileStore.format, fileStore.file_name])
 
     return (
         <Container>
             <View style={generalStyles.generalContainer}>
                 <View style={configStyles.containConfig}>
-
-                    <Text>{process.env.EXPO_PUBLIC_BANNER === "ca-app-pub-8789796567862358/9267814417" ? "Config" : "Settings"}</Text>
 
                     <Text style={{
                         color: theme.colors.white,
@@ -137,10 +146,29 @@ const Config = observer(() => {
                         fontWeight: 'bold',
                         color: theme.colors.white
                     }}>
+                        {i18n.t("fileName")}
+                    </Text>
+
+                    <Input
+                        placeholder={i18n.t("fileName")}
+                        autoCapitalize="none"
+                        value={fileName}
+                        onChangeText={handleFileNameChange}
+                        onBlur={handleFileNameBlur}
+                        maxLength={30}
+                        inputStyle={{ color: theme.colors.white }}
+                    />
+
+                    <Text style={{
+                        marginBottom: Dimensions.get("window").height / 143,
+                        fontWeight: 'bold',
+                        color: theme.colors.white
+                    }}>
                         {i18n.t("defaultRows")}
                     </Text>
 
                     <Input
+                        placeholder={i18n.t("defaultRows")}
                         keyboardType="numeric"
                         style={{ color: theme.colors.white }}
                         value={localRows}

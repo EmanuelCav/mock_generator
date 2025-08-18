@@ -14,7 +14,7 @@ class FileStore {
     field: IColumn | null = null
     rows: string = '1000'
     format: string = "csv"
-
+    file_name: string = "DATA_MOCKER"
     header_csv: boolean = true
     json_array: boolean = true
     root_element_xml: string = "dataset"
@@ -72,6 +72,11 @@ class FileStore {
         this.saveToStorage();
     }
 
+    updateFileName(data: string) {
+        this.file_name = data
+        this.saveToStorage();
+    }
+
     getColumns(columns: IColumn[]) {
         this.column = [...columns]
         this.saveToStorage();
@@ -90,6 +95,7 @@ class FileStore {
             format: this.format,
             rows: this.rows,
             header_csv: this.header_csv,
+            file_name: this.file_name,
             json_array: this.json_array,
             record_element_xml: this.record_element_xml,
             root_element_xml: this.root_element_xml,
@@ -109,6 +115,7 @@ class FileStore {
                 this.format = data.format ?? 'csv'
                 this.header_csv = data.header_csv ?? true
                 this.json_array = data.json_array ?? true
+                this.file_name = data.file_name ?? "DATA_MOCKER"
                 this.root_element_xml = data.root_element_xml ?? "dataset"
                 this.record_element_xml = data.record_element_xml ?? "record"
                 this.table_name_sql = data.table_name_sql ?? "DATA_MOCKER"

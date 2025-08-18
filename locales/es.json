@@ -67,6 +67,7 @@
     "elements": "Elementos",
     "tableNameSql": "Nombre de la tabla",
     "includeArray": "Incluir array",
+    "fileName": "Nombre del archivo",
     "datasetLabel": "Elemento raíz",
     "recordLabel": "Elemento de registro",
     "errorRecord": "Escribe un para el elemento de registro",
@@ -324,7 +325,8 @@
         "Sentences": "Oraciones",
         "Slug": "Slug",
         "Text": "Texto",
-        "Array elements": "Array elementos"
+        "Array elements": "Array elementos",
+        "Row number": "Número de fila"
     },
     "perfilUsuario": "Perfil de usuario",
     "productEcommerce": "Producto de ecommerce",
@@ -348,5 +350,5 @@
     "history": "Historial",
     "create": "Crear",
     "templates": "Plantillas",
-    "config": "Configuración"
+    "config": "Ajustes"
 }

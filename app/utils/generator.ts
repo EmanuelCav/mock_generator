@@ -12,7 +12,7 @@ import { IColumn } from '../interface/Column';
 import { fileStore } from '../store/file.store';
 
 export const generateData = (fields: IColumn[]) => {
-  return generateFakeData(fields, Number(fileStore.rows));
+  return generateFakeData(fields, fileStore.rows === "" ? 1000 : Number(fileStore.rows));
 };
 
 export const excelGenerator = async (fieldsData: any[], fileName: string) => {
@@ -136,7 +136,7 @@ const jsonToXml = (jsonArray: any[], rootName = 'Items', itemName = 'Item'): str
   return xml;
 }
 
-export const xmlGenerator = async (fieldsData: any[], fileName: string, root_element_xml: string = "dataset", record_element_xml: string = "record") => {
+export const xmlGenerator = async (fieldsData: any[], fileName: string, root_element_xml: string = "Items", record_element_xml: string = "Items") => {
   try {
     const xmlString = jsonToXml(fieldsData, root_element_xml, record_element_xml)
     const path = FileSystem.documentDirectory + `${fileName}.xml`;

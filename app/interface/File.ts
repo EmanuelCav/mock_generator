@@ -5,6 +5,7 @@ export interface IFileStore {
     field: IColumn | null;
     rows: string;
     format: string;
+    file_name: string;
     header_csv: boolean;
     json_array: boolean;
     root_element_xml: string;

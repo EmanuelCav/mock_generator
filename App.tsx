@@ -19,11 +19,10 @@ import { isFirstOpen, setFirstOpenFlag } from './app/utils/firstOpen';
 
 const Tab = createBottomTabNavigator();
 
-// const adUnitId = __DEV__ ? TestIds.APP_OPEN : `${process.env.EXPO_PUBLIC_START}`;
-const adUnitId = TestIds.APP_OPEN
+const adUnitId = __DEV__ ? TestIds.APP_OPEN : `${process.env.EXPO_PUBLIC_START}`;
 
 const App = observer(() => {
-  
+
   const [_, forceRender] = useState<number>(0);
   const [ready, setReady] = useState<boolean>(false);
 

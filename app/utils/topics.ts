@@ -248,6 +248,7 @@ export const column = [
   { type: [], topic: ["All topics", "Word"], name: "Slug", data: () => faker.lorem.slug() },
   { type: [], topic: ["All topics", "Word"], name: "Text", data: () => faker.lorem.text() },
   { type: [], topic: ["All topics", "General", "Computing"], name: "Array elements", data: (_: number, __: number, array: string[] = []) => faker.helpers.arrayElement(array) },
+  { type: [], topic: ["All topics", "General", "Number"], name: "Row number", data: () => null },
 ];
 
 export const fieldDefaultValue = (fieldName: string): IParameters => {

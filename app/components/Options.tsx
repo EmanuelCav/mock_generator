@@ -62,10 +62,12 @@ const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
 
     return (
         <ContainerBackground colors={theme.colors} isField={false}>
+
             <Close handleClose={() => {
                 setError("")
                 handleClose()
             }} />
+
             <Text style={{
                 marginBottom: Dimensions.get("window").height / 143,
                 fontWeight: 'bold',
@@ -227,7 +229,7 @@ const Options = observer(({ handleClose, handleOption }: OptionsPropsType) => {
                         if (!tableName) {
                             setError(i18n.t("errorTableName"))
                             return
-                        }    
+                        }
 
                         handleOption({
                             format: valueFormat,

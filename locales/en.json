@@ -67,6 +67,7 @@
     "elements": "Elements",
     "tableNameSql": "Table name",
     "includeArray": "Include array",
+    "fileName": "File name",
     "datasetLabel": "Root element",
     "recordLabel": "Record element",
     "errorRecord": "Enter a name for the record element",
@@ -324,7 +325,8 @@
         "Sentences": "Sentences",
         "Slug": "Slug",
         "Text": "Text",
-        "Array elements": "Array elements"
+        "Array elements": "Array elements",
+        "Row number": "Row number"
     },
     "perfilUsuario": "User profile",
     "productEcommerce": "Ecommerce product",
@@ -348,5 +350,5 @@
     "history": "History",
     "create": "Create",
     "templates": "Templates",
-    "config": "Config"
+    "config": "Settings"
 }

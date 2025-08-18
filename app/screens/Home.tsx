@@ -90,7 +90,7 @@ const Home = observer(() => {
             id: generateRandomString(),
             date: new Date().toISOString().split("T")[0],
             data: [...fields],
-            name: `DATA_MOCKER_${generateRandomString()}`,
+            name: `${fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name}_${generateRandomString()}`,
             columns: [...fileStore.column],
             extension: fileStore.format,
             header_csv: fileStore.header_csv,
@@ -120,27 +120,27 @@ const Home = observer(() => {
 
         switch (fileStore.format) {
             case "excel":
-                FileSystemOptions.excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.excelDownload(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name, setIsDownloaded)
                 break;
 
             case "csv":
-                FileSystemOptions.csvDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded, fileStore.header_csv)
+                FileSystemOptions.csvDownload(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name, setIsDownloaded, fileStore.header_csv)
                 break;
 
             case "xml":
-                FileSystemOptions.xmlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded, fileStore.root_element_xml, fileStore.record_element_xml)
+                FileSystemOptions.xmlDownload(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name, setIsDownloaded, fileStore.root_element_xml, fileStore.record_element_xml)
                 break;
 
             case "json":
-                FileSystemOptions.jsonDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded, fileStore.json_array)
+                FileSystemOptions.jsonDownload(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name, setIsDownloaded, fileStore.json_array)
                 break;
 
             case "sql":
-                FileSystemOptions.sqlDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded, fileStore.table_name_sql)
+                FileSystemOptions.sqlDownload(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name, setIsDownloaded, fileStore.table_name_sql)
                 break;
 
             default:
-                FileSystemOptions.excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                FileSystemOptions.excelDownload(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name, setIsDownloaded)
                 break;
         }
 
@@ -153,27 +153,27 @@ const Home = observer(() => {
 
         switch (fileStore.format) {
             case "excel":
-                FileSystemOptions.excelGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.excelGenerator(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name)
                 break;
 
             case "csv":
-                FileSystemOptions.csvGenerator(fieldsData, userStore.historyData?.name!, fileStore.header_csv)
+                FileSystemOptions.csvGenerator(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name, fileStore.header_csv)
                 break;
 
             case "xml":
-                FileSystemOptions.xmlGenerator(fieldsData, userStore.historyData?.name!, fileStore.root_element_xml, fileStore.record_element_xml)
+                FileSystemOptions.xmlGenerator(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name, fileStore.root_element_xml, fileStore.record_element_xml)
                 break;
 
             case "json":
-                FileSystemOptions.jsonGenerator(fieldsData, userStore.historyData?.name!, fileStore.json_array)
+                FileSystemOptions.jsonGenerator(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name, fileStore.json_array)
                 break;
 
             case "sql":
-                FileSystemOptions.sqlGenerator(fieldsData, userStore.historyData?.name!, fileStore.table_name_sql)
+                FileSystemOptions.sqlGenerator(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name, fileStore.table_name_sql)
                 break;
 
             default:
-                FileSystemOptions.excelGenerator(fieldsData, userStore.historyData?.name!)
+                FileSystemOptions.excelGenerator(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name)
                 break;
         }
     }

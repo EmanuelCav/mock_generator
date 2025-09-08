@@ -1,14 +1,18 @@
-# Data Mocker
+<h1 align="center">Data Mocker</h1>
+<div align="center">
+  <img src="https://res.cloudinary.com/projects-emanuek/image/upload/v1757349644/adaptive-icon_f1pd4x.png" width="40%" />
+</div>
 
 Una aplicación móvil desarrollada con React Native y Expo que permite generar datos de prueba realistas para aplicaciones móviles.  
-Basada en la funcionalidad de Mockaroo, esta herramienta facilita la creación de datos simulados en formatos como JSON y CSV.
+Facilita la creación de datos simulados en formatos como XLSX, JSON, XML, SQL y CSV.
 
 ## Características
 
 - **Generación de datos realistas**: Crea datos de prueba como nombres, correos electrónicos, direcciones y más.
 - **Interfaz intuitiva**: Diseñada para facilitar la creación y visualización de datos simulados.
-- **Exportación de datos**: Descarga los datos generados en formatos como JSON y CSV.
-- **Soporte para múltiples idiomas**: Incluye soporte para diferentes idiomas y regiones.
+- **Exportación de datos**: Descarga los datos generados en diversos formatos.
+- **Plantillas**: Utiliza plantillas para ahorrar tiempo.
+- **Historial**: Acceda a todos los archivos generados anteriormente.
 
 ## Uso
 - Abre la aplicación en tu dispositivo móvil.

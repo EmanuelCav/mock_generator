@@ -3,6 +3,11 @@
   <img src="https://res.cloudinary.com/projects-emanuek/image/upload/v1757349644/adaptive-icon_f1pd4x.png" width="40%" />
 </div>
 
+<br>
+<br>
+
+Link: https://play.google.com/store/apps/details?id=com.datamocker.excelgenerator
+
 Una aplicación móvil desarrollada con React Native y Expo que permite generar datos de prueba realistas para aplicaciones móviles.  
 Facilita la creación de datos simulados en formatos como XLSX, JSON, XML, SQL y CSV.
 

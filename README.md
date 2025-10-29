@@ -1,26 +1,57 @@
-<h1 align="center">Data Mocker</h1>
-<div align="center">
-  <img src="https://res.cloudinary.com/projects-emanuek/image/upload/v1757349644/adaptive-icon_f1pd4x.png" width="40%" />
-</div>
+# 🧩 Data Mocker
 
-<br>
+**Generate, customize, and export realistic mock data in seconds.**  
+A flexible tool designed for developers, QA engineers, data analysts, and product designers who need to create structured datasets quickly and efficiently.
 
-Link: https://play.google.com/store/apps/details?id=com.datamocker.excelgenerator
+📱 **Available on Google Play:**  
+👉 [Data Mocker](https://play.google.com/store/apps/details?id=com.datamocker.excelgenerator)
 
-Una aplicación móvil desarrollada con React Native y Expo que permite generar datos de prueba realistas para aplicaciones móviles.  
-Facilita la creación de datos simulados en formatos como XLSX, JSON, XML, SQL y CSV.
+---
 
-## Características
+## 🚀 Overview
 
-- **Generación de datos realistas**: Crea datos de prueba como nombres, correos electrónicos, direcciones y más.
-- **Interfaz intuitiva**: Diseñada para facilitar la creación y visualización de datos simulados.
-- **Exportación de datos**: Descarga los datos generados en diversos formatos.
-- **Plantillas**: Utiliza plantillas para ahorrar tiempo.
-- **Historial**: Acceda a todos los archivos generados anteriormente.
+**Data Mocker** allows you to instantly generate and export simulated data across multiple formats including **JSON, XML, SQL, CSV, and Excel (XLSX)**.  
+Whether you’re testing APIs, populating databases, building prototypes, or training AI models, this app helps you create realistic datasets tailored to your workflow.
 
-## Uso
-- Abre la aplicación en tu dispositivo móvil.
-- Selecciona el tipo de datos que deseas generar.
-- Configura las opciones según tus necesidades.
-- Visualiza los datos generados en la pantalla.
-- Descarga los datos en el formato deseado (XLSX, JSON, XML, SQL o CSV).
+With prebuilt templates and custom field selection, you can easily configure data types, formats, and values.  
+Advanced settings allow fine-tuning of output such as row counts, localization, date formats, and numeric ranges.
+
+---
+
+## ✳️ Key Features
+
+- 📤 **Export in Multiple Formats**  
+  Supports JSON, XML, SQL, CSV, and XLSX files.
+
+- 🧱 **Customizable Data Structure**  
+  Choose individual fields or use predefined templates for faster setup.
+
+- ⚙️ **Advanced Configuration Options**  
+  Define the number of rows, adjust formats, select data types, and localize results.
+
+- 💾 **Instant Download & Sharing**  
+  Export and share generated files with just a few taps.
+
+- 🕓 **Built-in History**  
+  Access your previous configurations and reuse them anytime.
+
+- ⚡ **Smart Presets**  
+  Speed up your workflow with intelligent default templates.
+
+- 🧭 **Modern and Intuitive Interface**  
+  A clean, fast, and user-friendly design focused on efficiency.
+
+---
+
+## 🛠️ Technologies Used
+
+- **Language:** TypeScript  
+- **Framework:** React Native (Expo)  
+- **State Management:** Zustand  
+- **Form Handling & Validation:** React Hook Form + Yup  
+- **UI Components:** React Native Paper, React Native Element Dropdown  
+- **Styling:** NativeWind  
+- **Localization:** i18n-js  
+- **Storage:** Async Storage  
+- **Feedback:** React Native Toast Message  
+- **Ads Integration:** react-native-google-mobile-ads  

@@ -47,11 +47,16 @@ Advanced settings allow fine-tuning of output such as row counts, localization, 
 
 - **Language:** TypeScript  
 - **Framework:** React Native (Expo)  
-- **State Management:** Zustand  
-- **Form Handling & Validation:** React Hook Form + Yup  
-- **UI Components:** React Native Paper, React Native Element Dropdown  
-- **Styling:** NativeWind  
+- **State Management:** MobX, MobX React Lite  
+- **Data Generation:** @faker-js/faker  
+- **Navigation:** React Navigation (Bottom Tabs)  
+- **UI Components:** React Native Elements, React Native Vector Icons, RNE UI  
+- **Dropdown & Pickers:** React Native Dropdown Picker, @react-native-community/datetimepicker  
+- **File Management & Export:** expo-file-system, expo-sharing, react-native-fs, xlsx  
 - **Localization:** i18n-js  
 - **Storage:** Async Storage  
-- **Feedback:** React Native Toast Message  
-- **Ads Integration:** react-native-google-mobile-ads  
+- **Media & Permissions:** expo-media-library  
+- **Feedback & Ads:** react-native-google-mobile-ads  
+- **Styling:** NativeWind (Tailwind for React Native)  
+- **Utilities:** buffer  
+- **Development Tools:** Expo Dev Client, Expo Status Bar  

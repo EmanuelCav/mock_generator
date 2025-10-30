@@ -56,6 +56,6 @@ Advanced settings allow fine-tuning of output such as row counts, localization, 
 - **Storage:** Async Storage  
 - **Media & Permissions:** expo-media-library  
 - **Feedback & Ads:** react-native-google-mobile-ads  
-- **Styling:** NativeWind (Tailwind for React Native)  
+- **Styling:** react-native-elements
 - **Utilities:** buffer  
 - **Development Tools:** Expo Dev Client, Expo Status Bar  

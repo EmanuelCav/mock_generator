@@ -1,13 +1,24 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Pressable } from 'react-native';
 import { Icon } from '@rneui/themed';
 
 import { ColumnPropsType } from '../types/home.types';
 
 import { homeStyles } from '../styles/home.styles';
 
-const Column = ({ column, removeColumn, openEdit, colors }: ColumnPropsType) => {
+const Column = ({ column, removeColumn, openEdit, colors, onLongPress, isActive }: ColumnPropsType) => {
     return (
-        <View style={[homeStyles.containColumn, { backgroundColor: colors.primary }]}>
+        <Pressable
+            onLongPress={onLongPress}
+            delayLongPress={150}
+            style={[
+                homeStyles.containColumn,
+                {
+                    backgroundColor: colors.primary,
+                    opacity: isActive ? 0.75 : 1,
+                    transform: [{ scale: isActive ? 0.98 : 1 }],
+                },
+            ]}
+        >
             <View>
                 <Text style={[homeStyles.titleColumn, { color: colors.white }]}>
                     {column.fieldName}
@@ -16,6 +27,7 @@ const Column = ({ column, removeColumn, openEdit, colors }: ColumnPropsType) => 
                     {column.topic}
                 </Text>
             </View>
+
             <View style={homeStyles.actionsColumn}>
                 <TouchableOpacity onPress={() => openEdit(column)}>
                     <Icon
@@ -25,6 +37,7 @@ const Column = ({ column, removeColumn, openEdit, colors }: ColumnPropsType) => 
                         containerStyle={homeStyles.iconSpacing}
                     />
                 </TouchableOpacity>
+
                 <TouchableOpacity onPress={() => removeColumn(column)}>
                     <Icon
                         name="delete"
@@ -33,8 +46,8 @@ const Column = ({ column, removeColumn, openEdit, colors }: ColumnPropsType) => 
                     />
                 </TouchableOpacity>
             </View>
-        </View>
+        </Pressable>
     )
 }
 
-export default Column;
+export default Column

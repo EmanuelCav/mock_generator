@@ -26,6 +26,10 @@ class FileStore {
         this.loadFromStorage();
     }
 
+    setColumns(columns: IColumn[]) {
+        this.column = columns;
+    }
+
     getField(field: IColumn | null) {
         this.field = field
         this.saveToStorage();

@@ -17,6 +17,7 @@ export const configStyles = StyleSheet.create({
 
     containConfig: {
         justifyContent: 'flex-start',
+        marginTop: Dimensions.get("window").height / 67,
         flex: 1,
         width: '100%'
     }

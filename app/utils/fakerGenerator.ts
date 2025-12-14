@@ -42,7 +42,7 @@ export const generateFakeData = (fields: IColumn[], count: number) => {
                     orderedRecord[column.fieldName] = shouldBeEmpty ? '' : rowIndex + 1
                     break;
                 case 'Gender':
-                    orderedRecord[column.fieldName] = shouldBeEmpty ? '' : record[column.fieldName];
+                    orderedRecord[column.fieldName] = record[column.fieldName];
                     break;
                 case 'First name':
                     orderedRecord[column.fieldName] = shouldBeEmpty ? '' : fname;

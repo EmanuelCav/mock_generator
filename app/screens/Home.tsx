@@ -1,7 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { observer } from 'mobx-react-lite';
-import { View, FlatList } from 'react-native';
+import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import { Button, Text, useTheme } from '@rneui/themed';
+import * as StoreReview from 'expo-store-review';
 import i18n from '../../i18n';
 
 import Column from '../components/Column';
@@ -13,6 +17,7 @@ import FormEdit from '../components/form/FormEdit';
 import Container from '../../ContainerGeneral';
 import Options from '../components/Options';
 import DownloadView from '../components/DownloadView';
+import Preview from '../components/Preview';
 
 import { IColumn, ICreateColumn } from '../interface/Column';
 import { FileOptions } from '../interface/File';
@@ -35,11 +40,13 @@ const Home = observer(() => {
     const [isEdit, setIsEdit] = useState<boolean>(false)
     const [isOptions, setIsOptions] = useState<boolean>(false)
     const [isGenerated, setIsGenerated] = useState<boolean>(false)
+    const [isPreview, setIsPreview] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
     const [fieldsData, setFieldsData] = useState<any[]>([])
     const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
     const [titleError, setTitleError] = useState<string>("")
+    const [isRefreshData, setIsRefreshData] = useState<boolean>(false);
     const [_, forceRender] = useState<number>(0);
 
     const handleAddColumn = (data: ICreateColumn) => {
@@ -82,14 +89,10 @@ const Home = observer(() => {
     const handleGenerate = () => {
         setLoading(true)
 
-        const fields = FileSystemOptions.generateData(fileStore.column);
-
-        setFieldsData(fields)
-
         const newFile: IHistory = {
             id: generateRandomString(),
             date: new Date().toISOString().split("T")[0],
-            data: [...fields],
+            data: [...fieldsData],
             name: `${fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name}_${generateRandomString()}`,
             columns: [...fileStore.column],
             extension: fileStore.format,
@@ -97,7 +100,7 @@ const Home = observer(() => {
             json_array: fileStore.json_array,
             record_element_xml: fileStore.record_element_xml,
             root_element_xml: fileStore.root_element_xml,
-            table_name_sql: fileStore.table_name_sql 
+            table_name_sql: fileStore.table_name_sql
         }
 
         userStore.addHistory(newFile)
@@ -178,12 +181,77 @@ const Home = observer(() => {
         }
     }
 
+    const handleRefreshData = () => {
+        setIsRefreshData(true)
+
+        setTimeout(() => {
+            setIsRefreshData(false)
+        }, 600)
+    }
+
+    const requestAppReview = async () => {
+
+        try {
+
+            const isAvailable = await StoreReview.isAvailableAsync()
+
+            if (isAvailable) {
+                await StoreReview.requestReview()
+            }
+
+        } catch (error) {
+            console.error("Error requesting review:", error);
+        }
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            const handleCount = async () => {
+
+                try {
+
+                    const storedCount = await AsyncStorage.getItem("reviewCount");
+                    const count = storedCount ? parseInt(storedCount, 10) : 0;
+
+                    if (count !== 0 && (count === 2 || count % 10 === 0)) {
+                        requestAppReview();
+                    }
+
+                    await AsyncStorage.setItem("reviewCount", (count + 1).toString());
+
+                } catch (error) {
+                    console.error("Error checking review count:", error);
+                }
+            };
+
+            handleCount();
+        }, [])
+    )
+
+    useEffect(() => {
+        const fields = FileSystemOptions.generateData(fileStore.column);
+        setFieldsData(fields)
+    }, [fileStore.column.length, fileStore.rows, fileStore.format, isRefreshData, fileStore.column])
+
     useEffect(() => {
         forceRender((prev) => prev + 1);
     }, [userStore.lang])
 
     return (
         <Container>
+            {
+                isPreview && <Preview
+                    colors={theme.colors}
+                    setIsPreview={setIsPreview}
+                    data={fieldsData}
+                    format={fileStore.format}
+                    header_csv={fileStore.header_csv}
+                    json_array={fileStore.json_array}
+                    record_element_xml={fileStore.record_element_xml}
+                    root_element_xml={fileStore.root_element_xml}
+                    table_name_sql={fileStore.table_name_sql}
+                />
+            }
             {
                 isForm && <FormColumn
                     error={titleError}
@@ -219,35 +287,45 @@ const Home = observer(() => {
                 />
             }
             <Banner />
+            <Media openForm={() => setIsForm(true)} openOptions={() => setIsOptions(true)} 
+            openPreview={() => setIsPreview(true)} isRefreshData={isRefreshData} />
+            <ButtonGenerator
+                handleGenerate={handleGenerate}
+                columnsLength={fileStore.column.length}
+                loading={loading}
+                isRefreshData={isRefreshData}
+                handleRefreshData={handleRefreshData}
+            />
             <View style={generalStyles.generalContainer}>
                 {
-                    fileStore.column.length > 0 ? <FlatList
+                    fileStore.column.length > 0 ? <DraggableFlatList
                         data={fileStore.column}
-                        renderItem={({ item }) => <Column
-                            colors={theme.colors}
-                            removeColumn={removeColumn}
-                            openEdit={openEdit}
-                            column={item}
-                        />}
-                        keyExtractor={(_, index) => String(index)}
-                    /> : <View style={homeStyles.containerNotFields}>
-                        <Text style={homeStyles.titleNotFields}>
-                            {i18n.t("emptyFields")}
-                        </Text>
-                        <Button
-                            title={i18n.t("addField")}
-                            buttonStyle={{
-                                backgroundColor: "#50C878"
-                            }}
-                            onPress={() => setIsForm(true)}
-                        />
-                    </View>
+                        keyExtractor={(item) => String(item.id)}
+                        onDragEnd={({ data }) => fileStore.setColumns(data)}
+                        renderItem={({ item, drag, isActive }: RenderItemParams<IColumn>) => (
+                            <Column
+                                colors={theme.colors}
+                                column={item}
+                                removeColumn={removeColumn}
+                                openEdit={openEdit}
+                                onLongPress={drag}
+                                isActive={isActive}
+                            />
+                        )}
+                    />
+                        : <View style={homeStyles.containerNotFields}>
+                            <Text style={homeStyles.titleNotFields}>
+                                {i18n.t("emptyFields")}
+                            </Text>
+                            <Button
+                                title={i18n.t("addField")}
+                                buttonStyle={{
+                                    backgroundColor: "#50C878"
+                                }}
+                                onPress={() => setIsForm(true)}
+                            />
+                        </View>
                 }
-                <Media openForm={() => setIsForm(true)} openOptions={() => setIsOptions(true)} />
-                <ButtonGenerator
-                    handleGenerate={handleGenerate}
-                    columnsLength={fileStore.column.length}
-                    loading={loading} />
             </View>
         </Container>
     );

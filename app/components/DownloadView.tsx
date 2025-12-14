@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Dimensions, View } from 'react-native'
 import { Button, Text } from '@rneui/themed'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from '../../i18n'
 import { AdEventType, InterstitialAd, TestIds } from 'react-native-google-mobile-ads';
 
@@ -52,11 +53,14 @@ const DownloadView = ({ colors, setIsGenerated, handleDownload, loading, text, s
         };
     }, []);
 
-    const handleClose = () => {
+    const handleClose = async () => {
 
         try {
 
-            if (interstitial.loaded || isIntersitialLoaded) {
+            const storedCount = await AsyncStorage.getItem("reviewCount");
+            const count = storedCount ? parseInt(storedCount, 10) : 0;
+
+            if ((interstitial.loaded || isIntersitialLoaded) && count > 2) {
                 interstitial.show()
             }
 

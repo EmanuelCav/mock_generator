@@ -190,7 +190,11 @@ const Config = observer(() => {
                         value={valueFormat}
                         items={itemsFormat}
                         setOpen={setOpenFormat}
-                        setValue={setValueFormat}
+                        setValue={(callback) => {
+                            const newValue = callback(valueFormat)
+                            setValueFormat(newValue)
+                            fileStore.updateFormat(newValue)
+                        }}
                         setItems={setItemsFormat}
                     />
 

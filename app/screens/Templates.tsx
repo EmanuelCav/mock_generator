@@ -20,7 +20,6 @@ import { fileStore } from "../store/file.store"
 import { faker } from "../utils/fakerGenerator"
 import { generateRandomNumber } from "../utils/data"
 
-
 const Templates = observer(({ navigation }: { navigation: StackNavigation }) => {
 
     const templatesData: ITemplate[] = [{

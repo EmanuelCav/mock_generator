@@ -10,6 +10,13 @@ export const homeStyles = StyleSheet.create({
         alignItems: 'center',
     },
 
+    containButtonsHome: {
+        flexDirection: 'row',
+        width: '35%',
+        justifyContent: 'space-around',
+        alignItems: 'center'
+    },
+
     containerBackground: {
         position: 'absolute',
         zIndex: 40,
@@ -35,10 +42,13 @@ export const homeStyles = StyleSheet.create({
         alignItems: 'center'
     },
 
-    ButtonGeneratorContainer: {
+    buttonGeneratorContainer: {
         width: '100%',
-        justifyContent: 'center',
-        height: '10%'
+        padding: Dimensions.get("window").height / 74,
+        justifyContent: 'space-between',
+        height: '10%',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 
     columnSelect: {
@@ -103,7 +113,7 @@ export const homeStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    
+
     iconSpacing: {
         marginRight: Dimensions.get('window').width / 25,
     }

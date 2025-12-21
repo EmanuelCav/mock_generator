@@ -151,7 +151,7 @@ const FormEdit = ({ colors, handleClose, field, handleEdit }: FormEditPropsType)
                         type="clear"
                         titleStyle={{ color: "#50C878" }}
                         onPress={() => {
-                            if(valueElement === "") {
+                            if (valueElement === "") {
                                 setIsError(i18n.t("errorAddElement"))
                                 return
                             }

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Data Mocker",
+    "name": "Mock Data Generator",
     "slug": "DataMocker",
     "version": "1.0.2",
     "icon": "./assets/icon.png",

@@ -213,7 +213,7 @@ const Home = observer(() => {
                     const storedCount = await AsyncStorage.getItem("reviewCount");
                     const count = storedCount ? parseInt(storedCount, 10) : 0;
 
-                    if (count !== 0 && (count === 2 || count % 10 === 0)) {
+                    if (count !== 0 && (count === 2 || count % 25 === 0)) {
                         requestAppReview();
                     }
 

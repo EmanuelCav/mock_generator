@@ -14,11 +14,11 @@ const DateInput = ({ colors, value, setValue, label, labelSelected, topic }: Dat
         if (selectedDate) {
             setValue(selectedDate.toISOString());
         }
-    };
+    }
 
     const showDatepicker = () => {
         setShow(true);
-    };
+    }
 
     return (
         <>

@@ -1,10 +1,10 @@
-# Data Mocker
+# Mock Data Generator
 
 **Generate, customize, and export realistic mock data.**  
 A flexible tool designed for developers, QA engineers, data analysts, and product designers who need to create structured datasets quickly and efficiently.
 
 📱 **Available on Google Play:**  
-[Data Mocker](https://play.google.com/store/apps/details?id=com.datamocker.excelgenerator)
+[Mock Data Generator](https://play.google.com/store/apps/details?id=com.datamocker.excelgenerator)
 
 ---
 

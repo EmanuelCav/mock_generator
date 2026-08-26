@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite"
 import { useTheme } from "@rneui/themed"
 import i18n from "../../i18n"
 
-import Container from "../../ContainerGeneral"
+import Container from "../components/ContainerGeneral"
 import Template from "../components/Template"
 import Banner from "../components/Banner"
 
@@ -620,7 +620,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             id: generateRandomNumber(),
             fieldName: "type",
             blank: 0,
-            topic: "Array Elements",
+            topic: "Array elements",
             data: () => faker.helpers.arrayElement(['deposit', 'withdrawal', 'transfer']),
         }, {
             id: generateRandomNumber(),

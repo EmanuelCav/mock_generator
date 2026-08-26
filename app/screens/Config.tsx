@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { observer } from 'mobx-react-lite';
 import i18n from '../../i18n';
 
-import Container from '../../ContainerGeneral';
+import Container from '../components/ContainerGeneral';
 
 import { FormatOption, LanguageOption } from '../types/general.types';
 

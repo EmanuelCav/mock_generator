@@ -14,7 +14,7 @@ import Media from '../components/Media';
 import Banner from '../components/Banner';
 import FormColumn from '../components/form/FormColumn';
 import FormEdit from '../components/form/FormEdit';
-import Container from '../../ContainerGeneral';
+import Container from '../components/ContainerGeneral';
 import Options from '../components/Options';
 import DownloadView from '../components/DownloadView';
 import Preview from '../components/Preview';

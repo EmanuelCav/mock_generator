@@ -4,7 +4,7 @@ import { FlatList, View } from "react-native"
 import { Button, Text, useTheme } from "@rneui/themed"
 import i18n from "../../i18n";
 
-import Container from "../../ContainerGeneral"
+import Container from "../components/ContainerGeneral"
 import HistoryElement from "../components/HistoryElement";
 import DownloadView from "../components/DownloadView";
 import Banner from "../components/Banner";
@@ -30,7 +30,6 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
     const [fieldsData, setFieldsData] = useState<any[]>([])
-    const [_, forceRender] = useState<number>(0);
 
     const handleEdit = (column: IColumn[]) => {
         fileStore.getColumns(column)
@@ -51,35 +50,39 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
 
         setLoading(true)
 
-        switch (userStore.historyData?.extension) {
-            case "xlsx":
-                FileSystemOptions.excelDownload(fieldsData, userStore.historyData.name, setIsDownloaded)
-                break;
+        try {
 
-            case "csv":
-                FileSystemOptions.csvDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.header_csv)
-                break;
+            switch (userStore.historyData?.extension) {
+                case "xlsx":
+                    FileSystemOptions.excelDownload(fieldsData, userStore.historyData.name, setIsDownloaded)
+                    break;
 
-            case "xml":
-                FileSystemOptions.xmlDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.root_element_xml, userStore.historyData.record_element_xml)
-                break;
+                case "csv":
+                    FileSystemOptions.csvDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.header_csv)
+                    break;
 
-            case "json":
-                FileSystemOptions.jsonDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.json_array)
-                break;
+                case "xml":
+                    FileSystemOptions.xmlDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.root_element_xml, userStore.historyData.record_element_xml)
+                    break;
 
-            case "sql":
-                FileSystemOptions.sqlDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.table_name_sql)
-                break;
+                case "json":
+                    FileSystemOptions.jsonDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.json_array)
+                    break;
 
-            default:
-                FileSystemOptions.excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
-                break;
-        }
+                case "sql":
+                    FileSystemOptions.sqlDownload(fieldsData, userStore.historyData.name, setIsDownloaded, userStore.historyData.table_name_sql)
+                    break;
 
-        setTimeout(() => {
+                default:
+                    FileSystemOptions.excelDownload(fieldsData, userStore.historyData?.name!, setIsDownloaded)
+                    break;
+            }
+
+        } catch (error) {
+            console.log(error)
+        } finally {
             setLoading(false)
-        }, 1260);
+        }
     }
 
     const handleShare = () => {
@@ -110,10 +113,6 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
                 break;
         }
     }
-
-    useEffect(() => {
-        forceRender((prev) => prev + 1);
-    }, [userStore.lang])
 
     return (
         <Container>

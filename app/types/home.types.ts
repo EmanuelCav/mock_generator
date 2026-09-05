@@ -1,5 +1,3 @@
-import { Colors } from "@rneui/base";
-
 import { IColumn, ICreateColumn, ISelectColumn } from "../interface/Column"
 import { FileOptions } from "../interface/File";
 
@@ -7,7 +5,6 @@ export type ColumnPropsType = {
     column: IColumn;
     removeColumn: (data: IColumn) => void;
     openEdit: (data: IColumn) => void;
-    colors: Colors;
     onLongPress: () => void;
     isActive: boolean;
 }
@@ -17,31 +14,32 @@ export type MediaPropsType = {
     openOptions: () => void;
     openPreview: () => void;
     isRefreshData: boolean;
+    t: (scope: string, options?: object | undefined) => string;
 }
 
 export type AddColumnPropsType = {
     openForm: () => void;
+    t: (scope: string, options?: object | undefined) => string;
 }
 
 export type FormColumnPropsType = {
     handleClose: () => void;
     handleAddColumn: (data: ICreateColumn) => void;
-    colors: Colors;
     error: string;
+    t: (scope: string, options?: object | undefined) => string;
 }
 
 export type ColumnSelectPropsType = {
     element: ISelectColumn;
     setColumnData: (columnData: string) => void;
     columnData: string;
-    colors: Colors;
 }
 
 export type FormEditPropsType = {
-    colors: Colors;
     handleClose: () => void;
     field: IColumn;
     handleEdit: (field: IColumn) => void;
+    t: (scope: string, options?: object | undefined) => string;
 }
 
 export type ButtonGeneratorPropsType = {
@@ -50,17 +48,18 @@ export type ButtonGeneratorPropsType = {
     loading: boolean;
     handleRefreshData: () => void;
     isRefreshData: boolean;
+    t: (scope: string, options?: object | undefined) => string;
 }
 
 export type OptionsPropsType = {
     handleClose: () => void;
     handleOption: (col: FileOptions) => void;
+    t: (scope: string, options?: object | undefined) => string;
 }
 
 export type TypeInputPropsType = {
     value: string;
     setValue: (value: string) => void;
-    colors: Colors;
     label: string;
     topic: string;
 }
@@ -68,14 +67,12 @@ export type TypeInputPropsType = {
 export type DateInputPropsType = {
     value: string;
     setValue: (value: string) => void;
-    colors: Colors;
     label: string;
     labelSelected: string;
     topic: string;
 }
 
 export type PreviewPropsType = {
-    colors: Colors;
     data: any[];
     setIsPreview: (isPreview: boolean) => void;
     format: string;
@@ -88,30 +85,25 @@ export type PreviewPropsType = {
 
 export type PreviewXLSXPropsType = {
     data: any[];
-    colors: Colors;
 }
 
 export type PreviewSQLPropsType = {
     data: any[];
-    colors: Colors;
     table_name_sql: string;
 }
 
 export type PreviewXMLPropsType = {
     data: any[];
-    colors: Colors;
-    record_element_xml: string; 
+    record_element_xml: string;
     root_element_xml: string;
 }
 
 export type PreviewJSONPropsType = {
     data: any[];
-    colors: Colors;
     json_array: boolean;
 }
 
 export type PreviewCSVPropsType = {
     data: any[];
-    colors: Colors;
     header_csv: boolean;
 }

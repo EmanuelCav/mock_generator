@@ -1,5 +1,4 @@
 import ContainerBackground from './ContainerBackground';
-import Close from './Close';
 
 import PreviewCSV from './preview/PreviewCSV';
 import PreviewJSON from './preview/PreviewJSON';
@@ -9,24 +8,24 @@ import PreviewXLSX from './preview/PreviewXLSX';
 
 import { PreviewPropsType } from '../types/home.types';
 
-const Preview = ({ colors, setIsPreview, data, format, header_csv, json_array, record_element_xml, root_element_xml, table_name_sql }: PreviewPropsType) => {
+const Preview = ({ setIsPreview, data, format, header_csv, json_array, record_element_xml, root_element_xml, table_name_sql }: PreviewPropsType) => {
 
   const renderPreview = () => {
     switch (format) {
       case 'csv':
-        return <PreviewCSV colors={colors} data={data} header_csv={header_csv} />
+        return <PreviewCSV data={data} header_csv={header_csv} />
 
       case 'json':
-        return <PreviewJSON colors={colors} data={data} json_array={json_array} />
+        return <PreviewJSON data={data} json_array={json_array} />
 
       case 'xml':
-        return <PreviewXML colors={colors} data={data} record_element_xml={record_element_xml} root_element_xml={root_element_xml} />
+        return <PreviewXML data={data} record_element_xml={record_element_xml} root_element_xml={root_element_xml} />
 
       case 'sql':
-        return <PreviewSQL colors={colors} data={data} table_name_sql={table_name_sql} />
+        return <PreviewSQL data={data} table_name_sql={table_name_sql} />
 
       case 'excel':
-        return <PreviewXLSX colors={colors} data={data} />
+        return <PreviewXLSX data={data} />
 
       default:
         return null
@@ -34,8 +33,7 @@ const Preview = ({ colors, setIsPreview, data, format, header_csv, json_array, r
   }
 
   return (
-    <ContainerBackground colors={colors} isField={true}>
-      <Close handleClose={() => setIsPreview(false)} />
+    <ContainerBackground isField={true} onClose={() => setIsPreview(false)}>
       {renderPreview()}
     </ContainerBackground>
   )

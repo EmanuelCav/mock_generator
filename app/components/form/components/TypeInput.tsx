@@ -1,39 +1,40 @@
-import { Dimensions } from "react-native"
-import { Input, Text } from "@rneui/themed"
+import { Text, TextInput, View } from "react-native";
 
-import { TypeInputPropsType } from "../../../types/home.types"
+import { TypeInputPropsType } from "../../../types/home.types";
 
-import { topicsLowLength } from "../../../utils/topics"
+import { topicsLowLength } from "../../../utils/topics";
 
-const TypeInput = ({ value, setValue, colors, label, topic }: TypeInputPropsType) => {
+const TypeInput = ({ value, setValue, label, topic }: TypeInputPropsType) => {
 
     const handleChange = (text: string) => {
-        let regex = (topic === "Number" || topic === "Float number") ? /^-?\d*$/ : /^\d*$/;
+        const regex =
+            topic === "Number" || topic === "Float number"
+                ? /^-?\d*$/
+                : /^\d*$/;
 
         if (regex.test(text)) {
             setValue(text);
         }
-    }
+    };
 
     return (
-        <>
-            <Text style={{
-                marginBottom: Dimensions.get("window").height / 143,
-                fontWeight: 'bold',
-                color: colors.white
-            }}>
+        <View className="mb-5">
+
+            <Text className="mb-2 text-base font-bold text-black dark:text-white">
                 {label}
             </Text>
 
-            <Input
+            <TextInput
                 keyboardType="numeric"
-                style={{ color: colors.white }}
                 value={value}
                 onChangeText={handleChange}
                 maxLength={topicsLowLength(topic)}
+                className="rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-neutral-900 dark:text-white"
+                placeholderTextColor="#9CA3AF"
             />
-        </>
-    )
-}
 
-export default TypeInput
+        </View>
+    );
+};
+
+export default TypeInput;

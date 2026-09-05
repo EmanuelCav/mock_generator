@@ -1,8 +1,7 @@
 import { faker } from "./fakerGenerator"
-import i18n from "../../i18n";
 
 import { IColumn } from "../interface/Column";
-import { FormatOption, LanguageOption } from "../types/general.types";
+import { FormatOption } from "../types/general.types";
 
 export const defaultColumn = (): IColumn[] => [
     {
@@ -80,11 +79,6 @@ export const extensionFile = (file: string): string => {
             return "xlsx"
     }
 }
-
-export const languagesAvailable: LanguageOption[] = [
-    { label: i18n.t("english"), value: 'en' },
-    { label: i18n.t("spanish"), value: 'es' }
-];
 
 export const generateRandomString = (): string => {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

@@ -1,11 +1,8 @@
-import { Colors } from "@rneui/base";
-
 export type ConfigSwitchPropsType = {
     defaultValue: boolean;
 }
 
 export type DownloadViewPropsType = {
-    colors: Colors;
     setIsGenerated: (isGenerated: boolean) => void;
     handleDownload: () => void;
     handleShare: () => void;
@@ -13,4 +10,5 @@ export type DownloadViewPropsType = {
     text: string;
     isDownloaded: boolean;
     setIsDownloaded: (isDownloaded: boolean) => void;
+    t: (scope: string, options?: object | undefined) => string;
 }

@@ -1,39 +1,50 @@
-import { Dimensions, View } from 'react-native'
-import { Button, Card } from '@rneui/themed'
-import i18n from '../../i18n'
+import { Pressable, Text, View } from "react-native";
 
-import { TemplatePropsType } from '../types/template.types'
+import { TemplatePropsType } from "../types/template.types";
 
-const Template = ({ template, colors, getTemplate }: TemplatePropsType) => {
+const Template = ({ template, getTemplate, t }: TemplatePropsType) => {
     return (
-        <Card containerStyle={{ backgroundColor: colors.primary }}>
-            <Card.Title style={{ color: colors.white, fontSize: Dimensions.get("window").height / 56 }}>
+        <View className="mx-4 mb-4 rounded-2xl bg-white p-5 shadow-sm dark:bg-zinc-900">
+
+            <Text className="text-center text-lg font-bold text-black dark:text-white">
                 {template.title.toUpperCase()}
-            </Card.Title>
-            <Card.FeaturedSubtitle style={{ textDecorationLine: "underline" }}>
-                {i18n.t("columnsText")}:
-            </Card.FeaturedSubtitle>
-            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                {
-                    template.data.map((column, index) => {
-                        return <Card.FeaturedSubtitle key={index}
-                            style={{ marginLeft: Dimensions.get("window").width / 120 }}>
-                            {column.fieldName}{index === template.data.length - 1 ? "" : ","}
-                        </Card.FeaturedSubtitle>
-                    })
-                }
+            </Text>
+
+            <View className="mt-4">
+
+                <Text className="mb-2 font-semibold text-black underline dark:text-white">
+                    {t("columnsText")}:
+                </Text>
+
+                <View className="flex-row flex-wrap">
+
+                    {template.data.map((column, index) => (
+                        <Text
+                            key={index}
+                            className="text-sm text-gray-600 dark:text-gray-300"
+                        >
+                            {column.fieldName}
+                            {index === template.data.length - 1 ? "" : ", "}
+                        </Text>
+                    ))}
+
+                </View>
+
             </View>
-            <Card.Divider />
-            <Button
-                title={i18n.t("use")}
+
+            <View className="my-5 h-px bg-gray-200 dark:bg-zinc-700" />
+
+            <Pressable
                 onPress={() => getTemplate(template.data)}
-                buttonStyle={{
-                    backgroundColor: "#50C878"
-                }}
-            />
-        </Card>
+                className="items-center justify-center rounded-xl bg-emerald-500 px-5 py-4 active:opacity-80"
+            >
+                <Text className="text-base font-bold text-white">
+                    {t("use")}
+                </Text>
+            </Pressable>
 
-    )
-}
+        </View>
+    );
+};
 
-export default Template
+export default Template;

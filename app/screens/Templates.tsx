@@ -1,16 +1,11 @@
-import { useEffect, useState } from "react"
 import { FlatList, View } from "react-native"
 import { observer } from "mobx-react-lite"
-import { useTheme } from "@rneui/themed"
-import i18n from "../../i18n"
 
 import Container from "../components/ContainerGeneral"
 import Template from "../components/Template"
 import Banner from "../components/Banner"
 
 import { generalStyles } from "../styles/general.styles"
-
-import { userStore } from "../store/user.store"
 
 import { IColumn, ITemplate } from "../interface/Column"
 import { StackNavigation } from "../types/general.types"
@@ -20,10 +15,14 @@ import { fileStore } from "../store/file.store"
 import { faker } from "../utils/fakerGenerator"
 import { generateRandomNumber } from "../utils/data"
 
+import { useLanguage } from "../hooks/useLanguageContext"
+
 const Templates = observer(({ navigation }: { navigation: StackNavigation }) => {
 
+    const { t } = useLanguage()
+
     const templatesData: ITemplate[] = [{
-        title: i18n.t("perfilUsuario"),
+        title: t("perfilUsuario"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -75,7 +74,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: () => faker.location.streetAddress()
         }]
     }, {
-        title: i18n.t("productEcommerce"),
+        title: t("productEcommerce"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -121,7 +120,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: () => faker.commerce.department()
         }]
     }, {
-        title: i18n.t("blogTemplate"),
+        title: t("blogTemplate"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -161,7 +160,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: (min: number = 5) => faker.date.past({ years: min })
         }]
     }, {
-        title: i18n.t("company"),
+        title: t("company"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -201,7 +200,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: () => faker.location.streetAddress()
         }]
     }, {
-        title: i18n.t("creditCard"),
+        title: t("creditCard"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -241,7 +240,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: (min: number = 10) => faker.date.future({ years: min }).toISOString().split("T")[0]
         }]
     }, {
-        title: i18n.t("event"),
+        title: t("event"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -281,7 +280,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: (min: number = 1, max: number = 3) => faker.lorem.paragraph({ max, min })
         }]
     }, {
-        title: i18n.t("review"),
+        title: t("review"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -328,7 +327,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
 
         }]
     }, {
-        title: i18n.t("bank"),
+        title: t("bank"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -368,7 +367,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: (min: number = 1, max: number = 1000) => faker.finance.amount({ symbol: "$", dec: 2, max, min })
         }]
     }, {
-        title: i18n.t("registerUser"),
+        title: t("registerUser"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -408,7 +407,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: (min: number = 5) => faker.date.past({ years: min })
         }]
     }, {
-        title: i18n.t("address"),
+        title: t("address"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -448,7 +447,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: () => faker.location.zipCode()
         }]
     }, {
-        title: i18n.t("animal"),
+        title: t("animal"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -482,7 +481,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: (min: number = 1, max: number = 20) => faker.number.int({ min, max })
         }]
     }, {
-        title: i18n.t("vehicle"),
+        title: t("vehicle"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -522,7 +521,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: () => faker.color.human()
         }]
     }, {
-        title: i18n.t("bill"),
+        title: t("bill"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -562,7 +561,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: (min: number = 3) => faker.date.future({ years: min })
         }]
     }, {
-        title: i18n.t("employee"),
+        title: t("employee"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -602,7 +601,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: (min: number = 20) => faker.date.past({ years: min }).toISOString().split("T")[0]
         }]
     }, {
-        title: i18n.t("transaction"),
+        title: t("transaction"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -636,7 +635,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: (min: number = 1) => faker.date.recent({ days: min })
         }]
     }, {
-        title: i18n.t("profile"),
+        title: t("profile"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -676,7 +675,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: () => faker.datatype.boolean()
         }]
     }, {
-        title: i18n.t("subscription"),
+        title: t("subscription"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -716,7 +715,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: () => faker.datatype.boolean()
         }]
     }, {
-        title: i18n.t("contact"),
+        title: t("contact"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -756,7 +755,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
             data: () => faker.company.name()
         }]
     }, {
-        title: i18n.t("film"),
+        title: t("film"),
         data: [{
             id: generateRandomNumber(),
             fieldName: "row number",
@@ -797,14 +796,6 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
         }]
     }]
 
-    const { theme } = useTheme()
-
-    const [_, forceRender] = useState<number>(0);
-
-    useEffect(() => {
-        forceRender((prev) => prev + 1);
-    }, [userStore.lang])
-
     const getTemplate = (data: IColumn[]) => {
         fileStore.getColumns(data)
         navigation.navigate("Create")
@@ -818,7 +809,7 @@ const Templates = observer(({ navigation }: { navigation: StackNavigation }) => 
                     data={templatesData}
                     renderItem={({ item }) =>
                         <Template
-                            colors={theme.colors}
+                            t={t}
                             template={item}
                             getTemplate={getTemplate}
                         />}

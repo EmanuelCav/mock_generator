@@ -1,25 +1,28 @@
-import { Dimensions, ScrollView, Text } from 'react-native';
+import { ScrollView, Text } from "react-native";
 
-import { PreviewXMLPropsType } from '../../types/home.types';
+import { PreviewXMLPropsType } from "../../types/home.types";
 
-const PreviewXML = ({ data, colors, record_element_xml, root_element_xml }: PreviewXMLPropsType) => {
+const PreviewXML = ({ data, record_element_xml, root_element_xml }: PreviewXMLPropsType) => {
 
   const xml = data
     .map(
       (row: any) =>
         `<${record_element_xml}>\n${Object.entries(row)
-          .map(([_, v]) => `  <${root_element_xml}>${v}</${root_element_xml}>`)
-          .join('\n')}\n</${record_element_xml}>`
+          .map(([_, value]) => `  <${root_element_xml}>${value}</${root_element_xml}>`)
+          .join("\n")}\n</${record_element_xml}>`
     )
-    .join('\n')
+    .join("\n");
 
   return (
-    <ScrollView horizontal style={{ paddingBottom: Dimensions.get("window").height / 66 }}>
-      <Text style={{ fontFamily: 'monospace', fontSize: 12, color: colors.white }}>
+    <ScrollView horizontal className="pb-4">
+      <Text
+        className="text-xs text-black dark:text-white"
+        style={{ fontFamily: "monospace" }}
+      >
         {xml}
       </Text>
     </ScrollView>
   );
-}
+};
 
-export default PreviewXML
+export default PreviewXML;

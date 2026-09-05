@@ -3,7 +3,6 @@ import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Feather } from "@expo/vector-icons";
 import { NavigationContainer } from '@react-navigation/native';
-import i18n from './i18n';
 
 import Home from './app/screens/Home';
 import Templates from './app/screens/Templates';
@@ -12,22 +11,25 @@ import Config from './app/screens/Config';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { userStore } from './app/store/user.store';
-
-import { theme } from './app/utils/theme';
+import { useLanguage } from "./app/hooks/useLanguageContext";
+import { useThemeMode } from "./app/hooks/useThemeContext";
 
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+
+  const { t } = useLanguage()
+  const { themeMode } = useThemeMode();
+
+  const isDark = themeMode === "dark";
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <Tab.Navigator initialRouteName="Create"
           screenOptions={{
             tabBarStyle: {
-              backgroundColor: userStore.isDarkMode ?
-                theme.darkColors?.background :
-                theme.lightColors?.background,
+              backgroundColor: isDark ? "#000000" : "#FFFFFF",
               borderTopColor: 'transparent',
               elevation: 0
             },
@@ -39,7 +41,7 @@ const App = () => {
             component={Home}
             options={{
               headerShown: false,
-              title: i18n.t("create"),
+              title: t("create"),
               tabBarIcon: ({ color, size }) => (
                 <Feather name="plus-circle" color={color} size={size} />
               ),
@@ -50,7 +52,7 @@ const App = () => {
             component={Templates}
             options={{
               headerShown: false,
-              title: i18n.t("templates"),
+              title: t("templates"),
               tabBarIcon: ({ color, size }) => (
                 <Feather name="layers" color={color} size={size} />
               ),
@@ -61,7 +63,7 @@ const App = () => {
             component={History}
             options={{
               headerShown: false,
-              title: i18n.t("history"),
+              title: t("history"),
               tabBarIcon: ({ color, size }) => (
                 <Feather name="clock" color={color} size={size} />
               ),
@@ -72,7 +74,7 @@ const App = () => {
             component={Config}
             options={{
               headerShown: false,
-              title: i18n.t("config"),
+              title: t("config"),
               tabBarIcon: ({ color, size }) => (
                 <Feather name="settings" color={color} size={size} />
               ),

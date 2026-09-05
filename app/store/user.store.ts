@@ -1,20 +1,16 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as Localization from 'expo-localization';
 
 import { STORAGE_KEY_USER } from "../constants/user.const";
 
 import { IHistory, IUserStore } from "../interface/User";
-import { column } from "../utils/topics";
 
-const languageCode = Localization.getLocales()[0].languageCode || 'en'
+import { column } from "../utils/topics";
 
 class UserStore {
 
     history: IHistory[] = [];
     historyData: IHistory | null = null
-    isDarkMode: boolean = false
-    lang: string = languageCode
 
     constructor() {
         makeAutoObservable(this);
@@ -36,22 +32,10 @@ class UserStore {
         this.saveToStorage();
     }
 
-    updateMode = (data: boolean) => {
-        this.isDarkMode = data
-        this.saveToStorage();
-    }
-
-    updateLang = (data: string) => {
-        this.lang = data
-        this.saveToStorage();
-    }
-
     async saveToStorage() {
         const data: IUserStore = {
             history: this.history,
-            historyData: this.historyData,
-            isDarkMode: this.isDarkMode,
-            lang: this.lang
+            historyData: this.historyData
         }
         await AsyncStorage.setItem(STORAGE_KEY_USER, JSON.stringify(data));
     }
@@ -69,8 +53,6 @@ class UserStore {
                     }))
                 })) ?? []
                 this.historyData = null;
-                this.isDarkMode = data.isDarkMode ?? false;
-                this.lang = data.lang ?? languageCode
             });
         }
     }

@@ -1,35 +1,44 @@
-import { Button } from "@rneui/themed";
-import { View } from "react-native";
-import i18n from "../../i18n";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 
 import { ButtonGeneratorPropsType } from "../types/home.types";
 
-import { homeStyles } from "../styles/home.styles";
+const ButtonGenerator = ({ columnsLength, handleGenerate, loading, handleRefreshData, isRefreshData, t }: ButtonGeneratorPropsType) => {
 
-const ButtonGenerator = ({ columnsLength, handleGenerate, loading, handleRefreshData, isRefreshData }: ButtonGeneratorPropsType) => {
+  const isDisabled = columnsLength === 0 || loading || isRefreshData;
+
   return (
-    <View style={homeStyles.buttonGeneratorContainer}>
-      <Button
-        icon={{
-          name: 'rotate-cw',
-          type: 'feather',
-          color: 'white',
-        }}
-        buttonStyle={{ backgroundColor: '#50C878' }}
+    <View className="flex-row items-center gap-3 px-4 py-3">
+
+      <Pressable
         onPress={handleRefreshData}
-      />
-      <Button
-        disabled={columnsLength === 0 || loading || isRefreshData}
-        loading={loading || isRefreshData}
-        title={i18n.t("generate")}
-        icon={{
-          name: 'save',
-          color: 'white',
-        }}
-        buttonStyle={{ backgroundColor: '#50C878', width: '100%' }}
-        disabledStyle={{ backgroundColor: loading ? '#50C878' : "#dddddd" }}
+        disabled={loading || isRefreshData}
+        className={`items-center justify-center rounded-xl bg-emerald-500 p-4 ${(loading || isRefreshData) ? "opacity-50" : "active:opacity-80"}`}
+      >
+        {isRefreshData ? (
+          <ActivityIndicator color="#FFFFFF" />
+        ) : (
+          <Feather name="rotate-cw" size={22} color="#FFFFFF" />
+        )}
+      </Pressable>
+
+      <Pressable
         onPress={handleGenerate}
-      />
+        disabled={isDisabled}
+        className={`flex-1 flex-row items-center justify-center gap-2 rounded-xl px-5 py-4 ${isDisabled ? "bg-gray-300 dark:bg-gray-700" : "bg-emerald-500 active:opacity-80"}`}
+      >
+        {loading ? (
+          <ActivityIndicator color="#FFFFFF" />
+        ) : (
+          <>
+            <FontAwesome name="save" size={18} color="#FFFFFF" />
+            <Text className={`text-base font-bold ${isDisabled ? "text-gray-500" : "text-white"}`}>
+              {t("generate")}
+            </Text>
+          </>
+        )}
+      </Pressable>
+
     </View>
   );
 };

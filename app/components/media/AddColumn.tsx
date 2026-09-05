@@ -1,24 +1,27 @@
-import { Dimensions, View } from "react-native";
-import { Button } from "@rneui/themed"
-import i18n from '../../../i18n';
+import { Pressable, Text, View } from "react-native";
+import { Feather } from "@expo/vector-icons";
 
-import { AddColumnPropsType } from "../../types/home.types"
+import { AddColumnPropsType } from "../../types/home.types";
 
-const AddColumn = ({ openForm }: AddColumnPropsType) => {
-  return (
-    <View style={{ width: '55%' }}>
-      <Button
-        title={i18n.t("addField")}
-        icon={{
-          name: 'add',
-          color: 'white',
-        }}
-        buttonStyle={{ backgroundColor: '#50C878' }}
-        titleStyle={{ fontSize: Dimensions.get("window").height / 63 }}
-        onPress={openForm}
-      />
-    </View>
-  )
-}
+const AddColumn = ({ openForm, t }: AddColumnPropsType) => {
+    return (
+        <View className="w-[55%]">
+            <Pressable
+                onPress={openForm}
+                className="flex-row items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-4 active:opacity-80"
+            >
+                <Feather
+                    name="plus"
+                    size={20}
+                    color="#FFFFFF"
+                />
 
-export default AddColumn
+                <Text className="text-base font-bold text-white">
+                    {t("addField")}
+                </Text>
+            </Pressable>
+        </View>
+    );
+};
+
+export default AddColumn;

@@ -4,7 +4,6 @@ import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import XLSX from 'xlsx';
 import { Buffer } from 'buffer';
 import * as Sharing from 'expo-sharing';
-import i18n from '../../i18n';
 import { generateFakeData } from './fakerGenerator';
 
 import { IColumn } from '../interface/Column';
@@ -15,11 +14,11 @@ export const generateData = (fields: IColumn[]) => {
   return generateFakeData(fields, fileStore.rows === "" ? 1000 : Number(fileStore.rows));
 };
 
-export const excelGenerator = async (fieldsData: any[], fileName: string) => {
+export const excelGenerator = async (fieldsData: any[], fileName: string, t: (scope: string, options?: object | undefined) => string) => {
   try {
     const ws = XLSX.utils.json_to_sheet(fieldsData);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, i18n.t("data"));
+    XLSX.utils.book_append_sheet(wb, ws, t("data"));
     const wbout = XLSX.write(wb, { type: 'base64', bookType: 'xlsx' });
 
     const path = FileSystem.documentDirectory + `${fileName}.xlsx`;
@@ -28,18 +27,18 @@ export const excelGenerator = async (fieldsData: any[], fileName: string) => {
       encoding: FileSystem.EncodingType.Base64,
     });
 
-    shareMethod(path, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', "Excel");
+    shareMethod(path, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', "Excel", t);
   } catch (error) {
-    Alert.alert(i18n.t("titleErrorShare"), i18n.t("descriptionErrorShare"))
+    Alert.alert(t("titleErrorShare"), t("descriptionErrorShare"))
   }
 };
 
-export const excelDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void) => {
+export const excelDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, t: (scope: string, options?: object | undefined) => string) => {
 
   try {
 
-    if (!permissionsReadStorage()) {
-      Alert.alert(i18n.t("titlePermissionDenied"), i18n.t("descriptionPermissionDenied"))
+    if (!permissionsReadStorage(t)) {
+      Alert.alert(t("titlePermissionDenied"), t("descriptionPermissionDenied"))
       return
     }
 
@@ -57,11 +56,11 @@ export const excelDownload = async (fieldsData: any[], fileName: string, setIsDo
     setIsDownload(true)
 
   } catch (error) {
-    Alert.alert(i18n.t("titleErrorDownload"), i18n.t("descriptionErrorDownload"))
+    Alert.alert(t("titleErrorDownload"), t("descriptionErrorDownload"))
   }
 }
 
-export const csvGenerator = async (fieldsData: any[], fileName: string, areHeaders: boolean) => {
+export const csvGenerator = async (fieldsData: any[], fileName: string, areHeaders: boolean, t: (scope: string, options?: object | undefined) => string) => {
   try {
     const keys = Object.keys(fieldsData[0]);
 
@@ -87,18 +86,18 @@ export const csvGenerator = async (fieldsData: any[], fileName: string, areHeade
       encoding: FileSystem.EncodingType.UTF8,
     })
 
-    shareMethod(path, 'text/csv', 'CSV')
+    shareMethod(path, 'text/csv', 'CSV', t)
 
   } catch (error) {
-    Alert.alert(i18n.t('titleErrorShare'), i18n.t('descriptionErrorShare'))
+    Alert.alert(t('titleErrorShare'), t('descriptionErrorShare'))
   }
 }
 
-export const csvDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, areHeaders: boolean) => {
+export const csvDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, areHeaders: boolean, t: (scope: string, options?: object | undefined) => string) => {
   try {
 
-    if (!permissionsReadStorage()) {
-      Alert.alert(i18n.t("titlePermissionDenied"), i18n.t("descriptionPermissionDenied"))
+    if (!permissionsReadStorage(t)) {
+      Alert.alert(t("titlePermissionDenied"), t("descriptionPermissionDenied"))
       return
     }
 
@@ -117,7 +116,7 @@ export const csvDownload = async (fieldsData: any[], fileName: string, setIsDown
     setIsDownload(true);
 
   } catch (error) {
-    Alert.alert(i18n.t("titleErrorDownload"), i18n.t("descriptionErrorDownload"))
+    Alert.alert(t("titleErrorDownload"), t("descriptionErrorDownload"))
   }
 }
 
@@ -136,7 +135,7 @@ const jsonToXml = (jsonArray: any[], rootName = 'Items', itemName = 'Item'): str
   return xml;
 }
 
-export const xmlGenerator = async (fieldsData: any[], fileName: string, root_element_xml: string = "Items", record_element_xml: string = "Items") => {
+export const xmlGenerator = async (fieldsData: any[], fileName: string, root_element_xml: string = "Items", record_element_xml: string = "Items", t: (scope: string, options?: object | undefined) => string) => {
   try {
     const xmlString = jsonToXml(fieldsData, root_element_xml, record_element_xml)
     const path = FileSystem.documentDirectory + `${fileName}.xml`;
@@ -145,18 +144,18 @@ export const xmlGenerator = async (fieldsData: any[], fileName: string, root_ele
       encoding: FileSystem.EncodingType.UTF8,
     });
 
-    shareMethod(path, 'application/xml', "XML");
+    shareMethod(path, 'application/xml', "XML", t);
 
   } catch (error) {
-    Alert.alert(i18n.t("titleErrorShare"), i18n.t("descriptionErrorShare"))
+    Alert.alert(t("titleErrorShare"), t("descriptionErrorShare"))
   }
 }
 
-export const xmlDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, root_element_xml: string = "dataset", record_element_xml: string = "record") => {
+export const xmlDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, root_element_xml: string = "dataset", record_element_xml: string = "record", t: (scope: string, options?: object | undefined) => string) => {
   try {
 
-    if (!permissionsReadStorage()) {
-      Alert.alert(i18n.t("titlePermissionDenied"), i18n.t("descriptionPermissionDenied"))
+    if (!permissionsReadStorage(t)) {
+      Alert.alert(t("titlePermissionDenied"), t("descriptionPermissionDenied"))
       return
     }
 
@@ -168,11 +167,11 @@ export const xmlDownload = async (fieldsData: any[], fileName: string, setIsDown
     setIsDownload(true);
 
   } catch (error) {
-    Alert.alert(i18n.t("titleErrorDownload"), i18n.t("descriptionErrorDownload"))
+    Alert.alert(t("titleErrorDownload"), t("descriptionErrorDownload"))
   }
 }
 
-export const sqlGenerator = async (fieldsData: any[], fileName: string, table_name: string) => {
+export const sqlGenerator = async (fieldsData: any[], fileName: string, table_name: string, t: (scope: string, options?: object | undefined) => string) => {
   try {
     const tableName = table_name;
     const keys = Object.keys(fieldsData[0]);
@@ -194,18 +193,18 @@ export const sqlGenerator = async (fieldsData: any[], fileName: string, table_na
       encoding: FileSystem.EncodingType.UTF8,
     });
 
-    shareMethod(path, 'application/sql', "SQL");
+    shareMethod(path, 'application/sql', "SQL", t);
 
   } catch (error) {
-    Alert.alert(i18n.t("titleErrorShare"), i18n.t("descriptionErrorShare"))
+    Alert.alert(t("titleErrorShare"), t("descriptionErrorShare"))
   }
 };
 
-export const sqlDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, table_name: string) => {
+export const sqlDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, table_name: string, t: (scope: string, options?: object | undefined) => string) => {
   try {
 
-    if (!permissionsReadStorage()) {
-      Alert.alert(i18n.t("titlePermissionDenied"), i18n.t("descriptionPermissionDenied"))
+    if (!permissionsReadStorage(t)) {
+      Alert.alert(t("titlePermissionDenied"), t("descriptionPermissionDenied"))
       return
     }
 
@@ -230,11 +229,11 @@ export const sqlDownload = async (fieldsData: any[], fileName: string, setIsDown
     setIsDownload(true);
 
   } catch (error) {
-    Alert.alert(i18n.t("titleErrorDownload"), i18n.t("descriptionErrorDownload"))
+    Alert.alert(t("titleErrorDownload"), t("descriptionErrorDownload"))
   }
 };
 
-export const jsonGenerator = async (fieldsData: any[], fileName: string, json_array: boolean) => {
+export const jsonGenerator = async (fieldsData: any[], fileName: string, json_array: boolean, t: (scope: string, options?: object | undefined) => string) => {
   try {
 
     let jsonString: string
@@ -251,18 +250,18 @@ export const jsonGenerator = async (fieldsData: any[], fileName: string, json_ar
       encoding: FileSystem.EncodingType.UTF8,
     });
 
-    shareMethod(path, 'application/json', "JSON");
+    shareMethod(path, 'application/json', "JSON", t);
 
   } catch (error) {
-    Alert.alert(i18n.t("titleErrorShare"), i18n.t("descriptionErrorShare"))
+    Alert.alert(t("titleErrorShare"), t("descriptionErrorShare"))
   }
 }
 
-export const jsonDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, json_array: boolean) => {
+export const jsonDownload = async (fieldsData: any[], fileName: string, setIsDownload: (data: boolean) => void, json_array: boolean, t: (scope: string, options?: object | undefined) => string) => {
   try {
 
-    if (!permissionsReadStorage()) {
-      Alert.alert(i18n.t("titlePermissionDenied"), i18n.t("descriptionPermissionDenied"))
+    if (!permissionsReadStorage(t)) {
+      Alert.alert(t("titlePermissionDenied"), t("descriptionPermissionDenied"))
       return
     }
 
@@ -281,32 +280,32 @@ export const jsonDownload = async (fieldsData: any[], fileName: string, setIsDow
     setIsDownload(true);
 
   } catch (error) {
-    Alert.alert(i18n.t("titleErrorDownload"), i18n.t("descriptionErrorDownload"))
+    Alert.alert(t("titleErrorDownload"), t("descriptionErrorDownload"))
   }
 }
 
-export const shareMethod = async (path: string, mimeType: string, format: string) => {
+export const shareMethod = async (path: string, mimeType: string, format: string, t: (scope: string, options?: object | undefined) => string) => {
   if (await Sharing.isAvailableAsync()) {
     await Sharing.shareAsync(path, {
       mimeType,
-      dialogTitle: `${i18n.t("shareFile")} ${format}`,
+      dialogTitle: `${t("shareFile")} ${format}`,
     });
   } else {
-    Alert.alert(i18n.t("errorShare"));
+    Alert.alert(t("errorShare"));
   }
 };
 
-export const permissionsReadStorage = async (): Promise<boolean> => {
+export const permissionsReadStorage = async (t: (scope: string, options?: object | undefined) => string): Promise<boolean> => {
 
   if (Platform.OS === 'android' && Platform.Version < 29) {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
       {
-        title: i18n.t("titleStorage"),
-        message: i18n.t("messageStorage"),
-        buttonNeutral: i18n.t("askafter"),
-        buttonNegative: i18n.t("cancel"),
-        buttonPositive: i18n.t("accept"),
+        title: t("titleStorage"),
+        message: t("messageStorage"),
+        buttonNeutral: t("askafter"),
+        buttonNegative: t("cancel"),
+        buttonPositive: t("accept"),
       }
     );
 

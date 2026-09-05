@@ -1,50 +1,50 @@
-import { View, Text, TouchableOpacity, Pressable } from 'react-native';
-import { Icon } from '@rneui/themed';
+import { Pressable, Text, View } from "react-native";
+import { Feather } from "@expo/vector-icons";
 
-import { ColumnPropsType } from '../types/home.types';
+import { ColumnPropsType } from "../types/home.types";
 
-import { homeStyles } from '../styles/home.styles';
-
-const Column = ({ column, removeColumn, openEdit, colors, onLongPress, isActive }: ColumnPropsType) => {
+const Column = ({ column, removeColumn, openEdit, onLongPress, isActive }: ColumnPropsType) => {
     return (
         <Pressable
             onLongPress={onLongPress}
             delayLongPress={150}
-            style={[
-                homeStyles.containColumn,
-                {
-                    backgroundColor: colors.primary,
-                    opacity: isActive ? 0.75 : 1,
-                    transform: [{ scale: isActive ? 0.98 : 1 }],
-                },
-            ]}
+            className={`mx-4 mb-3 flex-row items-center justify-between rounded-xl bg-emerald-500 px-4 py-4 shadow-sm ${isActive ? "opacity-75" : "opacity-100"}`}
+            style={{
+                transform: [{ scale: isActive ? 0.98 : 1 }],
+            }}
         >
-            <View>
-                <Text style={[homeStyles.titleColumn, { color: colors.white }]}>
+            <View className="flex-1 pr-4">
+                <Text className="text-lg font-bold text-white">
                     {column.fieldName}
                 </Text>
-                <Text style={[homeStyles.subtitleColumn, { color: colors.white }]}>
+
+                <Text className="mt-1 text-sm text-white/80">
                     {column.topic}
                 </Text>
             </View>
 
-            <View style={homeStyles.actionsColumn}>
-                <TouchableOpacity onPress={() => openEdit(column)}>
-                    <Icon
+            <View className="flex-row items-center gap-3">
+                <Pressable
+                    onPress={() => openEdit(column)}
+                    className="p-2 active:opacity-60"
+                >
+                    <Feather
                         name="edit"
-                        color="#50C878"
-                        size={30}
-                        containerStyle={homeStyles.iconSpacing}
+                        color="#FFFFFF"
+                        size={24}
                     />
-                </TouchableOpacity>
+                </Pressable>
 
-                <TouchableOpacity onPress={() => removeColumn(column)}>
-                    <Icon
-                        name="delete"
-                        color="#ff0000"
-                        size={30}
+                <Pressable
+                    onPress={() => removeColumn(column)}
+                    className="p-2 active:opacity-60"
+                >
+                    <Feather
+                        name="trash-2"
+                        color="#FF0000"
+                        size={24}
                     />
-                </TouchableOpacity>
+                </Pressable>
             </View>
         </Pressable>
     )

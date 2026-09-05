@@ -1,24 +1,21 @@
-import { Pressable } from "react-native"
+import { Pressable, Text } from "react-native";
 
-import { Text } from "@rneui/themed"
+import { ColumnSelectPropsType } from "../../../types/home.types";
 
-import { ColumnSelectPropsType } from "../../../types/home.types"
+const ColumnSelect = ({ element, columnData, setColumnData }: ColumnSelectPropsType) => {
 
-import { homeStyles } from "../../../styles/home.styles"
+    const isSelected = columnData === element.name;
 
-const ColumnSelect = ({ element, columnData, setColumnData, colors }: ColumnSelectPropsType) => {
     return (
-        <Pressable style={[{
-            backgroundColor: columnData === element.name ? "#50C878" : colors.primary,
-        }, homeStyles.columnSelect]} onPress={() => setColumnData(element.name)}>
-            <Text style={{
-                color: columnData === element.name ? "#FFFFFF" : colors.white,
-                fontWeight: columnData === element.name ? "bold" : '600',
-            }}>
+        <Pressable
+            className={`mb-3 rounded-lg px-4 py-4 ${isSelected ? "bg-[#50C878]" : "bg-white dark:bg-neutral-900"}`}
+            onPress={() => setColumnData(element.name)}
+        >
+            <Text className={`text-base ${isSelected ? "font-bold text-white" : "font-semibold text-black dark:text-white"}`}>
                 {element.name}
             </Text>
         </Pressable>
-    )
-}
+    );
+};
 
-export default ColumnSelect
+export default ColumnSelect;

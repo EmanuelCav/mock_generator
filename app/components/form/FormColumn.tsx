@@ -1,29 +1,27 @@
-import { useState } from 'react';
-import { Dimensions, ScrollView } from 'react-native';
-import { Button, Input, Text } from "@rneui/themed"
+import { useMemo, useState } from 'react';
+import { ScrollView, Text, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
-import i18n from '../../../i18n';
 
-import ContainerBackground from "../ContainerBackground"
+import ContainerBackground from "../ContainerBackground";
 import ColumnSelect from './components/ColumnSelect';
-import Close from '../Close';
 
 import { FormColumnPropsType } from '../../types/home.types';
 
 import { column, topics } from '../../utils/topics';
 
-const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnPropsType) => {
+const FormColumn = ({ handleClose, handleAddColumn, error, t }: FormColumnPropsType) => {
 
-    const [open, setOpen] = useState<boolean>(false)
-    const [columnData, setColumnData] = useState<string>("")
-    const [title, setTitle] = useState<string>("")
-    const [value, setValue] = useState<string>("all topics")
-    const [items, setItems] = useState(
-        topics
+    const [open, setOpen] = useState<boolean>(false);
+    const [columnData, setColumnData] = useState<string>("");
+    const [title, setTitle] = useState<string>("");
+    const [value, setValue] = useState<string>("all topics");
+
+    const items = useMemo(() => {
+        return topics
             .map(item => ({
                 ...item,
-                label: i18n.t(`topics.${item.value}`),
+                label: t(`topics.${item.value}`),
                 icon: () => (
                     <MaterialCommunityIcons
                         name={item.iconName as any}
@@ -32,48 +30,51 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
                     />
                 ),
             }))
-            .sort((a, b) => a.label.localeCompare(b.label))
-    )
+            .sort((a, b) => a.label.localeCompare(b.label));
+    }, [t]);
+
+    const filteredColumns = useMemo(() => {
+        return column
+            .filter(col =>
+                col.topic.find(
+                    topic =>
+                        topic === topics.find(top => top.value === value)?.label
+                )
+            )
+            .map(col => ({
+                ...col,
+                translatedName: t(`columns.${col.name}`)
+            }))
+            .sort((a, b) =>
+                a.translatedName.localeCompare(b.translatedName)
+            );
+    }, [value, t]);
 
     return (
-        <ContainerBackground colors={colors} isField={false}>
+        <ContainerBackground isField={false} onClose={handleClose}>
 
-            <Close handleClose={handleClose} />
-
-            <Text style={{
-                marginBottom: Dimensions.get("window").height / 143,
-                fontWeight: 'bold',
-                color: colors.white
-            }}>
-                {i18n.t("fieldName")}
+            <Text className="mb-2 text-base font-bold text-black dark:text-white">
+                {t("fieldName")}
             </Text>
 
-            {
-                error &&
-                <Text style={{
-                    marginBottom: Dimensions.get("window").height / 143,
-                    fontWeight: 'bold',
-                    color: 'red'
-                }}>
+            {error && (
+                <Text className="mb-3 font-bold text-red-500">
                     {error}
                 </Text>
-            }
+            )}
 
-            <Input
-                placeholder={i18n.t("fieldNamePlaceholder")}
+            <TextInput
+                placeholder={t("fieldNamePlaceholder")}
+                placeholderTextColor="#9CA3AF"
                 autoCapitalize="none"
                 value={title}
                 onChangeText={setTitle}
                 maxLength={30}
-                inputStyle={{ color: colors.white }}
+                className="mb-5 rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-neutral-900 dark:text-white"
             />
 
-            <Text style={{
-                marginBottom: Dimensions.get("window").height / 143,
-                fontWeight: 'bold',
-                color: colors.white
-            }}>
-                {i18n.t("topicFilter")}
+            <Text className="mb-2 text-base font-bold text-black dark:text-white">
+                {t("topicFilter")}
             </Text>
 
             <DropDownPicker
@@ -82,53 +83,72 @@ const FormColumn = ({ handleClose, handleAddColumn, colors, error }: FormColumnP
                 items={items}
                 setOpen={setOpen}
                 setValue={setValue}
-                setItems={setItems}
-                placeholder={i18n.t("topicFilterPlaceholder")}
+                placeholder={t("topicFilterPlaceholder")}
+                style={{
+                    backgroundColor: "#FFFFFF",
+                    borderColor: "#D1D5DB"
+                }}
+                dropDownContainerStyle={{
+                    backgroundColor: "#FFFFFF",
+                    borderColor: "#D1D5DB"
+                }}
+                textStyle={{
+                    color: "#000000"
+                }}
+                listItemLabelStyle={{
+                    color: "#000000"
+                }}
+                zIndex={3000}
+                zIndexInverse={1000}
             />
 
-            <Text style={{
-                marginVertical: Dimensions.get("window").height / 143,
-                fontWeight: 'bold',
-                color: colors.white
-            }}>
-                {i18n.t("selectType")} {value === "all topics" ? `${i18n.t("scrollDown")}` : ""}
+            <Text className="mb-3 mt-5 text-base font-bold text-black dark:text-white">
+                {t("selectType")} {value === "all topics" ? t("scrollDown") : ""}
             </Text>
 
-            <ScrollView style={{ marginVertical: Dimensions.get("window").height / 246.66 }}>
-                {
-                    column
-                        .filter(col => col.topic.find(t => t === topics.find(top => top.value === value)?.label))
-                        .map(col => ({
-                            ...col,
-                            translatedName: i18n.t(`columns.${col.name}`)
-                        }))
-                        .sort((a, b) => a.translatedName.localeCompare(b.translatedName))
-                        .map((element, index) => (
-                            <ColumnSelect
-                                colors={colors}
-                                columnData={columnData}
-                                setColumnData={setColumnData}
-                                element={{ ...element, name: element.translatedName }}
-                                key={index}
-                            />
-                        ))
-                }
+            <ScrollView className="mb-4 max-h-80">
+
+                {filteredColumns.map((element, index) => (
+                    <ColumnSelect
+                        columnData={columnData}
+                        setColumnData={setColumnData}
+                        element={{
+                            ...element,
+                            name: element.translatedName
+                        }}
+                        key={index}
+                    />
+                ))}
+
             </ScrollView>
 
-            <Button
+            <TouchableOpacity
                 disabled={columnData.length === 0}
-                title={i18n.t("add")}
-                buttonStyle={{
-                    backgroundColor: "#50C878"
-                }}
-                onPress={() => handleAddColumn({
-                    title: title === "" ? `${columnData.toLowerCase()}` : title,
-                    columnData: column.find((col) => i18n.t(`columns.${col.name}`) === columnData)?.name!,
-                    data: column.find((col) => i18n.t(`columns.${col.name}`) === columnData)?.data!
-                })}
-            />
-        </ContainerBackground>
-    )
-}
+                className={`items-center rounded-lg px-4 py-4 ${columnData.length === 0 ? "bg-gray-400" : "bg-[#50C878]"}`}
+                onPress={() => {
 
-export default FormColumn
+                    const selectedColumn = column.find(
+                        col => t(`columns.${col.name}`) === columnData
+                    );
+
+                    if (!selectedColumn) return;
+
+                    handleAddColumn({
+                        title: title === ""
+                            ? columnData.toLowerCase()
+                            : title,
+                        columnData: selectedColumn.name,
+                        data: selectedColumn.data
+                    });
+                }}
+            >
+                <Text className="font-bold text-white">
+                    {t("add")}
+                </Text>
+            </TouchableOpacity>
+
+        </ContainerBackground>
+    );
+};
+
+export default FormColumn;

@@ -34,7 +34,9 @@
           "androidAppId": "ca-app-pub-8789796567862358~9993189831"
         }
       ],
-      "expo-splash-screen"
+      "expo-splash-screen",
+      "expo-font",
+      "expo-sharing"
     ],
     "extra": {
       "eas": {

@@ -1,188 +1,333 @@
-import { Dimensions, View } from 'react-native'
-import { useEffect, useState } from 'react';
-import { Text, Switch, Icon, useTheme, useThemeMode, Input } from '@rneui/themed'
-import DropDownPicker from 'react-native-dropdown-picker';
-import { observer } from 'mobx-react-lite';
-import i18n from '../../i18n';
+import { useEffect, useState } from "react";
+import { KeyboardTypeOptions, Text, TextInput, View } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
+import { observer } from "mobx-react-lite";
+import { Ionicons } from "@expo/vector-icons";
 
-import Container from '../components/ContainerGeneral';
+import Container from "../components/ContainerGeneral";
 
-import { FormatOption, LanguageOption } from '../types/general.types';
+import { FormatOption, LanguageOption } from "../types/general.types";
 
-import { generalStyles } from '../styles/general.styles'
-import { configStyles } from '../styles/config.styles';
+import { formatsAvailable } from "../utils/data";
 
-import { formatsAvailable, languagesAvailable } from '../utils/data';
+import { fileStore } from "../store/file.store";
 
-import { fileStore } from '../store/file.store';
-import { userStore } from '../store/user.store';
+import { useLanguage } from "../hooks/useLanguageContext";
+import { ThemeMode, useThemeMode } from "../hooks/useThemeContext";
 
 const Config = observer(() => {
 
-    const { theme } = useTheme();
-    const { setMode } = useThemeMode();
+    const { t, changeLanguage, language } = useLanguage();
+    const { themeMode, setThemeMode } = useThemeMode();
 
-    const [_, forceRender] = useState<number>(0);
+    const [openLanguage, setOpenLanguage] = useState(false);
 
-    const [localRows, setLocalRows] = useState<string>(fileStore.rows);
+    const itemsLanguage: LanguageOption[] = [
+        {
+            label: t("english"),
+            value: "en",
+        },
+        {
+            label: t("spanish"),
+            value: "es",
+        },
+    ];
 
-    const [open, setOpen] = useState<boolean>(false)
-    const [value, setValue] = useState<string>(userStore.lang)
-    const [items, setItems] = useState<LanguageOption[]>(languagesAvailable)
+    const [openTheme, setOpenTheme] = useState(false);
 
-    const [openFormat, setOpenFormat] = useState<boolean>(false)
-    const [valueFormat, setValueFormat] = useState<string>(fileStore.format.toLowerCase())
-    const [itemsFormat, setItemsFormat] = useState<FormatOption[]>(formatsAvailable)
-    const [fileName, setFileName] = useState<string>(fileStore.file_name)
+    const itemsTheme = [
+        {
+            label: t("light"),
+            value: "light" as ThemeMode,
+        },
+        {
+            label: t("dark"),
+            value: "dark" as ThemeMode,
+        },
+    ];
 
-    const toggleSwitch = () => {
-        setMode(theme.mode === "dark" ? "light" : "dark")
-        userStore.updateMode(theme.mode !== "dark")
-    }
+    const [localRows, setLocalRows] = useState<string>(
+        fileStore.rows
+    );
+
+    const [fileName, setFileName] = useState<string>(
+        fileStore.file_name
+    );
+
+    const [openFormat, setOpenFormat] = useState(false);
+
+    const [valueFormat, setValueFormat] = useState<string>(
+        fileStore.format.toLowerCase()
+    );
+
+    const [itemsFormat, setItemsFormat] =
+        useState<FormatOption[]>(formatsAvailable);
+
+    const handleLanguageChange = async (
+        callback: (value: string) => string
+    ) => {
+        const newLanguage = callback(language);
+
+        if (newLanguage === "en" || newLanguage === "es") {
+            await changeLanguage(newLanguage);
+        }
+    };
+
+
+    const handleThemeChange = async (
+        callback: (value: ThemeMode) => ThemeMode
+    ) => {
+        const newTheme = callback(themeMode);
+
+        if (
+            newTheme === "light" ||
+            newTheme === "dark"
+        ) {
+            await setThemeMode(newTheme);
+        }
+    };
+
 
     const handleRowsChange = (text: string) => {
         setLocalRows(text);
-    }
+    };
+
 
     const handleRowsBlur = () => {
-        const valueToSave = localRows.trim() === '' ? '1000' : localRows.trim();
+        const valueToSave =
+            localRows.trim() === ""
+                ? "1000"
+                : localRows.trim();
+
         fileStore.updateRows(valueToSave);
-    }
+    };
+
 
     const handleFileNameChange = (text: string) => {
         setFileName(text);
-    }
+    };
+
 
     const handleFileNameBlur = () => {
-        const valueToSave = fileName.trim() === '' ? 'DATA_MOCKER' : fileName.trim();
+        const valueToSave =
+            fileName.trim() === ""
+                ? "DATA_MOCKER"
+                : fileName.trim();
+
         fileStore.updateFileName(valueToSave);
-    }
+    };
+
+
+    const handleFormatChange = (
+        callback: (value: string) => string
+    ) => {
+        const newValue = callback(valueFormat);
+
+        setValueFormat(newValue);
+        fileStore.updateFormat(newValue);
+    };
 
     useEffect(() => {
-        setItems([
-            { label: i18n.t("english"), value: 'en' },
-            { label: i18n.t("spanish"), value: 'es' },
-        ]);
-    }, [i18n.locale]);
+        setLocalRows(fileStore.rows);
+        setFileName(fileStore.file_name);
+        setValueFormat(fileStore.format.toLowerCase());
+    }, [
+        fileStore.rows,
+        fileStore.format,
+        fileStore.file_name,
+    ]);
 
-    useEffect(() => {
-        setLocalRows(fileStore.rows)
-        setFileName(fileStore.file_name)
-        setValueFormat(fileStore.format.toLowerCase())
-    }, [fileStore.rows, fileStore.format, fileStore.file_name])
+    const isDark = themeMode === "dark";
 
     return (
         <Container>
-            <View style={generalStyles.generalContainer}>
-                <View style={configStyles.containConfig}>
 
-                    <Text style={{
-                        color: theme.colors.white,
-                        fontSize: Dimensions.get("window").height / 47,
-                        fontWeight: 'bold'
-                    }}>{i18n.t("platform")}</Text>
+            <View className="flex-1 bg-white dark:bg-black">
 
-                    <View style={configStyles.platform}>
+                <View className="flex-1 px-5 py-6">
 
-                        <View style={configStyles.modeContainer}>
-                            <Icon
-                                name={theme.mode === "dark" ? 'moon' : 'sunny'}
-                                type='ionicon'
-                                color={theme.mode === "dark" ? '#ffffff' : '#FFA500'}
-                                size={30}
-                            />
-                            <Text style={{
-                                color: theme.colors.white,
-                                fontSize: Dimensions.get("window").height / 52,
-                                marginLeft: Dimensions.get("window").width / 36
-                            }}>
-                                {i18n.t("darkMode")}
-                            </Text>
-                        </View>
+                    <Text className="mb-4 text-xl font-bold text-black dark:text-white">
+                        {t("platform")}
+                    </Text>
 
-                        <Switch
-                            value={theme.mode === "dark"}
-                            onValueChange={toggleSwitch}
-                            color="#4CAF50"
-                            trackColor={{ true: '#81C784', false: '#E0E0E0' }}
-                            thumbColor={theme.mode === "dark" ? '#4CAF50' : '#F4F3F4'}
-                        />
-                    </View>
-
-                    <Text style={{
-                        marginBottom: Dimensions.get("window").height / 143,
-                        fontWeight: 'bold',
-                        color: theme.colors.white
-                    }}>
-                        {i18n.t("language")}
+                    <Text className="mb-2 text-base font-semibold text-black dark:text-white">
+                        {t("theme")}
                     </Text>
 
                     <DropDownPicker
-                        open={open}
-                        value={value}
-                        items={items}
-                        setOpen={setOpen}
-                        setValue={(callback) => {
-                            const newValue = callback(value)
-                            setValue(newValue)
-                            userStore.updateLang(newValue)
-                            i18n.locale = newValue
-                            forceRender(prev => prev + 1)
+                        open={openTheme}
+                        value={themeMode}
+                        items={itemsTheme}
+                        setOpen={setOpenTheme}
+                        setValue={handleThemeChange}
+                        ArrowDownIconComponent={() => (
+                            <Ionicons
+                                name="chevron-down"
+                                size={20}
+                                color={isDark ? "#FFFFFF" : "#000000"}
+                            />
+                        )}
+
+                        ArrowUpIconComponent={() => (
+                            <Ionicons
+                                name="chevron-up"
+                                size={20}
+                                color={isDark ? "#FFFFFF" : "#000000"}
+                            />
+                        )}
+
+                        style={{
+                            borderColor: isDark ? "#374151" : "#D1D5DB",
+                            backgroundColor: isDark ? "#111827" : "#FFFFFF",
                         }}
-                        setItems={setItems}
+
+                        textStyle={{
+                            color: isDark ? "#FFFFFF" : "#000000",
+                        }}
+
+                        dropDownContainerStyle={{
+                            borderColor: isDark ? "#374151" : "#D1D5DB",
+                            backgroundColor: isDark ? "#111827" : "#FFFFFF",
+                        }}
+
+                        listItemLabelStyle={{
+                            color: isDark ? "#FFFFFF" : "#000000",
+                        }}
+                    />
+                    <Text className="mb-2 mt-8 text-base font-semibold text-black dark:text-white">
+                        {t("language")}
+                    </Text>
+
+                    <DropDownPicker
+                        open={openLanguage}
+                        value={language}
+                        items={itemsLanguage}
+                        setOpen={setOpenLanguage}
+                        setValue={handleLanguageChange}
+                        placeholder={t("language")}
+                        zIndex={2000}
+                        zIndexInverse={2000}
+                        style={{
+                            borderColor: isDark
+                                ? "#374151"
+                                : "#D1D5DB",
+                            backgroundColor: isDark
+                                ? "#111827"
+                                : "#FFFFFF",
+                        }}
+
+                        textStyle={{
+                            color: isDark
+                                ? "#FFFFFF"
+                                : "#000000",
+                        }}
+
+                        dropDownContainerStyle={{
+                            borderColor: isDark
+                                ? "#374151"
+                                : "#D1D5DB",
+                            backgroundColor: isDark
+                                ? "#111827"
+                                : "#FFFFFF",
+                        }}
+
+                        listItemLabelStyle={{
+                            color: isDark
+                                ? "#FFFFFF"
+                                : "#000000",
+                        }}
+
+                        selectedItemLabelStyle={{
+                            fontWeight: "600",
+                        }}
                     />
 
-                    <Text style={{
-                        marginVertical: Dimensions.get("window").height / 41,
-                        color: theme.colors.white,
-                        fontSize: Dimensions.get("window").height / 47,
-                        fontWeight: 'bold'
-                    }}>
-                        {i18n.t("file")}
+                    <Text className="mb-4 mt-8 text-xl font-bold text-black dark:text-white">
+                        {t("file")}
                     </Text>
 
-                    <Text style={{
-                        marginBottom: Dimensions.get("window").height / 143,
-                        fontWeight: 'bold',
-                        color: theme.colors.white
-                    }}>
-                        {i18n.t("fileName")}
+                    <Text className="mb-2 text-base font-semibold text-black dark:text-white">
+                        {t("fileName")}
                     </Text>
 
-                    <Input
-                        placeholder={i18n.t("fileName")}
-                        autoCapitalize="none"
+                    <TextInput
                         value={fileName}
                         onChangeText={handleFileNameChange}
                         onBlur={handleFileNameBlur}
+                        placeholder={t("fileName")}
+                        placeholderTextColor={
+                            isDark
+                                ? "#9CA3AF"
+                                : "#6B7280"
+                        }
+                        autoCapitalize="none"
                         maxLength={30}
-                        inputStyle={{ color: theme.colors.white }}
+                        className="
+                            mb-6
+                            rounded-lg
+                            border
+                            border-gray-300
+                            bg-white
+                            px-4
+                            py-3
+                            text-black
+                            dark:border-gray-700
+                            dark:bg-gray-900
+                            dark:text-white
+                        "
                     />
 
-                    <Text style={{
-                        marginBottom: Dimensions.get("window").height / 143,
-                        fontWeight: 'bold',
-                        color: theme.colors.white
-                    }}>
-                        {i18n.t("defaultRows")}
+                    <Text
+                        className="
+                            mb-2
+                            text-base
+                            font-semibold
+                            text-black
+                            dark:text-white
+                        "
+                    >
+                        {t("defaultRows")}
                     </Text>
 
-                    <Input
-                        placeholder={i18n.t("defaultRows")}
-                        keyboardType="numeric"
-                        style={{ color: theme.colors.white }}
+                    <TextInput
                         value={localRows}
                         onChangeText={handleRowsChange}
                         onBlur={handleRowsBlur}
+                        placeholder={t("defaultRows")}
+                        placeholderTextColor={
+                            isDark
+                                ? "#9CA3AF"
+                                : "#6B7280"
+                        }
+                        keyboardType={
+                            "numeric" as KeyboardTypeOptions
+                        }
                         maxLength={8}
+                        className="
+                            mb-6
+                            rounded-lg
+                            border
+                            border-gray-300
+                            bg-white
+                            px-4
+                            py-3
+                            text-black
+                            dark:border-gray-700
+                            dark:bg-gray-900
+                            dark:text-white
+                        "
                     />
 
-                    <Text style={{
-                        marginBottom: Dimensions.get("window").height / 143,
-                        fontWeight: 'bold',
-                        color: theme.colors.white
-                    }}>
-                        {i18n.t("defaultFormat")}
+                    <Text
+                        className="
+                            mb-2
+                            text-base
+                            font-semibold
+                            text-black
+                            dark:text-white
+                        "
+                    >
+                        {t("defaultFormat")}
                     </Text>
 
                     <DropDownPicker
@@ -190,18 +335,53 @@ const Config = observer(() => {
                         value={valueFormat}
                         items={itemsFormat}
                         setOpen={setOpenFormat}
-                        setValue={(callback) => {
-                            const newValue = callback(valueFormat)
-                            setValueFormat(newValue)
-                            fileStore.updateFormat(newValue)
-                        }}
+                        setValue={handleFormatChange}
                         setItems={setItemsFormat}
+                        placeholder={t("defaultFormat")}
+                        zIndex={1000}
+                        zIndexInverse={3000}
+
+                        style={{
+                            borderColor: isDark
+                                ? "#374151"
+                                : "#D1D5DB",
+                            backgroundColor: isDark
+                                ? "#111827"
+                                : "#FFFFFF",
+                        }}
+
+                        textStyle={{
+                            color: isDark
+                                ? "#FFFFFF"
+                                : "#000000",
+                        }}
+
+                        dropDownContainerStyle={{
+                            borderColor: isDark
+                                ? "#374151"
+                                : "#D1D5DB",
+                            backgroundColor: isDark
+                                ? "#111827"
+                                : "#FFFFFF",
+                        }}
+
+                        listItemLabelStyle={{
+                            color: isDark
+                                ? "#FFFFFF"
+                                : "#000000",
+                        }}
+
+                        selectedItemLabelStyle={{
+                            fontWeight: "600",
+                        }}
                     />
 
                 </View>
-            </View>
-        </Container>
-    )
-})
 
-export default Config
+            </View>
+
+        </Container>
+    );
+});
+
+export default Config;

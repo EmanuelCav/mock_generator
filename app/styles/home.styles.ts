@@ -18,22 +18,27 @@ export const homeStyles = StyleSheet.create({
     },
 
     containerBackground: {
-        position: 'absolute',
-        zIndex: 40,
-        top: 0,
-        left: 0,
-        width: '100%',
+        ...StyleSheet.absoluteFill,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: Dimensions.get("window").width / 36,
-        flex: 1,
+        paddingHorizontal: Dimensions.get("window").width / 36
     },
 
     cardBackground: {
         borderRadius: 8,
         width: '100%',
+        flexGrow: 0,
         padding: Dimensions.get("window").width / 36,
-        position: 'relative'
+        position: 'relative',
+        maxHeight: Dimensions.get("window").height / 1.05,
+        marginVertical: Dimensions.get("window").height / 74
+    },
+
+    buttonClose: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        zIndex: 10
     },
 
     containerBanner: {

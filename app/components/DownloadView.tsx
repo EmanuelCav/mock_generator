@@ -16,9 +16,7 @@ const adUnitId = __DEV__
     ? TestIds.INTERSTITIAL
     : `${process.env.EXPO_PUBLIC_INTERSTICIAL}`;
 
-const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
-    keywords: ["fashion", "clothing"],
-});
+const interstitial = InterstitialAd.createForAdRequest(adUnitId);
 
 const DownloadView = ({ setIsGenerated, handleDownload, loading, text, setIsDownloaded, isDownloaded, handleShare, t }: DownloadViewPropsType) => {
 

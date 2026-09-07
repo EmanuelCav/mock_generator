@@ -13,8 +13,8 @@ export type RouteType = {
 export type StackNavigation = BottomTabNavigationProp<RouteType>;
 
 export type ContainerBackgroundPropsType = PropsWithChildren<{
-    isField: boolean;
     onClose: () => void;
+    title: string;
 }>
 
 export type FormatTypes = keyof FormatKeyProps;
@@ -29,3 +29,14 @@ export type LanguageOption = {
     label: string;
     value: LanguageTypes;
 };
+
+export interface IDropdown {
+    label: string;
+    value: string;
+}
+
+export type CustomDropdownPropsType = {
+    data: IDropdown[];
+    value: string;
+    onChange: (value: string) => void;
+}

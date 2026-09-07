@@ -10,7 +10,7 @@ const Banner = () => {
         <View style={homeStyles.containerBanner}>
             <BannerAd
                 unitId={adUnitId as string}
-                size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                size={BannerAdSize.BANNER}
                 requestOptions={{
                     requestNonPersonalizedAdsOnly: true,
                 }}

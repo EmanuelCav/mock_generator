@@ -5,8 +5,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useColorScheme } from "react-native";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useColorScheme } from "nativewind";
 
 export type ThemeMode = "light" | "dark";
 
@@ -17,41 +18,89 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
-export const ThemeProvider = ({ children }: PropsWithChildren) => {
-  const systemScheme = useColorScheme();
+export const ThemeProvider = ({
+  children,
+}: PropsWithChildren) => {
 
-  const [themeMode, setThemeModeState] = useState<ThemeMode>(
-    systemScheme === "dark" ? "dark" : "light"
-  );
+  const { colorScheme, setColorScheme } = useColorScheme();
+
+  const [themeMode, setThemeModeState] =
+    useState<ThemeMode>(
+      colorScheme === "dark" ? "dark" : "light"
+    );
 
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+
     const loadSavedTheme = async () => {
       try {
-        const savedTheme = await AsyncStorage.getItem("theme");
 
-        if (savedTheme === "light" || savedTheme === "dark") {
+        const savedTheme =
+          await AsyncStorage.getItem("theme");
+
+        if (
+          savedTheme === "light" ||
+          savedTheme === "dark"
+        ) {
+
           setThemeModeState(savedTheme);
+          setColorScheme(savedTheme);
+
+        } else {
+
+          const initialTheme =
+            colorScheme === "dark"
+              ? "dark"
+              : "light";
+
+          setThemeModeState(initialTheme);
+          setColorScheme(initialTheme);
+
         }
+
       } catch (error) {
-        console.warn("Error loading theme:", error);
+
+        console.warn(
+          "Error loading theme:",
+          error
+        );
+
       } finally {
+
         setReady(true);
+
       }
     };
 
     loadSavedTheme();
+
   }, []);
 
-  const setThemeMode = async (mode: ThemeMode) => {
+  const setThemeMode = async (
+    mode: ThemeMode
+  ) => {
+
     setThemeModeState(mode);
 
+    setColorScheme(mode);
+
     try {
-      await AsyncStorage.setItem("theme", mode);
+
+      await AsyncStorage.setItem(
+        "theme",
+        mode
+      );
+
     } catch (error) {
-      console.warn("Error saving theme:", error);
+
+      console.warn(
+        "Error saving theme:",
+        error
+      );
+
     }
+
   };
 
   if (!ready) {
@@ -59,6 +108,7 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
   }
 
   return (
+
     <ThemeContext.Provider
       value={{
         themeMode,
@@ -67,17 +117,24 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
     >
       {children}
     </ThemeContext.Provider>
+
   );
+
 };
 
 export const useThemeMode = () => {
-  const context = useContext(ThemeContext);
+
+  const context =
+    useContext(ThemeContext);
 
   if (!context) {
+
     throw new Error(
       "useThemeMode must be used inside ThemeProvider"
     );
+
   }
 
   return context;
+
 };

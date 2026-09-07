@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-    Pressable,
-    Switch,
-    Text,
-    TextInput,
-    View,
-} from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
+import { Pressable, Switch, Text, TextInput, View } from "react-native";
 import { observer } from "mobx-react-lite";
 
 import ContainerBackground from "./ContainerBackground";
@@ -15,8 +8,7 @@ import { OptionsPropsType } from "../types/home.types";
 import { FormatOption } from "../types/general.types";
 
 import { fileStore } from "../store/file.store";
-
-import { formatsAvailable } from "../utils/data";
+import CustomDropdown from "./CustomDropdown";
 
 const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) => {
 
@@ -29,9 +21,7 @@ const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) =>
     const [localRows, setLocalRows] = useState<string>(fileStore.rows);
     const [error, setError] = useState<string>("");
 
-    const [openFormat, setOpenFormat] = useState<boolean>(false);
     const [valueFormat, setValueFormat] = useState<string>(fileStore.format);
-    const [itemsFormat, setItemsFormat] = useState<FormatOption[]>(formatsAvailable);
 
     const handleRowsChange = (text: string) => {
         setLocalRows(text);
@@ -62,6 +52,14 @@ const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) =>
         setArrayJson(newValue);
         fileStore.updateArrayJson(newValue);
     };
+
+    const formatsAvailable: FormatOption[] = [
+        { label: 'CSV', value: 'csv' },
+        { label: 'EXCEL', value: 'excel' },
+        { label: 'JSON', value: 'json' },
+        { label: 'SQL', value: 'sql' },
+        { label: 'XML', value: 'xml' },
+    ];
 
     const handleAccept = () => {
 
@@ -94,12 +92,10 @@ const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) =>
     };
 
     return (
-        <ContainerBackground
-            isField={false}
-            onClose={() => {
-                setError("");
-                handleClose();
-            }}
+        <ContainerBackground title="FILE SETTINGS" onClose={() => {
+            setError("");
+            handleClose();
+        }}
         >
             <View className="w-full gap-4 px-5">
 
@@ -125,26 +121,13 @@ const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) =>
                         {t("formatfile")}
                     </Text>
 
-                    <DropDownPicker
-                        open={openFormat}
+                    <CustomDropdown
+                        data={formatsAvailable}
                         value={valueFormat}
-                        items={itemsFormat}
-                        setOpen={setOpenFormat}
-                        setValue={setValueFormat}
-                        setItems={setItemsFormat}
-                        style={{
-                            borderColor: "#D1D5DB",
-                            backgroundColor: "#FFFFFF",
+                        onChange={(value) => {
+                            setValueFormat(value);
+                            fileStore.updateFormat(value);
                         }}
-                        dropDownContainerStyle={{
-                            borderColor: "#D1D5DB",
-                            backgroundColor: "#FFFFFF",
-                        }}
-                        textStyle={{
-                            color: "#000000",
-                        }}
-                        zIndex={5000}
-                        zIndexInverse={1000}
                     />
                 </View>
 

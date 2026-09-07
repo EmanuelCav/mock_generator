@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import { KeyboardTypeOptions, Text, TextInput, View } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
 import { observer } from "mobx-react-lite";
-import { Ionicons } from "@expo/vector-icons";
 
 import Container from "../components/ContainerGeneral";
+import CustomDropdown from "../components/CustomDropdown";
 
 import { FormatOption, LanguageOption } from "../types/general.types";
-
-import { formatsAvailable } from "../utils/data";
 
 import { fileStore } from "../store/file.store";
 
@@ -19,8 +16,6 @@ const Config = observer(() => {
 
     const { t, changeLanguage, language } = useLanguage();
     const { themeMode, setThemeMode } = useThemeMode();
-
-    const [openLanguage, setOpenLanguage] = useState(false);
 
     const itemsLanguage: LanguageOption[] = [
         {
@@ -33,8 +28,6 @@ const Config = observer(() => {
         },
     ];
 
-    const [openTheme, setOpenTheme] = useState(false);
-
     const itemsTheme = [
         {
             label: t("light"),
@@ -46,6 +39,14 @@ const Config = observer(() => {
         },
     ];
 
+    const formatsAvailable: FormatOption[] = [
+        { label: 'CSV', value: 'csv' },
+        { label: 'EXCEL', value: 'excel' },
+        { label: 'JSON', value: 'json' },
+        { label: 'SQL', value: 'sql' },
+        { label: 'XML', value: 'xml' },
+    ];
+
     const [localRows, setLocalRows] = useState<string>(
         fileStore.rows
     );
@@ -54,39 +55,9 @@ const Config = observer(() => {
         fileStore.file_name
     );
 
-    const [openFormat, setOpenFormat] = useState(false);
-
     const [valueFormat, setValueFormat] = useState<string>(
         fileStore.format.toLowerCase()
     );
-
-    const [itemsFormat, setItemsFormat] =
-        useState<FormatOption[]>(formatsAvailable);
-
-    const handleLanguageChange = async (
-        callback: (value: string) => string
-    ) => {
-        const newLanguage = callback(language);
-
-        if (newLanguage === "en" || newLanguage === "es") {
-            await changeLanguage(newLanguage);
-        }
-    };
-
-
-    const handleThemeChange = async (
-        callback: (value: ThemeMode) => ThemeMode
-    ) => {
-        const newTheme = callback(themeMode);
-
-        if (
-            newTheme === "light" ||
-            newTheme === "dark"
-        ) {
-            await setThemeMode(newTheme);
-        }
-    };
-
 
     const handleRowsChange = (text: string) => {
         setLocalRows(text);
@@ -117,16 +88,6 @@ const Config = observer(() => {
         fileStore.updateFileName(valueToSave);
     };
 
-
-    const handleFormatChange = (
-        callback: (value: string) => string
-    ) => {
-        const newValue = callback(valueFormat);
-
-        setValueFormat(newValue);
-        fileStore.updateFormat(newValue);
-    };
-
     useEffect(() => {
         setLocalRows(fileStore.rows);
         setFileName(fileStore.file_name);
@@ -154,91 +115,23 @@ const Config = observer(() => {
                         {t("theme")}
                     </Text>
 
-                    <DropDownPicker
-                        open={openTheme}
+                    <CustomDropdown
+                        data={itemsTheme}
                         value={themeMode}
-                        items={itemsTheme}
-                        setOpen={setOpenTheme}
-                        setValue={handleThemeChange}
-                        ArrowDownIconComponent={() => (
-                            <Ionicons
-                                name="chevron-down"
-                                size={20}
-                                color={isDark ? "#FFFFFF" : "#000000"}
-                            />
-                        )}
-
-                        ArrowUpIconComponent={() => (
-                            <Ionicons
-                                name="chevron-up"
-                                size={20}
-                                color={isDark ? "#FFFFFF" : "#000000"}
-                            />
-                        )}
-
-                        style={{
-                            borderColor: isDark ? "#374151" : "#D1D5DB",
-                            backgroundColor: isDark ? "#111827" : "#FFFFFF",
-                        }}
-
-                        textStyle={{
-                            color: isDark ? "#FFFFFF" : "#000000",
-                        }}
-
-                        dropDownContainerStyle={{
-                            borderColor: isDark ? "#374151" : "#D1D5DB",
-                            backgroundColor: isDark ? "#111827" : "#FFFFFF",
-                        }}
-
-                        listItemLabelStyle={{
-                            color: isDark ? "#FFFFFF" : "#000000",
+                        onChange={(value) => {
+                            setThemeMode(value as ThemeMode);
                         }}
                     />
+
                     <Text className="mb-2 mt-8 text-base font-semibold text-black dark:text-white">
                         {t("language")}
                     </Text>
 
-                    <DropDownPicker
-                        open={openLanguage}
+                    <CustomDropdown
+                        data={itemsLanguage}
                         value={language}
-                        items={itemsLanguage}
-                        setOpen={setOpenLanguage}
-                        setValue={handleLanguageChange}
-                        placeholder={t("language")}
-                        zIndex={2000}
-                        zIndexInverse={2000}
-                        style={{
-                            borderColor: isDark
-                                ? "#374151"
-                                : "#D1D5DB",
-                            backgroundColor: isDark
-                                ? "#111827"
-                                : "#FFFFFF",
-                        }}
-
-                        textStyle={{
-                            color: isDark
-                                ? "#FFFFFF"
-                                : "#000000",
-                        }}
-
-                        dropDownContainerStyle={{
-                            borderColor: isDark
-                                ? "#374151"
-                                : "#D1D5DB",
-                            backgroundColor: isDark
-                                ? "#111827"
-                                : "#FFFFFF",
-                        }}
-
-                        listItemLabelStyle={{
-                            color: isDark
-                                ? "#FFFFFF"
-                                : "#000000",
-                        }}
-
-                        selectedItemLabelStyle={{
-                            fontWeight: "600",
+                        onChange={(value) => {
+                            changeLanguage(value as ThemeMode);
                         }}
                     />
 
@@ -262,30 +155,11 @@ const Config = observer(() => {
                         }
                         autoCapitalize="none"
                         maxLength={30}
-                        className="
-                            mb-6
-                            rounded-lg
-                            border
-                            border-gray-300
-                            bg-white
-                            px-4
-                            py-3
-                            text-black
-                            dark:border-gray-700
-                            dark:bg-gray-900
-                            dark:text-white
-                        "
+                        className="mb-6 rounded-lg border border-gray-300 bg-white px-4 py-3
+                            text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                     />
 
-                    <Text
-                        className="
-                            mb-2
-                            text-base
-                            font-semibold
-                            text-black
-                            dark:text-white
-                        "
-                    >
+                    <Text className="mb-2 text-base font-semibold text-black dark:text-white">
                         {t("defaultRows")}
                     </Text>
 
@@ -303,83 +177,24 @@ const Config = observer(() => {
                             "numeric" as KeyboardTypeOptions
                         }
                         maxLength={8}
-                        className="
-                            mb-6
-                            rounded-lg
-                            border
-                            border-gray-300
-                            bg-white
-                            px-4
-                            py-3
-                            text-black
-                            dark:border-gray-700
-                            dark:bg-gray-900
-                            dark:text-white
-                        "
+                        className="mb-6 rounded-lg border border-gray-300 bg-white px-4 py-3
+                            text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                     />
 
-                    <Text
-                        className="
-                            mb-2
-                            text-base
-                            font-semibold
-                            text-black
-                            dark:text-white
-                        "
-                    >
+                    <Text className="mb-2 text-base font-semibold text-black dark:text-white">
                         {t("defaultFormat")}
                     </Text>
 
-                    <DropDownPicker
-                        open={openFormat}
+                    <CustomDropdown
+                        data={formatsAvailable}
                         value={valueFormat}
-                        items={itemsFormat}
-                        setOpen={setOpenFormat}
-                        setValue={handleFormatChange}
-                        setItems={setItemsFormat}
-                        placeholder={t("defaultFormat")}
-                        zIndex={1000}
-                        zIndexInverse={3000}
-
-                        style={{
-                            borderColor: isDark
-                                ? "#374151"
-                                : "#D1D5DB",
-                            backgroundColor: isDark
-                                ? "#111827"
-                                : "#FFFFFF",
-                        }}
-
-                        textStyle={{
-                            color: isDark
-                                ? "#FFFFFF"
-                                : "#000000",
-                        }}
-
-                        dropDownContainerStyle={{
-                            borderColor: isDark
-                                ? "#374151"
-                                : "#D1D5DB",
-                            backgroundColor: isDark
-                                ? "#111827"
-                                : "#FFFFFF",
-                        }}
-
-                        listItemLabelStyle={{
-                            color: isDark
-                                ? "#FFFFFF"
-                                : "#000000",
-                        }}
-
-                        selectedItemLabelStyle={{
-                            fontWeight: "600",
+                        onChange={(value) => {
+                            setValueFormat(value);
+                            fileStore.updateFormat(value);
                         }}
                     />
-
                 </View>
-
             </View>
-
         </Container>
     );
 });

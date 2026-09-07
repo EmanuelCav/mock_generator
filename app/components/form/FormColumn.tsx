@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import DropDownPicker from 'react-native-dropdown-picker';
 
 import ContainerBackground from "../ContainerBackground";
 import ColumnSelect from './components/ColumnSelect';
+import CustomDropdown from '../CustomDropdown';
 
 import { FormColumnPropsType } from '../../types/home.types';
 
@@ -12,7 +12,6 @@ import { column, topics } from '../../utils/topics';
 
 const FormColumn = ({ handleClose, handleAddColumn, error, t }: FormColumnPropsType) => {
 
-    const [open, setOpen] = useState<boolean>(false);
     const [columnData, setColumnData] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [value, setValue] = useState<string>("all topics");
@@ -51,7 +50,7 @@ const FormColumn = ({ handleClose, handleAddColumn, error, t }: FormColumnPropsT
     }, [value, t]);
 
     return (
-        <ContainerBackground isField={false} onClose={handleClose}>
+        <ContainerBackground title='NEW FIELD' onClose={handleClose}>
 
             <Text className="mb-2 text-base font-bold text-black dark:text-white">
                 {t("fieldName")}
@@ -70,36 +69,19 @@ const FormColumn = ({ handleClose, handleAddColumn, error, t }: FormColumnPropsT
                 value={title}
                 onChangeText={setTitle}
                 maxLength={30}
-                className="mb-5 rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-neutral-900 dark:text-white"
+                className="mb-5 rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
             />
 
             <Text className="mb-2 text-base font-bold text-black dark:text-white">
                 {t("topicFilter")}
             </Text>
 
-            <DropDownPicker
-                open={open}
+            <CustomDropdown
+                data={items}
                 value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                placeholder={t("topicFilterPlaceholder")}
-                style={{
-                    backgroundColor: "#FFFFFF",
-                    borderColor: "#D1D5DB"
+                onChange={(value) => {
+                    setValue(value);
                 }}
-                dropDownContainerStyle={{
-                    backgroundColor: "#FFFFFF",
-                    borderColor: "#D1D5DB"
-                }}
-                textStyle={{
-                    color: "#000000"
-                }}
-                listItemLabelStyle={{
-                    color: "#000000"
-                }}
-                zIndex={3000}
-                zIndexInverse={1000}
             />
 
             <Text className="mb-3 mt-5 text-base font-bold text-black dark:text-white">
@@ -124,7 +106,7 @@ const FormColumn = ({ handleClose, handleAddColumn, error, t }: FormColumnPropsT
 
             <TouchableOpacity
                 disabled={columnData.length === 0}
-                className={`items-center rounded-lg px-4 py-4 ${columnData.length === 0 ? "bg-gray-400" : "bg-[#50C878]"}`}
+                className={`items-center rounded-lg px-4 py-4 ${columnData.length === 0 ? "bg-gray-400" : "bg-emerald-500"}`}
                 onPress={() => {
 
                     const selectedColumn = column.find(

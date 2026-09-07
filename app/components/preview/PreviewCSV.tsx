@@ -7,30 +7,45 @@ const PreviewCSV = ({ data, header_csv }: PreviewCSVPropsType) => {
   const headers = Object.keys(data[0] ?? {});
 
   return (
-    <ScrollView horizontal className="pb-4">
+    <View className="overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-black">
 
-      <View>
+      <ScrollView horizontal>
 
-        {header_csv && (
-          <Text className="font-bold text-black dark:text-white">
-            {headers.join(",")}
-          </Text>
-        )}
+        <View className="min-w-full p-4">
 
-        {data.map((row: any, i: number) => (
-          <Text
-            key={i}
-            className="text-black dark:text-white"
-            style={{ fontFamily: "monospace" }}
-          >
-            {headers.map((header) => row[header]).join(",")}
-          </Text>
-        ))}
+          {header_csv && (
 
-      </View>
+            <Text className=" mb-2 font-bold text-emerald-600 dark:text-emerald-400"
+              style={{
+                fontFamily: "monospace",
+              }}
+            >
+              {headers.join(",")}
+            </Text>
 
-    </ScrollView>
+          )}
+
+          {data.map((row: any, i: number) => (
+
+            <Text
+              key={i}
+              className="mb-1 text-sm text-gray-700 dark:text-gray-300"
+              style={{
+                fontFamily: "monospace",
+              }}
+            >
+              {headers
+                .map((header) => row[header])
+                .join(",")}
+            </Text>
+          ))}
+        </View>
+      </ScrollView>
+
+    </View>
+
   );
+
 };
 
 export default PreviewCSV;

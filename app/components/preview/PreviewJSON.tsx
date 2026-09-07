@@ -1,4 +1,4 @@
-import { ScrollView, Text } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 import { PreviewJSONPropsType } from "../../types/home.types";
 
@@ -8,17 +8,50 @@ const PreviewJSON = ({ data, json_array }: PreviewJSONPropsType) => {
     ? JSON.stringify(data, null, 2)
     : JSON.stringify(data[0] ?? {}, null, 2);
 
+  const lines = content.split("\n");
+
   return (
-    <ScrollView horizontal className="pb-4">
-      <Text
-        selectable
-        className="text-xs text-black dark:text-white"
-        style={{ fontFamily: "monospace" }}
-      >
-        {content}
-      </Text>
-    </ScrollView>
+    <View className="overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-black">
+      <ScrollView horizontal>
+        <View className="min-w-full p-4">
+          {lines.map((line, index) => (
+            <View
+              key={index}
+              className="flex-row"
+            >
+              <Text
+                className="mr-4 w-8 text-right text-xs text-gray-400 dark:text-gray-600"
+                style={{
+                  fontFamily: "monospace",
+                }}
+              >
+                {index + 1}
+              </Text>
+
+
+              <Text
+                selectable
+                className="text-xs leading-5 text-gray-800 dark:text-gray-200"
+                style={{
+                  fontFamily: "monospace",
+                }}
+              >
+                {line}
+              </Text>
+
+            </View>
+
+          ))}
+
+        </View>
+
+      </ScrollView>
+
+    </View>
+
   );
+
 };
+
 
 export default PreviewJSON;

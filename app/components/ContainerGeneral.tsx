@@ -18,7 +18,7 @@ const SafeAreaWrapper = ({ children }: { children: ReactNode }) => {
     const insets = useSafeAreaInsets()
 
     return (
-        <View style={[styles.container, {
+        <View className='bg-white dark:bg-black' style={[styles.container, {
             paddingTop: insets.top,
             paddingBottom: insets.bottom,
             paddingLeft: insets.left,

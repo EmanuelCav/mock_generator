@@ -2,6 +2,7 @@ import "./global.css"
 import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Feather } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from '@react-navigation/native';
 
 import Home from './app/screens/Home';
@@ -18,13 +19,18 @@ const Tab = createBottomTabNavigator();
 
 const App = () => {
 
-  const { t } = useLanguage()
+  const { t } = useLanguage();
   const { themeMode } = useThemeMode();
 
   const isDark = themeMode === "dark";
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+
+      <StatusBar
+        style={isDark ? "light" : "dark"}
+      />
+      
       <NavigationContainer>
         <Tab.Navigator initialRouteName="Create"
           screenOptions={{

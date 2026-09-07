@@ -350,5 +350,8 @@
     "history": "Historial",
     "create": "Crear",
     "templates": "Plantillas",
-    "config": "Ajustes"
+    "config": "Ajustes",
+    "theme": "Tema",
+    "dark": "Oscuro",
+    "light": "Claro"
 }

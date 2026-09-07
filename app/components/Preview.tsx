@@ -33,7 +33,7 @@ const Preview = ({ setIsPreview, data, format, header_csv, json_array, record_el
   }
 
   return (
-    <ContainerBackground isField={true} onClose={() => setIsPreview(false)}>
+    <ContainerBackground onClose={() => setIsPreview(false)} title='PREVIEW'>
       {renderPreview()}
     </ContainerBackground>
   )

@@ -350,5 +350,8 @@
     "history": "History",
     "create": "Create",
     "templates": "Templates",
-    "config": "Settings"
+    "config": "Settings",
+    "theme": "Theme",
+    "dark": "Dark",
+    "light": "Light"
 }

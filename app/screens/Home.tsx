@@ -209,7 +209,7 @@ const Home = observer(() => {
         }
     }
 
-    useFocusEffect(
+    /* useFocusEffect(
         useCallback(() => {
             const handleCount = async () => {
 
@@ -231,7 +231,7 @@ const Home = observer(() => {
 
             handleCount();
         }, [])
-    )
+    ) */
 
     useEffect(() => {
         const fields = FileSystemOptions.generateData(fileStore.column);

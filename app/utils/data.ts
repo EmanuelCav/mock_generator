@@ -55,14 +55,6 @@ export const defaultColumn = (): IColumn[] => [
     }
 ];
 
-export const formatsAvailable: FormatOption[] = [
-    { label: 'CSV', value: 'csv' },
-    { label: 'EXCEL', value: 'excel' },
-    { label: 'JSON', value: 'json' },
-    { label: 'SQL', value: 'sql' },
-    { label: 'XML', value: 'xml' },
-];
-
 export const extensionFile = (file: string): string => {
     switch (file) {
         case "csv":

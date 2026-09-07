@@ -1,32 +1,15 @@
-import { useEffect, useState } from "react";
-import { Dimensions, Keyboard, KeyboardEvent, Modal, Pressable, ScrollView, View } from "react-native";
+import { Modal, Pressable, View, Text, ScrollView } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-
-import { homeStyles } from "../styles/home.styles";
 
 import { ContainerBackgroundPropsType } from "../types/general.types";
 
-const ContainerBackground = ({ children, onClose }: ContainerBackgroundPropsType) => {
+import { useThemeMode } from "../hooks/useThemeContext";
 
-  const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
+const ContainerBackground = ({ children, onClose, title }: ContainerBackgroundPropsType) => {
 
-  useEffect(() => {
-    const onKeyboardDidShow = (e: KeyboardEvent) => {
-      setKeyboardHeight(e.endCoordinates.height);
-    };
+  const { themeMode } = useThemeMode();
 
-    const onKeyboardDidHide = () => {
-      setKeyboardHeight(0);
-    };
-
-    const showSubscription = Keyboard.addListener("keyboardDidShow", onKeyboardDidShow);
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", onKeyboardDidHide);
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
+  const isDark = themeMode === "dark";
 
   return (
     <Modal
@@ -35,25 +18,46 @@ const ContainerBackground = ({ children, onClose }: ContainerBackgroundPropsType
       animationType="fade"
       statusBarTranslucent
     >
-      <View style={[
-        homeStyles.containerBackground,
-        {
-          height: Dimensions.get("window").height - keyboardHeight,
-          backgroundColor: "rgba(58, 64, 73, 0.5)"
-        }
-      ]}>
-        <View style={[homeStyles.cardBackground, { position: 'relative' }]}>
-          <Pressable
-            onPress={onClose}
-            className="absolute right-3 top-3 z-50 items-center justify-center rounded-full p-2 active:opacity-60"
+
+      <View className="flex-1 items-center justify-center bg-black/60 px-4">
+
+        <View className="max-h-[85%] w-full max-w-2xl overflow-hidden rounded-2xl bg-white shadow-lg dark:bg-gray-900">
+
+          <View className="flex-row items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-gray-700">
+
+            <Text className="text-lg font-bold text-black dark:text-white">
+              {title}
+            </Text>
+
+            <Pressable
+              onPress={onClose}
+              className="items-center justify-center rounded-full bg-gray-100 p-2 active:opacity-60 dark:bg-gray-800"
+            >
+
+              <MaterialIcons
+                name="close"
+                size={22}
+                color={isDark ? "#FFFFFF" : "#000000"}
+              />
+
+            </Pressable>
+
+          </View>
+
+          <ScrollView
+            className="flex-grow"
+            contentContainerStyle={{
+              padding: 16,
+            }}
+            showsVerticalScrollIndicator
           >
-            <MaterialIcons name="close" size={26} color="#ff0000" />
-          </Pressable>
-          <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
             {children}
           </ScrollView>
+
         </View>
+
       </View>
+
     </Modal>
   );
 };

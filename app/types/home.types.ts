@@ -81,6 +81,7 @@ export type PreviewPropsType = {
     root_element_xml: string;
     record_element_xml: string;
     table_name_sql: string;
+    t: (scope: string, options?: object | undefined) => string;
 }
 
 export type PreviewXLSXPropsType = {

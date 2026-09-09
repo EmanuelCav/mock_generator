@@ -8,7 +8,7 @@ const ColumnSelect = ({ element, columnData, setColumnData }: ColumnSelectPropsT
 
     return (
         <Pressable
-            className={`mb-2 rounded-lg p-4 ${isSelected ? "bg-emerald-500" : "bg-emerald-800"}`}
+            className={`mb-2 rounded-lg p-4 ${isSelected ? "bg-emerald-500" : "bg-gray-300 dark:bg-gray-700"}`}
             onPress={() => setColumnData(element.name)}
         >
             <Text className={`text-base ${isSelected ? "font-bold text-white" : "font-semibold text-white"}`}>

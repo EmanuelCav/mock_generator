@@ -1,7 +1,6 @@
 import { faker } from "./fakerGenerator"
 
 import { IColumn } from "../interface/Column";
-import { FormatOption } from "../types/general.types";
 
 export const defaultColumn = (): IColumn[] => [
     {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Pressable, View, Text } from 'react-native';
 import { observer } from 'mobx-react-lite';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
@@ -40,12 +40,15 @@ const Home = observer(() => {
     const [isPreview, setIsPreview] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
-    const [fieldsData, setFieldsData] = useState<any[]>([])
     const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
     const [titleError, setTitleError] = useState<string>("")
     const [isRefreshData, setIsRefreshData] = useState<boolean>(false);
 
-    const handleAddColumn = (data: ICreateColumn) => {
+    const fieldsData = useMemo(() => {
+        return FileSystemOptions.generateData(fileStore.column);
+    }, [fileStore.column.length, fileStore.rows, fileStore.column, fileStore.rows, isRefreshData]);
+
+    const handleAddColumn = useCallback((data: ICreateColumn) => {
 
         if (data.title.length === 0) {
             setTitleError("Error write a field name. Please complete.")
@@ -61,28 +64,28 @@ const Home = observer(() => {
         })
 
         setIsForm(false)
-    }
+    }, [])
 
-    const removeColumn = (data: IColumn) => {
+    const removeColumn = useCallback((data: IColumn) => {
         fileStore.removeColumn(data)
-    }
+    }, [])
 
-    const openEdit = (data: IColumn) => {
-        setIsEdit(true)
+    const openEdit = useCallback((data: IColumn) => {
         fileStore.getField(data)
-    }
+        setIsEdit(true)
+    }, [])
 
-    const handleEdit = (data: IColumn) => {
+    const handleEdit = useCallback((data: IColumn) => {
         fileStore.updateField(data)
         setIsEdit(false)
-    }
+    }, [])
 
-    const closeEdit = () => {
-        setIsEdit(false)
+    const closeEdit = useCallback(() => {
         fileStore.getField(null)
-    }
+        setIsEdit(false)
+    }, [])
 
-    const handleGenerate = () => {
+    const handleGenerate = useCallback(() => {
 
         setLoading(true)
 
@@ -111,14 +114,14 @@ const Home = observer(() => {
             setLoading(false)
             setIsGenerated(true);
         }
-    };
+    }, [fieldsData])
 
-    const handleOption = (col: FileOptions) => {
+    const handleOption = useCallback((col: FileOptions) => {
         fileStore.updateOptions(col)
         setIsOptions(false)
-    }
+    }, [])
 
-    const handleDownload = () => {
+    const handleDownload = useCallback(() => {
 
         setLoadingDownload(true)
 
@@ -155,9 +158,9 @@ const Home = observer(() => {
         } finally {
             setLoadingDownload(false)
         }
-    }
+    }, [fieldsData, t])
 
-    const handleShare = () => {
+    const handleShare = useCallback(() => {
 
         switch (fileStore.format) {
             case "excel":
@@ -184,17 +187,17 @@ const Home = observer(() => {
                 FileSystemOptions.excelGenerator(fieldsData, fileStore.file_name === "" ? "DATA_MOCKER" : fileStore.file_name, t)
                 break;
         }
-    }
+    }, [fieldsData, t])
 
-    const handleRefreshData = () => {
+    const handleRefreshData = useCallback(() => {
         setIsRefreshData(true)
 
         setTimeout(() => {
             setIsRefreshData(false)
         }, 600)
-    }
+    }, [])
 
-    const requestAppReview = async () => {
+    const requestAppReview = useCallback(async () => {
 
         try {
 
@@ -207,36 +210,40 @@ const Home = observer(() => {
         } catch (error) {
             console.error("Error requesting review:", error);
         }
-    }
+    }, [])
 
-    /* useFocusEffect(
+    useFocusEffect(
         useCallback(() => {
             const handleCount = async () => {
 
                 try {
 
-                    const storedCount = await AsyncStorage.getItem("reviewCount");
-                    const count = storedCount ? parseInt(storedCount, 10) : 0;
+                    const storedCount = await AsyncStorage.getItem("reviewCount")
 
-                    if (count !== 0 && (count === 2 || count % 25 === 0)) {
-                        requestAppReview();
+                    if (storedCount === null) {
+                        await AsyncStorage.setItem("reviewCount", "0")
+                        return
                     }
 
-                    await AsyncStorage.setItem("reviewCount", (count + 1).toString());
+                    const count = parseInt(storedCount, 10);
+
+                    if ((count === 1 || count % 25 === 0) && count !== 0) {
+                        await requestAppReview();
+                    }
 
                 } catch (error) {
-                    console.error("Error checking review count:", error);
+                    console.log(error)
                 }
-            };
+            }
 
             handleCount();
-        }, [])
-    ) */
+        }, [requestAppReview])
+    );
 
-    useEffect(() => {
+    /* useEffect(() => {
         const fields = FileSystemOptions.generateData(fileStore.column);
         setFieldsData(fields)
-    }, [fileStore.column.length, fileStore.rows, fileStore.format, isRefreshData, fileStore.column])
+    }, [fileStore.column.length, fileStore.rows, fileStore.format, isRefreshData, fileStore.column]) */
 
     return (
         <Container>
@@ -251,6 +258,7 @@ const Home = observer(() => {
                     record_element_xml={fileStore.record_element_xml}
                     root_element_xml={fileStore.root_element_xml}
                     table_name_sql={fileStore.table_name_sql}
+                    t={t}
                 />
             )}
 
@@ -313,7 +321,7 @@ const Home = observer(() => {
                 t={t}
             />
 
-            <View className="flex-1 bg-white dark:bg-black">
+            <View className="flex-1">
 
                 {fileStore.column.length > 0 ? (
 

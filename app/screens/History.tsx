@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 
 import { FlatList, Pressable, Text, View } from "react-native";
@@ -29,22 +29,24 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
     const [isDownloaded, setIsDownloaded] = useState(false);
     const [fieldsData, setFieldsData] = useState<any[]>([]);
 
-    const handleEdit = (column: IColumn[]) => {
+    const reversedHistory = useMemo(() => {
+        return userStore.history.slice().reverse();
+    }, [userStore.history.length]);
+
+    const handleEdit = useCallback((column: IColumn[]) => {
         fileStore.getColumns(column);
         navigation.navigate("Create");
-    }
+    }, [])
 
-
-    const handleDelete = (history: IHistory) => {
+    const handleDelete = useCallback((history: IHistory) => {
         userStore.removeHistory(history);
-    }
+    }, [])
 
-
-    const openDownload = (history: IHistory) => {
+    const openDownload = useCallback((history: IHistory) => {
         userStore.getHistory(history);
         setFieldsData(history.data);
         setIsDownload(true);
-    }
+    }, [])
 
     const handleDownload = () => {
 
@@ -205,6 +207,16 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
 
     };
 
+    const renderItem = useCallback(({ item }: { item: IHistory }) => (
+        <HistoryElement
+            t={t}
+            handleDelete={handleDelete}
+            openDownload={openDownload}
+            handleEdit={handleEdit}
+            history={item}
+        />
+    ), [t, handleDelete, openDownload, handleEdit]);
+
     return (
         <Container>
             {isDownload && (
@@ -220,7 +232,7 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
                 />
             )}
             <Banner />
-            <View className="flex-1 bg-white dark:bg-black">
+            <View className="flex-1">
                 {userStore.history.length === 0 ? (
                     <View className="flex-1 items-center justify-center px-6">
                         <Text className="mb-6 text-center text-xl font-bold text-black dark:text-white">
@@ -236,20 +248,14 @@ const History = observer(({ navigation }: { navigation: StackNavigation }) => {
                     </View>
                 ) : (
                     <FlatList
-                        data={userStore.history.slice().reverse()}
-                        renderItem={({ item }) => (
-                            <HistoryElement
-                                t={t}
-                                handleDelete={handleDelete}
-                                openDownload={openDownload}
-                                handleEdit={handleEdit}
-                                history={item}
-                            />
-                        )}
-                        keyExtractor={(_, index) =>
-                            String(index)
-                        }
+                        data={reversedHistory}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
                         contentContainerClassName="px-4 py-4"
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
+                        windowSize={5}
+                        removeClippedSubviews={true}
                     />
 
                 )}

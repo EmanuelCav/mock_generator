@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { KeyboardTypeOptions, Text, TextInput, View } from "react-native";
 import { observer } from "mobx-react-lite";
 
@@ -12,23 +12,43 @@ import { fileStore } from "../store/file.store";
 import { useLanguage } from "../hooks/useLanguageContext";
 import { ThemeMode, useThemeMode } from "../hooks/useThemeContext";
 
+const formatsAvailable: FormatOption[] = [
+    { label: 'CSV', value: 'csv' },
+    { label: 'EXCEL', value: 'excel' },
+    { label: 'JSON', value: 'json' },
+    { label: 'SQL', value: 'sql' },
+    { label: 'XML', value: 'xml' }
+]
+
 const Config = observer(() => {
 
     const { t, changeLanguage, language } = useLanguage();
     const { themeMode, setThemeMode } = useThemeMode();
 
-    const itemsLanguage: LanguageOption[] = [
+    const itemsLanguage = useMemo<LanguageOption[]>(() => [
         {
             label: t("english"),
             value: "en",
         },
         {
+            label: t("french"),
+            value: "fr",
+        },
+        {
+            label: t("german"),
+            value: "de",
+        },
+        {
             label: t("spanish"),
             value: "es",
         },
-    ];
+        {
+            label: t("portuguese"),
+            value: "pt",
+        },
+    ], [t]);
 
-    const itemsTheme = [
+    const itemsTheme = useMemo(() => [
         {
             label: t("light"),
             value: "light" as ThemeMode,
@@ -37,32 +57,15 @@ const Config = observer(() => {
             label: t("dark"),
             value: "dark" as ThemeMode,
         },
-    ];
+    ], [t]);
 
-    const formatsAvailable: FormatOption[] = [
-        { label: 'CSV', value: 'csv' },
-        { label: 'EXCEL', value: 'excel' },
-        { label: 'JSON', value: 'json' },
-        { label: 'SQL', value: 'sql' },
-        { label: 'XML', value: 'xml' },
-    ];
-
-    const [localRows, setLocalRows] = useState<string>(
-        fileStore.rows
-    );
-
-    const [fileName, setFileName] = useState<string>(
-        fileStore.file_name
-    );
-
-    const [valueFormat, setValueFormat] = useState<string>(
-        fileStore.format.toLowerCase()
-    );
+    const [localRows, setLocalRows] = useState<string>(fileStore.rows);
+    const [fileName, setFileName] = useState<string>(fileStore.file_name)
+    const [valueFormat, setValueFormat] = useState<string>(fileStore.format.toLowerCase())
 
     const handleRowsChange = (text: string) => {
         setLocalRows(text);
-    };
-
+    }
 
     const handleRowsBlur = () => {
         const valueToSave =
@@ -70,14 +73,13 @@ const Config = observer(() => {
                 ? "1000"
                 : localRows.trim();
 
+        setLocalRows(valueToSave);
         fileStore.updateRows(valueToSave);
-    };
-
+    }
 
     const handleFileNameChange = (text: string) => {
         setFileName(text);
-    };
-
+    }
 
     const handleFileNameBlur = () => {
         const valueToSave =
@@ -85,25 +87,28 @@ const Config = observer(() => {
                 ? "DATA_MOCKER"
                 : fileName.trim();
 
+        setFileName(valueToSave);
         fileStore.updateFileName(valueToSave);
     };
 
     useEffect(() => {
         setLocalRows(fileStore.rows);
+    }, [fileStore.rows]);
+
+    useEffect(() => {
         setFileName(fileStore.file_name);
+    }, [fileStore.file_name]);
+
+    useEffect(() => {
         setValueFormat(fileStore.format.toLowerCase());
-    }, [
-        fileStore.rows,
-        fileStore.format,
-        fileStore.file_name,
-    ]);
+    }, [fileStore.format]);
 
     const isDark = themeMode === "dark";
 
     return (
         <Container>
 
-            <View className="flex-1 bg-white dark:bg-black">
+            <View className="flex-1">
 
                 <View className="flex-1 px-5 py-6">
 
@@ -131,7 +136,7 @@ const Config = observer(() => {
                         data={itemsLanguage}
                         value={language}
                         onChange={(value) => {
-                            changeLanguage(value as ThemeMode);
+                            changeLanguage(value);
                         }}
                     />
 

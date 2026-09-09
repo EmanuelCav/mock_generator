@@ -38,10 +38,10 @@ const DateInput = ({ value, setValue, label, labelSelected, topic }: DateInputPr
             </Text>
 
             <TouchableOpacity
-                className="mt-3 items-center rounded-lg bg-[#50C878] px-4 py-3"
+                className="mt-3 items-center rounded-lg bg-white border border-[#50C878] px-4 py-3 dark:bg-gray-900"
                 onPress={showDatepicker}
             >
-                <Text className="font-bold text-white">
+                <Text className="font-bold text-emerald-500">
                     {label}
                 </Text>
             </TouchableOpacity>

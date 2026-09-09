@@ -3,8 +3,8 @@ import { ScrollView, Text, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import ContainerBackground from "../ContainerBackground";
-import ColumnSelect from './components/ColumnSelect';
 import CustomDropdown from '../CustomDropdown';
+import ColumnSelect from './components/ColumnSelect';
 
 import { FormColumnPropsType } from '../../types/home.types';
 
@@ -50,7 +50,7 @@ const FormColumn = ({ handleClose, handleAddColumn, error, t }: FormColumnPropsT
     }, [value, t]);
 
     return (
-        <ContainerBackground title='NEW FIELD' onClose={handleClose}>
+        <ContainerBackground title={t("new_field")} onClose={handleClose}>
 
             <Text className="mb-2 text-base font-bold text-black dark:text-white">
                 {t("fieldName")}

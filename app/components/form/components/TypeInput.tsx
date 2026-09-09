@@ -29,7 +29,7 @@ const TypeInput = ({ value, setValue, label, topic }: TypeInputPropsType) => {
                 value={value}
                 onChangeText={handleChange}
                 maxLength={topicsLowLength(topic)}
-                className="rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-neutral-900 dark:text-white"
+                className="rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                 placeholderTextColor="#9CA3AF"
             />
 

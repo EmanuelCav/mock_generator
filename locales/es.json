@@ -16,7 +16,7 @@
     "file": "ARCHIVO",
     "defaultRows": "Cantidad predeterminada de filas",
     "blankLabel": "Datos vacíos (%)",
-    "downloadComplete": "¡Descarga completada! El archivo se guardó en la carpeta Descargas. Puedes acceder desde la app Archivos de tu dispositivo.",
+    "downloadComplete": "¡Descarga completada! Puedes acceder a él desde los archivos de tu dispositivo.",
     "defaultFormat": "Formato de archivo predeterminado",
     "defaultHeader": "Incluir encabezado",
     "historyEmpty": "Aún no se han generado archivos",
@@ -45,6 +45,9 @@
     "startNow": "¡Empezar ahora!",
     "spanish": "Español",
     "english": "Inglés",
+    "french": "Francés",
+    "german": "Alemán",
+    "portuguese": "Portugués",
     "titlePermissionDenied": "Permiso denegado",
     "descriptionPermissionDenied": "Por favor, otorga los permisos necesarios para que la aplicación funcione correctamente",
     "titleErrorDownload": "Error al descargar",
@@ -353,5 +356,12 @@
     "config": "Ajustes",
     "theme": "Tema",
     "dark": "Oscuro",
-    "light": "Claro"
+    "light": "Claro",
+    "file_settings": "CONFIGURACIÓN DE ARCHIVO",
+    "file_generated": "ARCHIVO GENERADO",
+    "new_field": "NUEVO CAMPO",
+    "showing": "Mostrando",
+    "of": "de",
+    "rows_title": "filas",
+    "page": "Página"
 }

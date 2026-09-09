@@ -24,6 +24,9 @@ export interface FormatKeyProps {
 export interface LanguageKeyProps {
     es: string;
     en: string;
+    de: string;
+    fr: string;
+    pt: string;
 }
 
 export interface FileOptions {

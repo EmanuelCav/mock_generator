@@ -16,7 +16,7 @@
     "file": "FILE",
     "defaultRows": "Default rows amount",
     "blankLabel": "Empty data (%)",
-    "downloadComplete": "Download complete! Check your Downloads folder in the Files app.",
+    "downloadComplete": "Download complete! You can access it from your device's files.",
     "defaultFormat": "Default file format",
     "defaultHeader": "Default include header value",
     "historyEmpty": "No files have been generated yet",
@@ -45,6 +45,9 @@
     "startNow": "Start now!",
     "spanish": "Spanish",
     "english": "English",
+    "french": "French",
+    "german": "German",
+    "portuguese": "Portuguese",
     "titlePermissionDenied": "Permission Denied",
     "descriptionPermissionDenied": "Please grant the necessary permissions for the app to function properly.",
     "titleErrorDownload": "Download Error",
@@ -353,5 +356,12 @@
     "config": "Settings",
     "theme": "Theme",
     "dark": "Dark",
-    "light": "Light"
+    "light": "Light",
+    "file_settings": "FILE SETTINGS",
+    "file_generated": "FILE GENERATED",
+    "new_field": "NEW FIELD",
+    "showing": "Showing",
+    "of": "of",
+    "rows_title": "rows",
+    "page": "Page"
 }

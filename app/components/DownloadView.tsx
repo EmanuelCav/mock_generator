@@ -65,24 +65,28 @@ const DownloadView = ({ setIsGenerated, handleDownload, loading, text, setIsDown
 
             const count = storedCount ? parseInt(storedCount, 10) : 0;
 
-            if ((interstitial.loaded || isInterstitialLoaded) && count > 2) {
+            const newCount = count + 1;
+
+            await AsyncStorage.setItem("reviewCount", newCount.toString())
+
+            if ((interstitial.loaded || isInterstitialLoaded) && newCount > 1) {
                 interstitial.show();
             }
 
         } catch (error) {
-            console.log(error);
+            console.log(error)
         } finally {
-            setIsDownloaded(false);
-            setIsGenerated(false);
+            setIsDownloaded(false)
+            setIsGenerated(false)
         }
-    };
+    }
 
     const fileName = userStore.historyData
         ? `${userStore.historyData.name}.${extensionFile(userStore.historyData.extension)}`
         : "";
 
     return (
-        <ContainerBackground isField={false} onClose={handleClose}>
+        <ContainerBackground title={t("file_generated")} onClose={handleClose}>
 
             <View className="w-full items-center px-6">
 

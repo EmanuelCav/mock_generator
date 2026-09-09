@@ -3,12 +3,12 @@ import { Pressable, Switch, Text, TextInput, View } from "react-native";
 import { observer } from "mobx-react-lite";
 
 import ContainerBackground from "./ContainerBackground";
+import CustomDropdown from "./CustomDropdown";
 
 import { OptionsPropsType } from "../types/home.types";
 import { FormatOption } from "../types/general.types";
 
 import { fileStore } from "../store/file.store";
-import CustomDropdown from "./CustomDropdown";
 
 const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) => {
 
@@ -92,7 +92,7 @@ const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) =>
     };
 
     return (
-        <ContainerBackground title="FILE SETTINGS" onClose={() => {
+        <ContainerBackground title={t("file_settings")} onClose={() => {
             setError("");
             handleClose();
         }}
@@ -111,10 +111,9 @@ const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) =>
                         maxLength={8}
                         placeholder={t("rows")}
                         placeholderTextColor="#9CA3AF"
-                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                     />
                 </View>
-
 
                 <View className="z-50">
                     <Text className="mb-2 text-base font-bold text-black dark:text-white">
@@ -131,9 +130,8 @@ const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) =>
                     />
                 </View>
 
-
                 {valueFormat === "csv" && (
-                    <View className="flex-row items-center justify-between rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-zinc-700 dark:bg-zinc-900">
+                    <View className="flex-row items-center justify-between rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
 
                         <Text className="flex-1 text-base text-black dark:text-white">
                             {t("defaultHeader")}
@@ -154,7 +152,7 @@ const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) =>
 
 
                 {valueFormat === "json" && (
-                    <View className="flex-row items-center justify-between rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-zinc-700 dark:bg-zinc-900">
+                    <View className="flex-row items-center justify-between rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
 
                         <Text className="flex-1 text-base text-black dark:text-white">
                             {t("includeArray")}
@@ -187,7 +185,7 @@ const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) =>
                             value={rootElement}
                             onChangeText={handleRootElement}
                             maxLength={30}
-                            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+                            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                         />
                     </View>
                 )}
@@ -206,7 +204,7 @@ const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) =>
                             value={recordElement}
                             onChangeText={handleRecordElement}
                             maxLength={30}
-                            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+                            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                         />
                     </View>
                 )}
@@ -225,7 +223,7 @@ const Options = observer(({ handleClose, handleOption, t }: OptionsPropsType) =>
                             value={tableName}
                             onChangeText={handleTableName}
                             maxLength={30}
-                            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+                            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                         />
                     </View>
                 )}

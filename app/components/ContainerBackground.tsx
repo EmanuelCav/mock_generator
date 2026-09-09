@@ -1,4 +1,5 @@
-import { Modal, Pressable, View, Text, ScrollView } from "react-native";
+import { useEffect, useState } from "react";
+import { Dimensions, Keyboard, KeyboardEvent, Modal, Pressable, ScrollView, Text, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { ContainerBackgroundPropsType } from "../types/general.types";
@@ -7,9 +8,39 @@ import { useThemeMode } from "../hooks/useThemeContext";
 
 const ContainerBackground = ({ children, onClose, title }: ContainerBackgroundPropsType) => {
 
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
   const { themeMode } = useThemeMode();
 
   const isDark = themeMode === "dark";
+
+  useEffect(() => {
+    const keyboardShow =
+      Keyboard.addListener(
+        "keyboardDidShow",
+        (event: KeyboardEvent) => {
+          setKeyboardHeight(
+            event.endCoordinates.height
+          );
+
+        }
+      );
+
+    const keyboardHide =
+      Keyboard.addListener(
+        "keyboardDidHide",
+        () => {
+          setKeyboardHeight(0);
+        }
+      );
+
+    return () => {
+      keyboardShow.remove();
+      keyboardHide.remove();
+    };
+  }, []);
+
+  const screenHeight = Dimensions.get("screen").height;
 
   return (
     <Modal
@@ -19,9 +50,19 @@ const ContainerBackground = ({ children, onClose, title }: ContainerBackgroundPr
       statusBarTranslucent
     >
 
-      <View className="flex-1 items-center justify-center bg-black/60 px-4">
+      <View
+        className="items-center justify-center bg-black/60 px-4"
+        style={{
+          height: screenHeight - keyboardHeight,
+        }}
+      >
 
-        <View className="max-h-[85%] w-full max-w-2xl overflow-hidden rounded-2xl bg-white shadow-lg dark:bg-gray-900">
+        <View
+          className="w-full max-w-2xl overflow-hidden rounded-2xl bg-white shadow-lg dark:bg-gray-900"
+          style={{
+            maxHeight: screenHeight - keyboardHeight - 118,
+          }}
+        >
 
           <View className="flex-row items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-gray-700">
 
@@ -37,7 +78,11 @@ const ContainerBackground = ({ children, onClose, title }: ContainerBackgroundPr
               <MaterialIcons
                 name="close"
                 size={22}
-                color={isDark ? "#FFFFFF" : "#000000"}
+                color={
+                  isDark
+                    ? "#FFFFFF"
+                    : "#000000"
+                }
               />
 
             </Pressable>
@@ -45,21 +90,22 @@ const ContainerBackground = ({ children, onClose, title }: ContainerBackgroundPr
           </View>
 
           <ScrollView
-            className="flex-grow"
             contentContainerStyle={{
-              padding: 16,
+              padding: 20,
+              paddingBottom: 40,
             }}
+            keyboardShouldPersistTaps="handled"
+            automaticallyAdjustKeyboardInsets
             showsVerticalScrollIndicator
           >
             {children}
           </ScrollView>
-
         </View>
-
       </View>
-
     </Modal>
   );
+
 };
+
 
 export default ContainerBackground;

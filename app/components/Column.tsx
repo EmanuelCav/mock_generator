@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Pressable, Text, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
@@ -8,17 +9,17 @@ const Column = ({ column, removeColumn, openEdit, onLongPress, isActive }: Colum
         <Pressable
             onLongPress={onLongPress}
             delayLongPress={150}
-            className={`mx-4 mb-3 flex-row items-center justify-between rounded-xl bg-emerald-500 px-4 py-4 shadow-sm ${isActive ? "opacity-75" : "opacity-100"}`}
+            className={`mx-4 mb-3 flex-row items-center justify-between rounded-xl bg-white px-4 py-4 shadow-sm ${isActive ? "opacity-75" : "opacity-100"} dark:bg-zinc-800`}
             style={{
                 transform: [{ scale: isActive ? 0.98 : 1 }],
             }}
         >
             <View className="flex-1 pr-4">
-                <Text className="text-lg font-bold text-white">
+                <Text className="text-lg font-bold dark:text-white">
                     {column.fieldName}
                 </Text>
 
-                <Text className="mt-1 text-sm text-white/80">
+                <Text className="mt-1 text-sm dark:text-white">
                     {column.topic}
                 </Text>
             </View>
@@ -30,7 +31,7 @@ const Column = ({ column, removeColumn, openEdit, onLongPress, isActive }: Colum
                 >
                     <Feather
                         name="edit"
-                        color="#FFFFFF"
+                        color="#0000ff"
                         size={24}
                     />
                 </Pressable>
@@ -50,4 +51,4 @@ const Column = ({ column, removeColumn, openEdit, onLongPress, isActive }: Colum
     )
 }
 
-export default Column
+export default memo(Column)

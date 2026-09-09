@@ -85,7 +85,7 @@ export const column = [
   { type: [], topic: ["Computing", "All topics"], name: "Database column", data: () => faker.database.column() },
   { type: [], topic: ["Computing", "All topics"], name: "Database engine", data: () => faker.database.engine() },
   { type: [], topic: ["Computing", "All topics"], name: "Git branch", data: () => faker.git.branch() },
-  { type: [], topic: ["Computing", "All topics"], name: "Git commit date", data: () => faker.git.commitDate() }, // date
+  { type: [], topic: ["Computing", "All topics"], name: "Git commit date", data: () => faker.git.commitDate() },
   { type: [], topic: ["Computing", "All topics"], name: "Git commit message", data: () => faker.git.commitMessage() },
   { type: [], topic: ["Computing", "All topics"], name: "IT text abbreviation", data: () => faker.hacker.abbreviation() },
   { type: [], topic: ["Computing", "All topics"], name: "IT adjective", data: () => faker.hacker.adjective() },
@@ -96,20 +96,20 @@ export const column = [
   { type: [], topic: ["Computing", "All topics"], name: "Domain name", data: () => faker.internet.domainName() },
   { type: [], topic: ["Computing", "All topics"], name: "Domain suffix", data: () => faker.internet.domainSuffix() },
   { type: [], topic: ["Computing", "All topics"], name: "Domain word", data: () => faker.internet.domainWord() },
-  { type: [], topic: ["Computing", "Person", "All topics"], name: "Email", data: () => faker.internet.email() }, // provider
+  { type: [], topic: ["Computing", "Person", "All topics"], name: "Email", data: () => faker.internet.email() },
   { type: [], topic: ["Computing", "All topics"], name: "Http method", data: () => faker.internet.httpMethod() },
   { type: [], topic: ["Computing", "All topics"], name: "Http status code", data: () => faker.internet.httpStatusCode() },
   { type: [], topic: ["Computing", "All topics"], name: "IPv4", data: () => faker.internet.ipv4() },
   { type: [], topic: ["Computing", "All topics"], name: "IPv6", data: () => faker.internet.ipv6() },
   { type: [], topic: ["Computing", "All topics"], name: "Token", data: () => faker.internet.jwt() },
   { type: [], topic: ["Computing", "All topics"], name: "Mac address", data: () => faker.internet.mac() },
-  { type: [], topic: ["Computing", "Person", "All topics"], name: "Password", data: () => faker.internet.password() }, // length
+  { type: [], topic: ["Computing", "Person", "All topics"], name: "Password", data: () => faker.internet.password() },
   { type: [], topic: ["Computing", "All topics"], name: "Port number", data: () => faker.internet.port() },
   { type: [], topic: ["Computing", "All topics"], name: "Web protocol", data: () => faker.internet.protocol() },
-  { type: [], topic: ["Computing", "All topics"], name: "URL", data: () => faker.internet.url() }, // protocol
+  { type: [], topic: ["Computing", "All topics"], name: "URL", data: () => faker.internet.url() },
   { type: [], topic: ["Computing", "All topics"], name: "User agent", data: () => faker.internet.userAgent() },
   { type: [], topic: ["Computing", "All topics"], name: "Common file extension", data: () => faker.system.commonFileExt() },
-  { type: [], topic: ["Computing", "All topics"], name: "Common file name", data: () => faker.system.commonFileName() }, // Common file name
+  { type: [], topic: ["Computing", "All topics"], name: "Common file name", data: () => faker.system.commonFileName() },
   { type: [], topic: ["Computing", "All topics"], name: "Common file type", data: () => faker.system.commonFileType() },
   { type: [], topic: ["Computing", "All topics"], name: "Cron", data: () => faker.system.cron() },
   { type: [], topic: ["Computing", "All topics"], name: "Directory path", data: () => faker.system.directoryPath() },
@@ -129,11 +129,11 @@ export const column = [
   { type: ["min", "max"], topic: ["Computing", "General", "All topics"], name: "Symbol", data: (min: number = 1, max: number = 1) => faker.string.symbol({ max, min }) },
   { type: [], topic: ["Computing", "All topics"], name: "ULID", data: () => faker.string.ulid() },
   { type: [], topic: ["Computing", "All topics"], name: "UUID", data: () => faker.string.uuid() },
-  { type: [], topic: ["Computing", "General", "All topics"], name: "Boolean", data: () => faker.datatype.boolean() },  // probability
+  { type: [], topic: ["Computing", "General", "All topics"], name: "Boolean", data: () => faker.datatype.boolean() },
   { type: ["min", "max"], topic: ["Computing", "Number", "All topics"], name: "BigInt number", data: (min: number = 0, max: number = 1000000) => faker.number.bigInt({ min, max }) },
   { type: ["min", "max"], topic: ["Computing", "Number", "All topics"], name: "Binary number", data: (min: number = 0, max: number = 65535) => faker.number.binary({ max, min }) },
-  { type: ["min", "max"], topic: ["Computing", "Number", "All topics"], name: "Float number", data: (min: number = 0, max: number = 10000) => faker.number.float({ max, min }) }, // functionLengths, multipleOf
-  { type: ["min", "max"], topic: ["Computing", "Number", "All topics"], name: "Number", data: (min: number = 0, max: number = 1000000) => faker.number.int({ max, min }) }, // multipleOf
+  { type: ["min", "max"], topic: ["Computing", "Number", "All topics"], name: "Float number", data: (min: number = 0, max: number = 10000) => faker.number.float({ max, min }) },
+  { type: ["min", "max"], topic: ["Computing", "Number", "All topics"], name: "Number", data: (min: number = 0, max: number = 1000000) => faker.number.int({ max, min }) },
   { type: ["min", "max"], topic: ["Computing", "Number", "All topics"], name: "Roman numeral", data: (min: number = 1, max: number = 1000) => faker.number.romanNumeral({ max, min }) },
   { type: [], topic: ["Number", "All topics"], name: "IMEI number", data: () => faker.phone.imei() },
   { type: [], topic: ["Number", "Person", "All topics"], name: "Phone number national", data: () => faker.phone.number({ style: "national" }) },
@@ -141,7 +141,7 @@ export const column = [
   { type: ["minDate", "maxDate"], topic: ["Date", "Person", "All topics"], name: "Birthdate", data: (min: number = 1940, max: number = 2007) => faker.date.between({ from: `${min}-01-01T00:00:00.000Z`, to: `${max}-01-01T00:00:00.000Z` }).toISOString().split("T")[0] },
   { type: ["min", "max"], topic: ["Date", "General", "All topics"], name: "Year", data: (min: number = 1940, max: number = new Date().getFullYear() - 1) => faker.number.int({ min, max }) },
   { type: [], topic: ["Date", "General", "All topics"], name: "Any datatime", data: () => faker.date.anytime() },
-  { type: [], topic: ["Date", "General", "All topics"], name: "Any date", data: () => faker.date.anytime().toISOString().split("T")[0] }, // dates
+  { type: [], topic: ["Date", "General", "All topics"], name: "Any date", data: () => faker.date.anytime().toISOString().split("T")[0] },
   { type: ["minDate", "maxDate"], topic: ["Date", "General", "All topics"], name: "Date", data: (min: number = 1980, max: number = new Date().getFullYear() - 1) => faker.date.between({ from: `${min}-01-01T00:00:00.000Z`, to: `${max}-01-01T00:00:00.000Z` }).toISOString().split("T")[0] },
   { type: ["max"], topic: ["Date", "All topics"], name: "Future datetime", data: (min: number = 90) => faker.date.future({ years: min }) },
   { type: ["max"], topic: ["Date", "All topics"], name: "Future date", data: (min: number = 90) => faker.date.future({ years: min }).toISOString().split("T")[0] },
@@ -346,12 +346,14 @@ export const fieldDefaultValue = (fieldName: string): IParameters => {
 
     case "Future datetime":
       return {
-        min: 90
+        min: 90,
+        max: 90
       }
 
     case "Future date":
       return {
-        min: 90
+        min: 90,
+        max: 90
       }
 
     case "Past datetime":
@@ -371,7 +373,8 @@ export const fieldDefaultValue = (fieldName: string): IParameters => {
 
     case "Soon datetime":
       return {
-        min: 1
+        min: 1,
+        max: 1
       }
 
     case "Price":

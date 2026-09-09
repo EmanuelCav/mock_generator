@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Pressable, Text, View } from "react-native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 
@@ -8,7 +9,7 @@ import { extensionFile } from "../utils/data";
 const HistoryElement = ({ history, openDownload, handleEdit, handleDelete, t }: HistoryElementPropsType) => {
 
     return (
-        <View className="mx-4 mb-4 flex-row rounded-xl bg-white p-4 shadow-sm dark:bg-zinc-900">
+        <View className="mx-4 mb-4 flex-row rounded-xl bg-white p-4 shadow-sm dark:bg-zinc-800">
 
             <View className="flex-1">
 
@@ -71,7 +72,7 @@ const HistoryElement = ({ history, openDownload, handleEdit, handleDelete, t }: 
                 >
                     <Feather
                         name="edit"
-                        color="#50C878"
+                        color="#0000FF"
                         size={24}
                     />
                 </Pressable>
@@ -94,4 +95,4 @@ const HistoryElement = ({ history, openDownload, handleEdit, handleDelete, t }: 
     );
 };
 
-export default HistoryElement;
+export default memo(HistoryElement);

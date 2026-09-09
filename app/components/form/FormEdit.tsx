@@ -32,7 +32,7 @@ const FormEdit = ({ handleClose, field, handleEdit, t }: FormEditPropsType) => {
     const [valueElement, setValueElement] = useState<string>("");
 
     return (
-        <ContainerBackground isField={true} onClose={() => {
+        <ContainerBackground title={title} onClose={() => {
             handleClose();
             setValueElement("");
             setIsError("");
@@ -49,7 +49,7 @@ const FormEdit = ({ handleClose, field, handleEdit, t }: FormEditPropsType) => {
                 value={title}
                 onChangeText={setTitle}
                 maxLength={30}
-                className="mb-5 rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-neutral-900 dark:text-white"
+                className="mb-5 rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
             />
 
             {field.topic !== "Array elements" && (
@@ -78,7 +78,7 @@ const FormEdit = ({ handleClose, field, handleEdit, t }: FormEditPropsType) => {
                         }
                     }}
                     maxLength={3}
-                    className="mb-5 rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-neutral-900 dark:text-white"
+                    className="mb-5 rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                 />
             )}
 
@@ -124,7 +124,7 @@ const FormEdit = ({ handleClose, field, handleEdit, t }: FormEditPropsType) => {
                         value={valueElement}
                         onChangeText={setValueElement}
                         maxLength={30}
-                        className="mb-5 rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-neutral-900 dark:text-white"
+                        className="mb-5 rounded-lg border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                     />
                 </>
             )}
@@ -173,7 +173,7 @@ const FormEdit = ({ handleClose, field, handleEdit, t }: FormEditPropsType) => {
             )}
 
             <TouchableOpacity
-                className="flex-row items-center justify-center rounded-lg bg-[#50C878] px-4 py-4"
+                className="flex-row items-center justify-center rounded-lg bg-emerald-500 px-4 py-4"
                 onPress={() => {
 
                     const maxValueSelected =

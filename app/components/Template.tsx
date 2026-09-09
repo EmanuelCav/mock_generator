@@ -1,10 +1,11 @@
+import { memo } from 'react'
 import { Pressable, Text, View } from "react-native";
 
 import { TemplatePropsType } from "../types/template.types";
 
 const Template = ({ template, getTemplate, t }: TemplatePropsType) => {
     return (
-        <View className="mx-4 mb-4 rounded-2xl bg-white p-5 shadow-sm dark:bg-zinc-900">
+        <View className="mx-4 mb-4 rounded-2xl bg-white p-5 shadow-sm dark:bg-zinc-800">
 
             <Text className="text-center text-lg font-bold text-black dark:text-white">
                 {template.title.toUpperCase()}
@@ -47,4 +48,4 @@ const Template = ({ template, getTemplate, t }: TemplatePropsType) => {
     );
 };
 
-export default Template;
+export default memo(Template);

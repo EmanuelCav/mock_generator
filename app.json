@@ -2,7 +2,7 @@
   "expo": {
     "name": "Mock Data Generator",
     "slug": "DataMocker",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
@@ -11,15 +11,11 @@
     },
     "android": {
       "package": "com.datamocker.excelgenerator",
-      "versionCode": 8,
+      "versionCode": 9,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
-      ],
       "userInterfaceStyle": "automatic"
     },
     "web": {
@@ -34,7 +30,15 @@
           "androidAppId": "ca-app-pub-8789796567862358~9993189831"
         }
       ],
-      "expo-splash-screen",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#efffef",
+          "image": "./assets/splash-icon.png",
+          "resizeMode": "contain",
+          "imageWidth": 200
+        }
+      ],
       "expo-font",
       "expo-sharing"
     ],
